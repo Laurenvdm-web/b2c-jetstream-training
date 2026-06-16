@@ -1585,7 +1585,7 @@ function homePage(forcedTab){
   h+='<span style="background:rgba(255,255,255,0.15);color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:0.5px;">'+(u?'Hi '+u+'! ':'')+'Welcome</span>';
   h+='</div></div>';
 
-  var tabs=[['trainingguide','📖 Training Guide'],['overview','Overview'],['sched','Work Schedule'],['progress','Training Progress'],['challenge','Today\'s Challenge'],['mq','Module Quiz Results'],['reflection','Weekly Reflection'],['reminders','Recent Reminders']];
+  var tabs=[['trainingguide','📖 Training Guide'],['overview','Overview'],['progress','Training Progress'],['challenge','Today\'s Challenge'],['mq','Module Quiz Results'],['reflection','Weekly Reflection'],['reminders','Recent Reminders']];
   h+='<div style="display:flex;border-bottom:1px solid #e2e8f0;margin-bottom:16px;background:#fff;flex-wrap:nowrap;overflow-x:auto;">';
   for(var i=0;i<tabs.length;i++){
     h+='<button class="home-tab'+(activeTab===tabs[i][0]?' active':'')+'" data-tab="'+tabs[i][0]+'" onclick="setHomeTab(\''+tabs[i][0]+'\')">'+tabs[i][1]+'</button>';
@@ -1629,27 +1629,6 @@ function homePage(forcedTab){
     h+='</div>';
   }
 
-  if(activeTab==='overview'||activeTab==='sched'){
-    h+='<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;margin-bottom:14px;">';
-    h+='<div style="padding:14px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e2e8f0;"><span style="font-size:18px;">&#x1F4C5;</span><span style="font-size:14px;font-weight:700;color:#1a1a2e;">Work Schedule</span></div>';
-    h+='<div style="padding:16px 20px;background:#f7fafc;"><div class="tz-btns" style="margin-bottom:14px;">';
-    h+='<button class="tz-btn'+(curTz==="sa"?" active":"")+'" id="tz-sa" onclick="setTz(\'sa\')">South Africa (SAST)</button>';
-    h+='<button class="tz-btn'+(curTz==="ph"?" active":"")+'" id="tz-ph" onclick="setTz(\'ph\')">Manila</button>';
-    h+='<button class="tz-btn'+(curTz==="eu"?" active":"")+'" id="tz-eu" onclick="setTz(\'eu\')">Europe</button>';
-    h+='<button class="tz-btn'+(curTz==="us"?" active":"")+'" id="tz-us" onclick="setTz(\'us\')">USA</button>';
-    h+='<button class="tz-btn'+(curTz==="ca"?" active":"")+'" id="tz-ca" onclick="setTz(\'ca\')">Canada</button>';
-    h+='</div><div class="sched-grid">';
-    var days=["mon","tue","wed","thu","fri","sat","sun"];
-    for(var d=0;d<days.length;d++){
-      var day=days[d];var s=SCHED[day];var isOff=s.off;
-      h+='<div class="sched-day'+(isOff?" off":"")+'">';
-      h+='<div class="sched-day-name">'+s.label+'</div>';
-      if(isOff){h+='<div id="st-'+day+'"><span class="sched-off">Off</span></div><div id="ssa-'+day+'"></div>';}
-      else{var t=curTz==="sa"?s.sa:curTz==="ph"?s.ph:curTz==="eu"?s.eu:curTz==="us"?s.us:s.ca;h+='<div id="st-'+day+'"><span class="sched-time">'+t+'</span></div><div class="sched-sa" id="ssa-'+day+'">'+(curTz!=="sa"?s.sa:"")+'</div>';}
-      h+='</div>';
-    }
-    h+='</div></div></div>';
-  }
 
   if(activeTab==='overview'||activeTab==='progress'){
     h+='<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px 20px;margin-bottom:14px;">';
