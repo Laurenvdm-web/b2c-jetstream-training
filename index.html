@@ -4,6 +4,29 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Training at Jetstream</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+var _fbConfig={apiKey:"AIzaSyAVNPaShxP2mPr3E8w1Z0eK4r5QEjvigNg",authDomain:"b2c-training-95807.firebaseapp.com",databaseURL:"https://b2c-training-95807-default-rtdb.firebaseio.com",projectId:"b2c-training-95807",storageBucket:"b2c-training-95807.firebasestorage.app",messagingSenderId:"217301850710",appId:"1:217301850710:web:aa5fff5faa72b58b1d39f7"};
+firebase.initializeApp(_fbConfig);
+var _fbDB=firebase.database();
+var _fbUser=null;
+function _fbKey(k){return k.replace(/[.#$\[\]]/g,'_');}
+function _fbSyncToLocal(username,cb){
+  _fbDB.ref('users/'+username).once('value').then(function(snap){
+    var d=snap.val();
+    if(d){Object.keys(d).forEach(function(k){try{localStorage.setItem(k,d[k]);}catch(e){}});}
+    if(cb)cb();
+  }).catch(function(){if(cb)cb();});
+}
+var _origLS=localStorage.setItem.bind(localStorage);
+localStorage.setItem=function(key,value){
+  _origLS(key,value);
+  if(_fbUser&&key.startsWith(_fbUser+'-')){
+    try{_fbDB.ref('users/'+_fbUser+'/'+_fbKey(key)).set(String(value));}catch(e){}
+  }
+};
+</script>
 <style>
 *,::before,::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Segoe UI",system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e;display:flex;height:100vh;overflow:hidden}
@@ -461,16 +484,19 @@ function startTraining(){
     var entered=document.getElementById("pw-input").value;
     if(entered!==USER_PASSWORDS[name]){alert("Incorrect password.");return;}
   }
-  try{localStorage.setItem("jt-user",name);}catch(e){}
-  document.getElementById("name-overlay").style.display="none";
-  document.getElementById("user-chip").innerHTML="Logged in as: <strong>"+name+"</strong> &nbsp;<span onclick=\"switchUser()\" style=\"cursor:pointer;text-decoration:underline;opacity:0.75;font-weight:400;\">(switch)</span>";
-  var last="home";
-  try{last=localStorage.getItem("jt-last-"+name)||"home";}catch(e){}
-  show(last);
-  updSidebar();
-  checkDqButtonState();
-  var adminBtn=document.getElementById("n-admin");
-  if(adminBtn)adminBtn.style.display=(name==="Lauren")?"block":"none";
+  _fbUser=name;
+  _fbSyncToLocal(name,function(){
+    try{localStorage.setItem("jt-user",name);}catch(e){}
+    document.getElementById("name-overlay").style.display="none";
+    document.getElementById("user-chip").innerHTML="Logged in as: <strong>"+name+"</strong> &nbsp;<span onclick=\"switchUser()\" style=\"cursor:pointer;text-decoration:underline;opacity:0.75;font-weight:400;\">(switch)</span>";
+    var last="home";
+    try{last=localStorage.getItem("jt-last-"+name)||"home";}catch(e){}
+    show(last);
+    updSidebar();
+    checkDqButtonState();
+    var adminBtn=document.getElementById("n-admin");
+    if(adminBtn)adminBtn.style.display=(name==="Lauren")?"block":"none";
+  });
 }
 
 function checkAllAnswered(allAnswered,total){if(!allAnswered){alert('Please answer all '+(total?total:'')+' questions before submitting.');return false;}return true;}
