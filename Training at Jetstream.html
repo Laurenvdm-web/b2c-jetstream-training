@@ -6028,16 +6028,30 @@ function modificationsPage(){
   // Number of Guest Modifications gateway card
   h+='<div style="flex:1;min-width:260px;display:flex;position:relative;">';
   h+='<span onclick="event.stopPropagation();markModSection(\'mod-guests\')" id="mod-guests-check" role="button" title="Mark as read" style="position:absolute;top:12px;right:12px;z-index:2;width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;background:transparent;color:#fff;">&#x25CB;</span>';
-  h+='<button onclick="window.open(\'https://www.notion.so/jetstream-intranet/Modifications-2b7608d1bf2a8010967bd040379e620f?source=copy_link\',\'_blank\')" style="width:100%;min-height:260px;background:linear-gradient(135deg,#276749 0%,#38a169 60%,#68d391 100%);border:none;border-radius:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:36px 30px;transition:all 0.2s;font-family:inherit;box-shadow:0 4px 20px rgba(39,103,73,0.32);" onmouseover="this.style.transform=\'translateY(-4px)\';this.style.boxShadow=\'0 10px 32px rgba(39,103,73,0.44)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'0 4px 20px rgba(39,103,73,0.32)\'">';
-  h+='<span style="font-size:56px;line-height:1;">👥</span>';
+  h+='<div style="width:100%;background:linear-gradient(135deg,#276749 0%,#38a169 60%,#68d391 100%);border-radius:16px;box-shadow:0 4px 20px rgba(39,103,73,0.32);overflow:hidden;">';
+  h+='<button onclick="var b=document.getElementById(\'mod-guests-body\');var a=document.getElementById(\'mod-guests-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'▶\':\'▼\';" style="width:100%;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px 24px;font-family:inherit;">';
+  h+='<span style="font-size:48px;line-height:1;">👥</span>';
   h+='<div style="text-align:center;">';
-  h+='<div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:10px;">Number of Guest Modifications</div>';
+  h+='<div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:8px;">Number of Guest Modifications</div>';
   h+='<div style="font-size:13px;color:rgba(255,255,255,0.9);line-height:1.7;max-width:210px;margin:0 auto;">Guest count modification guide for V1 and V2 properties</div>';
   h+='</div>';
-  h+='<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);border-radius:24px;padding:10px 24px;">';
-  h+='<span style="font-size:14px;font-weight:800;color:#fff;">Open in Notion ↗</span>';
+  h+='<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);border-radius:24px;padding:8px 20px;">';
+  h+='<span id="mod-guests-arr" style="font-size:13px;font-weight:800;color:#fff;">▶ View guide</span>';
   h+='</div>';
   h+='</button>';
+  h+='<div id="mod-guests-body" style="display:none;background:#fff;margin:0 16px 16px;border-radius:10px;padding:20px 22px;">';
+  h+='<h3 style="font-size:15px;font-weight:700;color:#1e3a5c;margin:0 0 14px;">Training Manual: Guest Modifications for Airbnb Reservations</h3>';
+  h+='<div style="font-size:13px;color:#2d3748;line-height:1.7;">';
+  h+='<p style="margin:0 0 10px;"><strong>Step 1 — Identifying a Modification Request</strong><br>You will receive a notification with a subject line such as <em>"Jetstream Airbnb - Guest Name wants to change their reservation."</em> The notification will show the original guest count (crossed out) and the new requested guest count.</p>';
+  h+='<p style="margin:0 0 10px;"><strong>Step 2 — Log into Airbnb &amp; Cirrus</strong><br>Access the Airbnb back-end using the appropriate credentials and locate the guest\'s reservation. Then search for the guest\'s full name in Cirrus and open their booking to review details.</p>';
+  h+='<p style="margin:0 0 10px;"><strong>Step 3 — Save Key Information</strong><br>Before making any changes: take a screenshot of the reservation page and save the total reservation cost, partner cost, tax, and total payable. Copy these into your notes so you can restore them after the modification.</p>';
+  h+='<p style="margin:0 0 10px;"><strong>Step 4 — Review the Modification Request</strong><br>Check the maximum number of guests allowed for the listing. If there is an additional charge per guest, note the extra cost. If the new guest count is within the allowed limit, proceed with approval.</p>';
+  h+='<p style="margin:0 0 10px;"><strong>Step 5 — Approve the Modification</strong><br>In Airbnb: click the modification request and approve it. Wait for the "Request Approved" confirmation with a green checkmark.<br>In Cirrus: refresh the reservation page. If the update does not reflect, add an "Action Required" tag and a note: <em>"Please update the pre-tax amount to [original amount] once the Airbnb modification has synced."</em> Keep the booking ID to check back later in the day.</p>';
+  h+='<p style="margin:0 0 10px;"><strong>Step 6 — Handle Additional Fees</strong><br>Airbnb automatically adjusts pricing for modifications. If there is a price difference it will be displayed in Airbnb. In Cirrus, check if the partner payment resets to zero — if yes, manually restore the pre-tax amount using the details you saved in Step 3.</p>';
+  h+='<p style="margin:0;"><strong>Step 7 — Verify and Close</strong><br>Revisit the reservation later to confirm the correct number of guests is displayed and the partner payment is accurate. Once verified, remove the "Action Required" tag and archive the request.</p>';
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
 
   h+='</div>';
   h+='</div>';
