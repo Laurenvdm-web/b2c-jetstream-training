@@ -1178,10 +1178,9 @@ function securityPage(){
 function startSecurityQuiz(){
   var btn=document.getElementById('sec-start-btn');
   var wrap=document.getElementById('sec-quiz-wrap');
-  if(btn) btn.disabled=true;
-  if(btn) btn.style.opacity='0.5';
-  if(btn) btn.style.cursor='not-allowed';
-  if(wrap) wrap.style.display='block';
+  var isOpen=wrap&&wrap.style.display!=='none';
+  if(wrap) wrap.style.display=isOpen?'none':'block';
+  if(btn){ btn.disabled=false; btn.style.opacity=isOpen?'1':'0.85'; btn.style.cursor='pointer'; }
 }
 
 
