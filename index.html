@@ -26,6 +26,13 @@ localStorage.setItem=function(key,value){
     try{_fbDB.ref('users/'+_fbUser+'/'+_fbKey(key)).set(String(value));}catch(e){}
   }
 };
+var _origLSRemove=localStorage.removeItem.bind(localStorage);
+localStorage.removeItem=function(key){
+  _origLSRemove(key);
+  if(_fbUser&&key.startsWith(_fbUser+'-')){
+    try{_fbDB.ref('users/'+_fbUser+'/'+_fbKey(key)).remove();}catch(e){}
+  }
+};
 </script>
 <style>
 *,::before,::after{box-sizing:border-box;margin:0;padding:0}
@@ -514,7 +521,7 @@ function switchUser(){
   document.getElementById("name-btn").disabled=true;
   document.getElementById("name-overlay").style.display="flex";
 }
-function resetAllProgressAndScores(){var u=getUser();if(!u){alert('No user selected.');return;}if(!confirm('This will clear ALL your quiz scores, section progress, and learning history. Are you sure?'))return;try{var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(u+'-')){keys.push(k);}}for(var j=0;j<keys.length;j++){localStorage.removeItem(keys[j]);}alert('Done! All scores and progress have been cleared.');show('home');}catch(e){alert('Error clearing data: '+e.message);}}
+function resetAllProgressAndScores(){var u=getUser();if(!u){alert('No user selected.');return;}if(!confirm('This will clear ALL your quiz scores, section progress, and learning history. Are you sure?'))return;_fbDB.ref('users/'+u).remove().then(function(){var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(u+'-'))keys.push(k);}keys.forEach(function(k){_origLSRemove(k);});alert('Done! All scores and progress have been cleared.');show('home');}).catch(function(e){alert('Error clearing data: '+e.message);});}
 function recordModuleQuiz(name,score,total,pct){var u=getUser();if(!u)return;try{var key=u+'-module-quiz-log';var log=JSON.parse(localStorage.getItem(key)||'[]');var now=new Date();log.unshift({name:name,score:score,total:total,pct:pct,pass:pct>=70,date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),time:now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})});localStorage.setItem(key,JSON.stringify(log));}catch(e){}}
 // ── Shared quiz toggle helper ─────────────────────────────────────────────
 function toggleQuiz(prefix) {
