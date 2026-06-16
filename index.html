@@ -10908,8 +10908,8 @@ document.addEventListener('DOMContentLoaded', function(){
       if(sel) sel.value = savedUser;
       document.getElementById("name-overlay").style.display="none";
       document.getElementById("user-chip").innerHTML="Logged in as: <strong>"+savedUser+"</strong> &nbsp;<span onclick=\"switchUser()\" style=\"cursor:pointer;text-decoration:underline;opacity:0.75;font-weight:400;\">(switch)</span>";
-      // Defer show/updSidebar so static content is fully ready first
-      setTimeout(function(){
+      _fbUser=savedUser;
+      _fbSyncToLocal(savedUser,function(){
         try{
           var last="home";
           try{last=localStorage.getItem("jt-last-"+savedUser)||"home";}catch(e3){}
@@ -10918,7 +10918,7 @@ document.addEventListener('DOMContentLoaded', function(){
           var adminBtn=document.getElementById("n-admin");
           if(adminBtn)adminBtn.style.display=(savedUser==="Lauren")?"block":"none";
         }catch(e2){}
-      },0);
+      });
     }
   } catch(e) {}
 
