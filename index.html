@@ -440,6 +440,8 @@ function selectName(n){
   var pwRow=document.getElementById("pw-row");
   var pwInput=document.getElementById("pw-input");
   var nameBtn=document.getElementById("name-btn");
+  var errEl=document.getElementById("pw-error");
+  if(errEl)errEl.style.display="none";
   if(USER_PASSWORDS[n]){
     pwRow.style.display="block";
     pwInput.value="";
