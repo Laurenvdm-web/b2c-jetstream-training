@@ -445,26 +445,14 @@ function selectName(n){
   if(USER_PASSWORDS[n]){
     pwRow.style.display="block";
     pwInput.value="";
-    pwInput.focus();
-    nameBtn.disabled=true;
+    nameBtn.disabled=false;
   } else {
     pwRow.style.display="none";
     nameBtn.disabled=false;
   }
 }
 
-function checkPassword(){
-  var name=document.getElementById("name-select").value;
-  var entered=document.getElementById("pw-input").value;
-  var errEl=document.getElementById("pw-error");
-  if(entered===USER_PASSWORDS[name]){
-    errEl.style.display="none";
-    document.getElementById("name-btn").disabled=false;
-  } else {
-    document.getElementById("name-btn").disabled=true;
-    if(entered.length>0){errEl.style.display="block";}else{errEl.style.display="none";}
-  }
-}
+function checkPassword(){}
 
 function startTraining(){
   var name=document.getElementById("name-select").value;
