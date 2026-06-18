@@ -2884,13 +2884,16 @@ function partnersPage(){
   h+='</button>';
   h+='<div id="pa-quiz-drop" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
   h+='<p class="quiz-intro" style="margin-bottom:16px;">Test your knowledge on how and when to contact partners. All questions are shown below \u2014 answer each one and submit when you\'re done.</p>';
-  h+='<div id="partners-start-area" style="text-align:center;padding:8px 0 4px;">';
+  var _paU=getUser();var _paDone=_paU&&!!localStorage.getItem(_paU+'-quiz-partners-done');var _paSc=_paDone?parseInt(localStorage.getItem(_paU+'-quiz-partners-score')||'0'):0;var _paTot=partnersQuizData.length;var _paMsgs=['Keep reviewing the sections above and give it another go!','Good effort — a couple to brush up on.','Getting there — review any missed questions.','Great work — almost perfect!','Perfect score! Excellent work!'];
+  h+='<div id="partners-start-area" style="text-align:center;padding:8px 0 4px;'+(_paDone?'display:none;':'')+'\">';
   h+='<button onclick="startPartnersQuiz()" class="quiz-submit">Start Quiz</button>';
   h+='</div>';
   h+='<div id="partners-all-questions" style="display:none;"></div>';
-  h+='<div id="partners-results" style="display:none;">';
-  h+='<div class="quiz-result show"><div class="quiz-score" id="partners-score-display"></div><div class="quiz-msg" id="partners-score-msg"></div></div>';
-  h+='<div id="partners-review-list" style="margin-top:14px;"></div>';
+  h+='<div id="partners-results" style="'+(_paDone?'display:block;':'display:none;')+'">';
+  h+='<div class="quiz-result show"><div class="quiz-score" id="partners-score-display">'+(_paDone?_paSc+' / '+_paTot:'')+'</div><div class="quiz-msg" id="partners-score-msg">'+(_paDone?(_paMsgs[_paSc]||''):'')+'</div></div>';
+  h+='<div id="partners-review-list" style="margin-top:14px;">';
+  if(_paDone){var _paLabels=['A','B','C','D'];for(var _pi=0;_pi<partnersQuizData.length;_pi++){var _pq=partnersQuizData[_pi];h+='<div style="border-left:3px solid #68d391;padding:10px 14px;margin-bottom:10px;border-radius:0 8px 8px 0;background:#f7fafc;font-size:13px;"><strong>Q'+(_pi+1)+':</strong> '+_pq.text+'<br><span style="color:#4a5568;display:block;margin-top:4px;">Correct answer: <strong>'+_paLabels[_pq.correct]+' — '+_pq.opts[_pq.correct]+'</strong></span></div>';}}
+  h+='</div>';
   h+='<div style="text-align:center;margin-top:14px;"><button onclick="startPartnersQuiz()" class="quiz-submit">Redo Quiz for Practice</button></div>';
   h+='</div>';
   h+='</div>';
