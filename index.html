@@ -642,11 +642,11 @@ function resetBkQuiz(){var u=getUser();try{localStorage.removeItem(u+"-quiz-book
 function submitCirrusQuiz(){
   var answers=[0,1,0,0,0,0,0,1,0,0];
   var opts=[['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No']];
-  var score=0;var missing=[];var results=[];
+  var score=0;var missing=[];var results=[];var savedAnswers={};
   for(var i=0;i<10;i++){
     var sel=document.querySelector('input[name="cirrus-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{var val=parseInt(sel.value);var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct});}
+    else{var val=parseInt(sel.value);savedAnswers['cirrus-q'+i]=val;var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct});}
   }
   if(missing.length>0){
     var disp=document.getElementById('cirrus-score-display');
@@ -671,7 +671,7 @@ function submitCirrusQuiz(){
   }
   var u=getUser();
   try{recordModuleQuiz('Cirrus Quiz 1',score,9,Math.round(score/9*100));
-  localStorage.setItem(u+'-quiz-cirrus-done','1');localStorage.setItem(u+'-quiz-cirrus-score',score);}catch(e){}
+  localStorage.setItem(u+'-quiz-cirrus-done','1');localStorage.setItem(u+'-quiz-cirrus-score',score);localStorage.setItem(u+'-quiz-cirrus-answers',JSON.stringify(savedAnswers));}catch(e){}
   var qc1=document.getElementById('circ-quiz1-check');
   if(qc1){markDone(qc1);}
   updateCirrusProgress();
@@ -724,11 +724,11 @@ function resetCirrusQuiz(){
 function submitCirrusQuiz2(){
   var answers=[1,2,3,3,2,3,2,2,3,2,1]; // correct option indices for each question
   var nq=11;
-  var score=0;var missing=[];var results=[];
+  var score=0;var missing=[];var results=[];var savedAnswers={};
   for(var i=0;i<nq;i++){
     var sel=document.querySelector('input[name="sq2-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{var val=parseInt(sel.value);var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
+    else{var val=parseInt(sel.value);savedAnswers['sq2-q'+i]=val;var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
   }
   if(missing.length>0){
     var disp=document.getElementById('sq2-score-display');
@@ -756,6 +756,7 @@ function submitCirrusQuiz2(){
     recordModuleQuiz('Cirrus Quiz 2',score,11,Math.round(score/11*100));
   localStorage.setItem(u+'-quiz-cirrus2-done','1');
     localStorage.setItem(u+'-quiz-cirrus2-score',score);
+    localStorage.setItem(u+'-quiz-cirrus2-answers',JSON.stringify(savedAnswers));
   }catch(e){}
   var qc2=document.getElementById('circ-quiz2-check');
   if(qc2){markDone(qc2);}
@@ -809,11 +810,11 @@ function resetCirrusQuiz2(){
 function submitCirrusQuiz3(){
   var answers=[2,1,3,2,0,2,2,2];
   var nq=8;
-  var score=0;var missing=[];var results=[];
+  var score=0;var missing=[];var results=[];var savedAnswers={};
   for(var i=0;i<nq;i++){
     var sel=document.querySelector('input[name="sq3-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{var val=parseInt(sel.value);var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
+    else{var val=parseInt(sel.value);savedAnswers['sq3-q'+i]=val;var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
   }
   if(missing.length>0){
     var disp=document.getElementById('sq3-score-display');
@@ -838,7 +839,7 @@ function submitCirrusQuiz3(){
   }
   var u=getUser();
   try{recordModuleQuiz('Cirrus Quiz 3',score,8,Math.round(score/8*100));
-  localStorage.setItem(u+'-quiz-cirrus3-done','1');localStorage.setItem(u+'-quiz-cirrus3-score',score);}catch(e){}
+  localStorage.setItem(u+'-quiz-cirrus3-done','1');localStorage.setItem(u+'-quiz-cirrus3-score',score);localStorage.setItem(u+'-quiz-cirrus3-answers',JSON.stringify(savedAnswers));}catch(e){}
   var qc3=document.getElementById('circ-quiz3-check');
   if(qc3){markDone(qc3);}
   updateCirrusProgress();
@@ -10146,6 +10147,43 @@ function updateCirrusProgress(){
   setProgress('circ', pct);
   if(typeof updateAllNavChecks==='function')updateAllNavChecks();
 }
+function _applyCircusAnswers(u, doneKey, ansKey, scoreKey, namePrefix, nq, nopt, answers, checkId, dispId, btnId, passMark, outOf, pctDen, passLabel, failDetail) {
+  if (!localStorage.getItem(u + '-' + doneKey)) return;
+  var qc = document.getElementById(checkId);
+  if (qc) markDone(qc);
+  var saved = {};
+  try { var raw = localStorage.getItem(u + '-' + ansKey); if (raw) saved = JSON.parse(raw); } catch(e) {}
+  var score = parseInt(localStorage.getItem(u + '-' + scoreKey) || '0', 10);
+  for (var i = 0; i < nq; i++) {
+    var v = saved[namePrefix + i];
+    if (v === undefined || v === null) continue;
+    var inp = document.querySelector('input[name="' + namePrefix + i + '"][value="' + v + '"]');
+    if (inp) inp.checked = true;
+    for (var j = 0; j < nopt; j++) {
+      var lbl = document.getElementById(namePrefix + i + '-opt' + j);
+      if (!lbl) continue;
+      var li = lbl.querySelector('input');
+      if (li) li.disabled = true;
+      lbl.style.cursor = 'not-allowed';
+      if (j === v) { if (v === answers[i]) markCorrect(lbl); else markWrong(lbl); }
+      if (j === answers[i] && v !== answers[i]) markCorrect(lbl);
+    }
+  }
+  var pass = score >= passMark;
+  var disp = document.getElementById(dispId);
+  if (disp && !disp.innerHTML.trim()) {
+    disp.style.display = 'block';
+    disp.innerHTML = '<div style="background:' + (pass ? '#f0fff4' : '#fff5f5') + ';border:2px solid ' + (pass ? '#68d391' : '#fc8181') + ';border-radius:12px;padding:24px;text-align:center;margin-top:20px;">'
+      + '<div style="font-size:42px;margin-bottom:10px;">' + (pass ? '🎉' : '📚') + '</div>'
+      + '<div style="font-size:22px;font-weight:700;color:' + (pass ? '#276749' : '#c53030') + ';margin-bottom:6px;">You scored ' + score + ' out of ' + outOf + '</div>'
+      + '<div style="font-size:14px;color:' + (pass ? '#276749' : '#c53030') + ';margin-bottom:14px;">' + Math.round(score / pctDen * 100) + '%</div>'
+      + '<span style="background:' + (pass ? '#276749' : '#c53030') + ';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">' + (pass ? passLabel : 'NEEDS REVIEW') + '</span>'
+      + '<div style="font-size:13px;color:#4a5568;margin-top:14px;">' + (pass ? 'Great work!' : failDetail) + '</div>'
+      + '</div>';
+  }
+  var btn = document.getElementById(btnId);
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+}
 function restoreCirrusProgress(){
   var u=getUser();if(!u)return;
   var ids=['circ-about','circ-find','circ-workflow','circ-tabs','circ-prop','circ-videos'];
@@ -10155,13 +10193,9 @@ function restoreCirrusProgress(){
       if(btn){markDone(btn);}
     }
   }
-  var qmap=[['quiz-cirrus-done','circ-quiz1-check'],['quiz-cirrus2-done','circ-quiz2-check'],['quiz-cirrus3-done','circ-quiz3-check']];
-  for(var i=0;i<qmap.length;i++){
-    if(localStorage.getItem(u+'-'+qmap[i][0])){
-      var qc=document.getElementById(qmap[i][1]);
-      if(qc){markDone(qc);}
-    }
-  }
+  _applyCircusAnswers(u,'quiz-cirrus-done','quiz-cirrus-answers','quiz-cirrus-score','cirrus-q',10,2,[0,1,0,0,0,0,0,1,0,0],'circ-quiz1-check','cirrus-score-display','cirrus-submit-btn',7,10,9,'&#x2705; CIRRUS PAGE COMPLETED','Review the material above and try again when ready (passing score: 7/10).');
+  _applyCircusAnswers(u,'quiz-cirrus2-done','quiz-cirrus2-answers','quiz-cirrus2-score','sq2-q',11,4,[1,2,3,3,2,3,2,2,3,2,1],'circ-quiz2-check','sq2-score-display','sq2-submit-btn',8,11,11,'&#x2705; CIRRUS QUIZ 2 COMPLETED','Review booking 211500 in Cirrus and try again (passing score: 8/11).');
+  _applyCircusAnswers(u,'quiz-cirrus3-done','quiz-cirrus3-answers','quiz-cirrus3-score','sq3-q',8,4,[2,1,3,2,0,2,2,2],'circ-quiz3-check','sq3-score-display','sq3-submit-btn',6,8,8,'&#x2705; CIRRUS QUIZ 3 COMPLETED','Review the material above and try again (passing score: 6/8).');
   updateCirrusProgress();
 }
 function markGESection(id){
