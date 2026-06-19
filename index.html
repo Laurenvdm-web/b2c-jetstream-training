@@ -3522,6 +3522,8 @@ function cirrusPage(){
   h+='<div style="padding:20px;">';
   if(_cqDone){
     var _cqPass=_cqScore>=7;
+    var _cqSavedA={};try{var _cqRaw=localStorage.getItem(_cqUser+'-quiz-cirrus-answers');if(_cqRaw)_cqSavedA=JSON.parse(_cqRaw);}catch(e){}
+    var _cqCorrect=[0,1,0,0,0,0,0,1,0,0];
     h+='<div style="background:'+(_cqPass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_cqPass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">';
     h+='<div style="font-size:48px;margin-bottom:12px;">'+(_cqPass?'🎉':'📚')+'</div>';
     h+='<div style="font-size:22px;font-weight:700;color:'+(_cqPass?'#276749':'#c53030')+';margin-bottom:6px;">'+_cqScore+' / '+_cqTotal+'</div>';
@@ -3529,6 +3531,26 @@ function cirrusPage(){
     h+='<span style="background:'+(_cqPass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">'+(_cqPass?'✅ CIRRUS PAGE COMPLETED':'NEEDS REVIEW')+'</span>';
     h+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_cqPass?'Great work!':'Review the content above and try again for a passing score (7/10).')+'</div>';
     h+='<div style="margin-top:18px;"><button onclick="resetCirrusQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:11px;color:#718096;cursor:pointer;">↺ Reset for practice</button></div>';
+    h+='</div>';
+    var _cqqqr=[{q:'Does this resort have a swimming pool?',opts:['a) Yes','b) No']},{q:'Does this resort have a bathtub?',opts:['a) Yes','b) No']},{q:'Does this resort have a hot tub?',opts:['a) Yes','b) No']},{q:'Does this resort offer skiing?',opts:['a) Yes','b) No']},{q:'Does this resort allow pets?',opts:['a) Yes','b) No']},{q:'Does this resort have a sauna?',opts:['a) Yes','b) No']},{q:'Does this resort offer free parking?',opts:['a) Yes','b) No']},{q:'Does this resort have air conditioning?',opts:['a) Yes','b) No']},{q:'Does this resort have WiFi?',opts:['a) Yes','b) No']},{q:'Does this resort have a spa?',opts:['a) Yes','b) No']}];
+    h+='<div style="margin-top:20px;">';
+    for(var _cqi=0;_cqi<_cqqqr.length;_cqi++){
+      var _cqq=_cqqqr[_cqi];var _cqv=_cqSavedA['cirrus-q'+_cqi];
+      h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;margin-bottom:12px;">';
+      h+='<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:12px;">'+(_cqi+1)+'. '+_cqq.q+'</div>';
+      h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+      for(var _cqo=0;_cqo<_cqq.opts.length;_cqo++){
+        var _cqSel=(_cqv===_cqo);var _cqIsCorr=(_cqo===_cqCorrect[_cqi]);
+        var _cqBg='#fff';var _cqBd='#e2e8f0';
+        if(_cqSel&&_cqIsCorr){_cqBg='#f0fff4';_cqBd='#68d391';}
+        else if(_cqSel&&!_cqIsCorr){_cqBg='#fff5f5';_cqBd='#fc8181';}
+        else if(_cqIsCorr&&_cqv!==undefined){_cqBg='#f0fff4';_cqBd='#68d391';}
+        h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid '+_cqBd+';background:'+_cqBg+';cursor:not-allowed;font-size:13px;color:#1a1a2e;">';
+        h+='<input type="radio" name="cirrus-q'+_cqi+'-ro" value="'+_cqo+'" disabled'+(_cqSel?' checked':'')+' style="accent-color:#667eea;width:16px;height:16px;flex-shrink:0;"> '+_cqq.opts[_cqo];
+        h+='</label>';
+      }
+      h+='</div></div>';
+    }
     h+='</div>';
   }else{
     var _cqqs=[
@@ -3586,6 +3608,8 @@ function cirrusPage(){
   h+='<div style="padding:20px;">';
   if(_sq2Done){
     var _sq2Pass=_sq2Score>=8;
+    var _sq2SavedA={};try{var _sq2Raw=localStorage.getItem(_sq2User+'-quiz-cirrus2-answers');if(_sq2Raw)_sq2SavedA=JSON.parse(_sq2Raw);}catch(e){}
+    var _sq2Correct=[1,2,3,3,2,3,2,2,3,2,1];
     h+='<div style="background:'+(_sq2Pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_sq2Pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">';
     h+='<div style="font-size:48px;margin-bottom:12px;">'+(_sq2Pass?'🎉':'📚')+'</div>';
     h+='<div style="font-size:22px;font-weight:700;color:'+(_sq2Pass?'#276749':'#c53030')+';margin-bottom:6px;">'+_sq2Score+' / '+_sq2Total+'</div>';
@@ -3593,6 +3617,26 @@ function cirrusPage(){
     h+='<span style="background:'+(_sq2Pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">'+(_sq2Pass?'✅ CIRRUS QUIZ 2 COMPLETED':'NEEDS REVIEW')+'</span>';
     h+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_sq2Pass?'Great work! Cirrus Quiz 2 has been marked as completed.':'Review the booking details and try again for a passing score (8/11).')+'</div>';
     h+='<div style="margin-top:18px;"><button onclick="resetCirrusQuiz2()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:11px;color:#718096;cursor:pointer;">↺ Reset for practice</button></div>';
+    h+='</div>';
+    var _sq2qqr=[{q:"What is the guest's name?",opts:["a) George Taylor","b) Gregory Taylor","c) Gary Thompson","d) Graham Turner"]},{q:"What are the booking dates?",opts:["a) 24 April – 25 April 2026","b) 26 April – 27 April 2026","c) 25 April – 26 April 2026","d) 23 April – 25 April 2026"]},{q:"What is the pre-tax partner cost?",opts:["a) $156.14","b) $129.33","c) $152.15","d) $143.65"]},{q:"What is the total payable partner cost (including tax)?",opts:["a) $182.68","b) $155.87","c) $178.40","d) $168.07 USD"]},{q:"How many adults were booked?",opts:["a) 1","b) 3","c) 2","d) 4"]},{q:"How many pets did the guest bring?",opts:["a) 1","b) 2","c) 3","d) 0"]},{q:"What is the total cost of the booking?",opts:["a) $156.14","b) $178.40","c) $182.68","d) $168.07 USD"]},{q:"What is the supplier reference number?",opts:["a) 79384827","b) 69873482","c) 69783482","d) 96783482"]},{q:"What is the Cirrus ID?",opts:["a) 211580","b) 211050","c) 215100","d) 211500"]},{q:"What is the room type?",opts:["a) 1 King Suite","b) 2 Double Suite Sofa Bed","c) Queen Accessible Roll In Shwr Nosmk","d) 1 Queen Studio Suite Sofa Bed"]},{q:"What is the resort name?",opts:["a) Staybridge Suites Nashville Downtown","b) Staybridge Chattanooga Dtwn-Conv Ctr","c) Staybridge Suites Knoxville Downtown","d) Staybridge Suites Memphis Convention"]}];
+    h+='<div style="margin-top:20px;">';
+    for(var _sq2i=0;_sq2i<_sq2qqr.length;_sq2i++){
+      var _sq2q=_sq2qqr[_sq2i];var _sq2v=_sq2SavedA['sq2-q'+_sq2i];
+      h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;margin-bottom:12px;">';
+      h+='<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:12px;">'+(_sq2i+1)+'. '+_sq2q.q+'</div>';
+      h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+      for(var _sq2o=0;_sq2o<_sq2q.opts.length;_sq2o++){
+        var _sq2Sel=(_sq2v===_sq2o);var _sq2IsCorr=(_sq2o===_sq2Correct[_sq2i]);
+        var _sq2Bg='#fff';var _sq2Bd='#e2e8f0';
+        if(_sq2Sel&&_sq2IsCorr){_sq2Bg='#f0fff4';_sq2Bd='#68d391';}
+        else if(_sq2Sel&&!_sq2IsCorr){_sq2Bg='#fff5f5';_sq2Bd='#fc8181';}
+        else if(_sq2IsCorr&&_sq2v!==undefined){_sq2Bg='#f0fff4';_sq2Bd='#68d391';}
+        h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid '+_sq2Bd+';background:'+_sq2Bg+';cursor:not-allowed;font-size:13px;color:#1a1a2e;">';
+        h+='<input type="radio" name="sq2-q'+_sq2i+'-ro" value="'+_sq2o+'" disabled'+(_sq2Sel?' checked':'')+' style="accent-color:#667eea;width:16px;height:16px;flex-shrink:0;"> '+_sq2q.opts[_sq2o];
+        h+='</label>';
+      }
+      h+='</div></div>';
+    }
     h+='</div>';
   }else{
     // Instruction banner
@@ -3654,6 +3698,8 @@ function cirrusPage(){
   h+='<div style="padding:20px;">';
   if(_sq3Done){
     var _sq3Pass=_sq3Score>=6;
+    var _sq3SavedA={};try{var _sq3Raw=localStorage.getItem(_sq3User+'-quiz-cirrus3-answers');if(_sq3Raw)_sq3SavedA=JSON.parse(_sq3Raw);}catch(e){}
+    var _sq3Correct=[2,1,3,2,0,2,2,2];
     h+='<div style="background:'+(_sq3Pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_sq3Pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">';
     h+='<div style="font-size:48px;margin-bottom:12px;">'+(_sq3Pass?'🎉':'📚')+'</div>';
     h+='<div style="font-size:22px;font-weight:700;color:'+(_sq3Pass?'#276749':'#c53030')+';margin-bottom:6px;">'+_sq3Score+' / '+_sq3Total+'</div>';
@@ -3661,6 +3707,26 @@ function cirrusPage(){
     h+='<span style="background:'+(_sq3Pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">'+(_sq3Pass?'✅ CIRRUS QUIZ 3 COMPLETED':'NEEDS REVIEW')+'</span>';
     h+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_sq3Pass?'Great work! Cirrus Quiz 3 has been marked as completed.':'Review booking 211199 in Cirrus and try again (passing score: 6/8).')+'</div>';
     h+='<div style="margin-top:18px;"><button onclick="resetCirrusQuiz3()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:11px;color:#718096;cursor:pointer;">↺ Reset for practice</button></div>';
+    h+='</div>';
+    var _sq3qqr=[{q:"What is the guest's name?",opts:["a) Henry Bassett","b) Hannah Beckett","c) Harper Baggett","d) Holly Barrett"]},{q:"What are the booking dates?",opts:["a) 22 April – 24 April 2026","b) 24 April – 26 April 2026","c) 23 April – 25 April 2026","d) 25 April – 27 April 2026"]},{q:"What is the booking source?",opts:["a) VRBO","b) Holidu","c) Booking.com","d) Airbnb"]},{q:"Does this resort allow pets?",opts:["a) Yes, up to 2 pets","b) Yes, with a fee","c) No — not a pet-friendly property","d) Yes, ADA service animals and pets"]},{q:"Does this resort have a hot tub?",opts:["a) Yes — hot tub is listed as a resort amenity","b) No"]},{q:"What is the margin for this resort?",opts:["a) 20%","b) 18%","c) 16%","d) 12%"]},{q:"What is the supplier reference number?",opts:["a) 31323B0504329","b) 31323B0405239","c) 31323B0405329","d) 31323B0405392"]},{q:"What is the booking status?",opts:["a) Confirmed","b) Pending","c) Cancelled — cancelled by the guest on 22 April 2026","d) Modified"]}];
+    h+='<div style="margin-top:20px;">';
+    for(var _sq3i=0;_sq3i<_sq3qqr.length;_sq3i++){
+      var _sq3q=_sq3qqr[_sq3i];var _sq3v=_sq3SavedA['sq3-q'+_sq3i];
+      h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;margin-bottom:12px;">';
+      h+='<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:12px;">'+(_sq3i+1)+'. '+_sq3q.q+'</div>';
+      h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+      for(var _sq3o=0;_sq3o<_sq3q.opts.length;_sq3o++){
+        var _sq3Sel=(_sq3v===_sq3o);var _sq3IsCorr=(_sq3o===_sq3Correct[_sq3i]);
+        var _sq3Bg='#fff';var _sq3Bd='#e2e8f0';
+        if(_sq3Sel&&_sq3IsCorr){_sq3Bg='#f0fff4';_sq3Bd='#68d391';}
+        else if(_sq3Sel&&!_sq3IsCorr){_sq3Bg='#fff5f5';_sq3Bd='#fc8181';}
+        else if(_sq3IsCorr&&_sq3v!==undefined){_sq3Bg='#f0fff4';_sq3Bd='#68d391';}
+        h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid '+_sq3Bd+';background:'+_sq3Bg+';cursor:not-allowed;font-size:13px;color:#1a1a2e;">';
+        h+='<input type="radio" name="sq3-q'+_sq3i+'-ro" value="'+_sq3o+'" disabled'+(_sq3Sel?' checked':'')+' style="accent-color:#9f7aea;width:16px;height:16px;flex-shrink:0;"> '+_sq3q.opts[_sq3o];
+        h+='</label>';
+      }
+      h+='</div></div>';
+    }
     h+='</div>';
   }else{
     h+='<div style="background:#faf5ff;border:2px solid #d6bcfa;border-radius:10px;padding:16px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start;">';
