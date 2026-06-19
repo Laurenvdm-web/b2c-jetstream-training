@@ -549,7 +549,7 @@ function toggleMc3Quiz() { toggleQuiz("mc3"); }
 /* ════════════════════════════════════════════════════════
    MANAGING CASES — quiz & progress logic
    ════════════════════════════════════════════════════════ */
-function submitMc3Quiz(){var correct={mc3q1:"B",mc3q2:"C",mc3q3:"B",mc3q4:"B",mc3q5:"C"};var score=0;var allAnswered=true;var savedAnswers={};document.querySelectorAll("#mc3-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{savedAnswers[q]=sel.value;var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,5))return;var pct=Math.round(score/5*100);var msg,icon,bg,bord,col;if(score>=4){msg="Excellent – strong understanding ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=3){msg="Good – review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review training and retry";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var res=document.getElementById("mc3-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,5,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});var _u=getUser();if(_u){localStorage.setItem(_u+'-mc3-quiz-done','1');localStorage.setItem(_u+'-mc3-quiz-answers',JSON.stringify(savedAnswers));localStorage.setItem(_u+'-mc3-quiz-score',String(score));recordModuleQuiz('Follow-up Guest Tag Quiz Part 2',score,5,Math.round(score/5*100));setCheck('mc3-quiz-check');updateMcProgress();}}}
+function submitMc3Quiz(){var correct={mc3q1:"B",mc3q2:"C",mc3q3:"B",mc3q4:"B",mc3q5:"C"};var score=0;var allAnswered=true;document.querySelectorAll("#mc3-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,5))return;var pct=Math.round(score/5*100);var msg,icon,bg,bord,col;if(score>=4){msg="Excellent – strong understanding ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=3){msg="Good – review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review training and retry";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var res=document.getElementById("mc3-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,5,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});var _u=getUser();if(_u){localStorage.setItem(_u+'-mc3-quiz-done','1');recordModuleQuiz('Follow-up Guest Tag Quiz Part 2',score,5,Math.round(score/5*100));setCheck('mc3-quiz-check');updateMcProgress();}}}
 function markMcSection(id){
   var u=getUser();if(!u)return;
   var key=u+'-mc-sec-'+id;
@@ -573,22 +573,20 @@ function restoreMcProgress(){
   ['mc-guest','mc-partner','mc-tags'].forEach(function(k){
     if(localStorage.getItem(u+'-mc-sec-'+k)){var btn=document.getElementById(k+'-check');if(btn){markDone(btn);}}
   });
-  var _mcCfg={'mc-quiz':{correct:{mcq1:"B",mcq2:"C",mcq3:"B",mcq4:"C",mcq5:"B",mcq6:"A",mcq7:"B",mcq8:"A",mcq9:"C",mcq10:"B"},total:10,pctDen:9,build:function(score){var pct=Math.round(score/9*100);var msg,icon,bg,bord,col;if(score>=9){msg="Excellent – you’ve mastered guest tagging ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=7){msg="Good – minor review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}return buildQuizResult(score,10,icon,msg,bg,bord,col,pct);}},'mc2-quiz':{correct:{mc2q1:"A",mc2q2:"C",mc2q3:"B",mc2q4:"C",mc2q5:"C"},total:5,pctDen:5,build:function(score){var pct=Math.round(score/5*100);var msg,icon,bg,bord,col;if(score>=5){msg="Excellent – strong understanding ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=4){msg="Good – minor review needed";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review and retry";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}return buildQuizResult(score,5,icon,msg,bg,bord,col,pct);}},'mc3-quiz':{correct:{mc3q1:"B",mc3q2:"C",mc3q3:"B",mc3q4:"B",mc3q5:"C"},total:5,pctDen:5,build:function(score){var pct=Math.round(score/5*100);var msg,icon,bg,bord,col;if(score>=4){msg="Excellent – strong understanding ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=3){msg="Good – review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review training and retry";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}return buildQuizResult(score,5,icon,msg,bg,bord,col,pct);}}};
+  var _mcResetFns={'mc-quiz':'resetMcQuiz','mc2-quiz':'resetMc2Quiz','mc3-quiz':'resetMc3Quiz'};
   [['mc-quiz','mc-quiz-result','mc-quiz-submit-row'],['mc2-quiz','mc2-quiz-result','mc2-quiz-submit-row'],['mc3-quiz','mc3-quiz-result','mc3-quiz-submit-row']].forEach(function(t){
     if(localStorage.getItem(u+'-'+t[0]+'-done')){
       var qc=document.getElementById(t[0]+'-check');if(qc){markDone(qc);}
-      var cfg=_mcCfg[t[0]];var savedAnswers={};try{var raw=localStorage.getItem(u+'-'+t[0]+'-answers');if(raw)savedAnswers=JSON.parse(raw);}catch(e){}for(var q in savedAnswers){var inp=document.querySelector("input[name="+q+"][value="+savedAnswers[q]+"]");if(inp){inp.checked=true;var lbl=inp.closest("label");if(lbl){var isCorrect=savedAnswers[q]===cfg.correct[q];lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}}}
-      var score=parseInt(localStorage.getItem(u+'-'+t[0]+'-score')||String(cfg.total),10);
-      var res=document.getElementById(t[1]);if(res&&!res.innerHTML.trim()){res.style.display='block';res.innerHTML=cfg.build(score);}
+      var res=document.getElementById(t[1]);if(res&&!res.innerHTML.trim()){res.style.display='block';res.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:20px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">&#x2705;</div><div style="font-size:17px;font-weight:800;color:#276749;margin-bottom:4px;">Quiz Completed</div><div style="font-size:12px;color:#276749;margin-bottom:12px;">Your progress is saved.</div><button onclick="'+_mcResetFns[t[0]]+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>';}
       var row=document.getElementById(t[2]);if(row)row.style.display='none';
     }
   });
   updateMcProgress();
 }
-function resetMc3Quiz(){for(var i=1;i<=5;i++){document.querySelectorAll("input[name=mc3q"+i+"]").forEach(function(inp){inp.checked=false;var lbl=inp.closest("label");if(lbl){resetLabel(lbl);}});}var res=document.getElementById("mc3-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('mc3-quiz-submit-row');if(row)row.style.display='flex';var _u=getUser();if(_u){localStorage.removeItem(_u+'-mc3-quiz-done');localStorage.removeItem(_u+'-mc3-quiz-answers');localStorage.removeItem(_u+'-mc3-quiz-score');clearCheck('mc3-quiz-check');updateMcProgress();}}
+function resetMc3Quiz(){for(var i=1;i<=5;i++){document.querySelectorAll("input[name=mc3q"+i+"]").forEach(function(inp){inp.checked=false;var lbl=inp.closest("label");if(lbl){resetLabel(lbl);}});}var res=document.getElementById("mc3-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('mc3-quiz-submit-row');if(row)row.style.display='flex';var _u=getUser();if(_u){localStorage.removeItem(_u+'-mc3-quiz-done');clearCheck('mc3-quiz-check');updateMcProgress();}}
 function toggleMc2Quiz() { toggleQuiz("mc2"); }
-function submitMc2Quiz(){var correct={mc2q1:"A",mc2q2:"C",mc2q3:"B",mc2q4:"C",mc2q5:"C"};var score=0;var allAnswered=true;var savedAnswers={};document.querySelectorAll("#mc2-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{savedAnswers[q]=sel.value;var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,5))return;var pct=Math.round(score/5*100);var msg,icon,bg,bord,col;if(score>=5){msg="Excellent – strong understanding ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=4){msg="Good – minor review needed";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review and retry";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var res=document.getElementById("mc2-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,5,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});var _u=getUser();if(_u){localStorage.setItem(_u+'-mc2-quiz-done','1');localStorage.setItem(_u+'-mc2-quiz-answers',JSON.stringify(savedAnswers));localStorage.setItem(_u+'-mc2-quiz-score',String(score));recordModuleQuiz('Follow-up Guest Tag Quiz Part 2',score,5,Math.round(score/5*100));setCheck('mc2-quiz-check');updateMcProgress();}}}
-function resetMc2Quiz(){for(var i=1;i<=5;i++){document.querySelectorAll("input[name=mc2q"+i+"]").forEach(function(inp){inp.checked=false;var lbl=inp.closest("label");if(lbl){resetLabel(lbl);}});}var res=document.getElementById("mc2-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('mc2-quiz-submit-row');if(row)row.style.display='flex';var _u=getUser();if(_u){localStorage.removeItem(_u+'-mc2-quiz-done');localStorage.removeItem(_u+'-mc2-quiz-answers');localStorage.removeItem(_u+'-mc2-quiz-score');clearCheck('mc2-quiz-check');updateMcProgress();}}
+function submitMc2Quiz(){var correct={mc2q1:"A",mc2q2:"C",mc2q3:"B",mc2q4:"C",mc2q5:"C"};var score=0;var allAnswered=true;document.querySelectorAll("#mc2-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,5))return;var pct=Math.round(score/5*100);var msg,icon,bg,bord,col;if(score>=5){msg="Excellent – strong understanding ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=4){msg="Good – minor review needed";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review and retry";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var res=document.getElementById("mc2-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,5,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});var _u=getUser();if(_u){localStorage.setItem(_u+'-mc2-quiz-done','1');recordModuleQuiz('Follow-up Guest Tag Quiz Part 2',score,5,Math.round(score/5*100));setCheck('mc2-quiz-check');updateMcProgress();}}}
+function resetMc2Quiz(){for(var i=1;i<=5;i++){document.querySelectorAll("input[name=mc2q"+i+"]").forEach(function(inp){inp.checked=false;var lbl=inp.closest("label");if(lbl){resetLabel(lbl);}});}var res=document.getElementById("mc2-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('mc2-quiz-submit-row');if(row)row.style.display='flex';var _u=getUser();if(_u){localStorage.removeItem(_u+'-mc2-quiz-done');clearCheck('mc2-quiz-check');updateMcProgress();}}
 function showMCSection(section){
   var overview=document.getElementById('mc-overview');
   var guestSec=document.getElementById('mc-guest-section');
@@ -610,15 +608,15 @@ function hideMCSection(){
   if(partnerSec)partnerSec.style.display='none';
 }
 function toggleMcQuiz() { toggleQuiz("mc"); }
-function submitMcQuiz(){var correct={mcq1:"B",mcq2:"C",mcq3:"B",mcq4:"C",mcq5:"B",mcq6:"A",mcq7:"B",mcq8:"A",mcq9:"C",mcq10:"B"};var score=0;var allAnswered=true;var savedAnswers={};document.querySelectorAll("#mc-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{savedAnswers[q]=sel.value;var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,10))return;var pct=Math.round(score/9*100);var msg,icon,bg,bord,col;if(score>=9){msg="Excellent – you’ve mastered guest tagging ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=7){msg="Good – minor review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var res=document.getElementById("mc-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,10,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});var _u=getUser();if(_u){localStorage.setItem(_u+'-mc-quiz-done','1');localStorage.setItem(_u+'-mc-quiz-answers',JSON.stringify(savedAnswers));localStorage.setItem(_u+'-mc-quiz-score',String(score));recordModuleQuiz('Follow-up Guest Tag Quiz Part 1',score,9,Math.round(score/9*100));setCheck('mc-quiz-check');updateMcProgress();}}}
-function resetMcQuiz(){for(var i=1;i<=10;i++){document.querySelectorAll("input[name=mcq"+i+"]").forEach(function(inp){inp.checked=false;var lbl=inp.closest("label");if(lbl){resetLabel(lbl);}});}var res=document.getElementById("mc-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('mc-quiz-submit-row');if(row)row.style.display='flex';var _u=getUser();if(_u){localStorage.removeItem(_u+'-mc-quiz-done');localStorage.removeItem(_u+'-mc-quiz-answers');localStorage.removeItem(_u+'-mc-quiz-score');clearCheck('mc-quiz-check');updateMcProgress();}}
+function submitMcQuiz(){var correct={mcq1:"B",mcq2:"C",mcq3:"B",mcq4:"C",mcq5:"B",mcq6:"A",mcq7:"B",mcq8:"A",mcq9:"C",mcq10:"B"};var score=0;var allAnswered=true;document.querySelectorAll("#mc-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,10))return;var pct=Math.round(score/9*100);var msg,icon,bg,bord,col;if(score>=9){msg="Excellent – you’ve mastered guest tagging ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=7){msg="Good – minor review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var res=document.getElementById("mc-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,10,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});var _u=getUser();if(_u){localStorage.setItem(_u+'-mc-quiz-done','1');recordModuleQuiz('Follow-up Guest Tag Quiz Part 1',score,9,Math.round(score/9*100));setCheck('mc-quiz-check');updateMcProgress();}}}
+function resetMcQuiz(){for(var i=1;i<=10;i++){document.querySelectorAll("input[name=mcq"+i+"]").forEach(function(inp){inp.checked=false;var lbl=inp.closest("label");if(lbl){resetLabel(lbl);}});}var res=document.getElementById("mc-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('mc-quiz-submit-row');if(row)row.style.display='flex';var _u=getUser();if(_u){localStorage.removeItem(_u+'-mc-quiz-done');clearCheck('mc-quiz-check');updateMcProgress();}}
 function togglePnbQuiz() { toggleQuiz("pnb"); }
 
 /* ════════════════════════════════════════════════════════
    PROCESSING NEW BOOKINGS — quiz & progress logic
    ════════════════════════════════════════════════════════ */
-function submitPnbQuiz(){var correct={pnbq1:"C",pnbq2:"C",pnbq3:"C",pnbq4:"D"};var score=0;var allAnswered=true;var savedAnswers={};document.querySelectorAll("#pnb-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{savedAnswers[q]=sel.value;var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,4))return;var pct=Math.round(score/4*100);var msg,icon,bg,bord,col;if(score===4){msg="Perfect – you\'re ready ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=3){msg="Almost there – review and retry";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var u=getUser();try{localStorage.setItem(u+'-quiz-pnb-done','1');localStorage.setItem(u+'-quiz-pnb-answers',JSON.stringify(savedAnswers));localStorage.setItem(u+'-quiz-pnb-score',String(score));recordModuleQuiz('Processing New Bookings Quiz',score,4,Math.round(score/4*100));}catch(e){}setCheck('pnb-quiz-check');updatePnbProgress();var res=document.getElementById("pnb-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,4,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});}}
-function resetPnbQuiz(){var u=getUser();try{localStorage.removeItem(u+'-quiz-pnb-done');localStorage.removeItem(u+'-quiz-pnb-answers');localStorage.removeItem(u+'-quiz-pnb-score');}catch(e){}clearCheck('pnb-quiz-check');updatePnbProgress();["pnbq1","pnbq2","pnbq3","pnbq4"].forEach(function(n){document.querySelectorAll("input[name="+n+"]").forEach(function(i){i.checked=false;var lbl=i.closest("label");if(lbl){resetLabel(lbl);}});});var res=document.getElementById("pnb-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('pnb-quiz-submit-row');if(row)row.style.display='flex';}
+function submitPnbQuiz(){var correct={pnbq1:"C",pnbq2:"C",pnbq3:"C",pnbq4:"D"};var score=0;var allAnswered=true;document.querySelectorAll("#pnb-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,4))return;var pct=Math.round(score/4*100);var msg,icon,bg,bord,col;if(score===4){msg="Perfect – you\'re ready ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=3){msg="Almost there – review and retry";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var u=getUser();try{localStorage.setItem(u+'-quiz-pnb-done','1');recordModuleQuiz('Processing New Bookings Quiz',score,4,Math.round(score/4*100));}catch(e){}setCheck('pnb-quiz-check');updatePnbProgress();var res=document.getElementById("pnb-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,4,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});}}
+function resetPnbQuiz(){var u=getUser();try{localStorage.removeItem(u+'-quiz-pnb-done');}catch(e){}clearCheck('pnb-quiz-check');updatePnbProgress();["pnbq1","pnbq2","pnbq3","pnbq4"].forEach(function(n){document.querySelectorAll("input[name="+n+"]").forEach(function(i){i.checked=false;var lbl=i.closest("label");if(lbl){resetLabel(lbl);}});});var res=document.getElementById("pnb-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('pnb-quiz-submit-row');if(row)row.style.display='flex';}
 function toggleAircallQuiz(){var b=document.getElementById("ac-quiz-body");var a=document.getElementById("ac-quiz-arr");var btn=document.getElementById("ac-quiz-btn");if(!b)return;var isOpen=b.style.display!=="none";b.style.display=isOpen?"none":"block";a.textContent=isOpen?"►":"▼";btn.style.boxShadow=isOpen?"":"0 4px 20px rgba(30,58,92,0.45)";}
 
 /* ════════════════════════════════════════════════════════
@@ -634,8 +632,8 @@ function startBkQuiz(){var b=document.getElementById("bkq-start-area");var w=doc
 /* ════════════════════════════════════════════════════════
    BOOKINGS OVERVIEW — quiz & progress logic
    ════════════════════════════════════════════════════════ */
-function submitBkQuiz(){var correct={bkq1:"B",bkq2:"C",bkq3:"B"};var score=0;var allDone=true;var savedAnswers={};for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allDone=false;break;}savedAnswers[q]=sel.value;if(sel.value===correct[q])score++;}if(!allDone){alert("Please answer all 3 questions before submitting.");return;}var u=getUser();try{localStorage.setItem(u+"-quiz-bookings-done","1");localStorage.setItem(u+"-quiz-bookings-answers",JSON.stringify(savedAnswers));recordModuleQuiz('Tech Quiz — Bookings Overview',score,3,Math.round(score/3*100));localStorage.setItem(u+"-quiz-bookings-score",score);var qc=document.getElementById("bk-quiz-check");if(qc){markDone(qc);}if(typeof updateBkProgress==="function")updateBkProgress();}catch(e){}updSidebar();show("bookings");}
-function resetBkQuiz(){var u=getUser();try{localStorage.removeItem(u+"-quiz-bookings-done");localStorage.removeItem(u+"-quiz-bookings-score");localStorage.removeItem(u+"-quiz-bookings-answers");}catch(e){}var qc=document.getElementById("bk-quiz-check");if(qc){qc.innerHTML="&#x25CB;";qc.style.background="transparent";qc.style.borderColor="rgba(255,255,255,0.5)";}if(typeof updateBkProgress==="function")updateBkProgress();updSidebar();show("bookings");}
+function submitBkQuiz(){var correct={bkq1:"B",bkq2:"C",bkq3:"B"};var score=0;var allDone=true;for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allDone=false;break;}if(sel.value===correct[q])score++;}if(!allDone){alert("Please answer all 3 questions before submitting.");return;}var u=getUser();try{localStorage.setItem(u+"-quiz-bookings-done","1");recordModuleQuiz('Tech Quiz — Bookings Overview',score,3,Math.round(score/3*100));localStorage.setItem(u+"-quiz-bookings-score",score);var qc=document.getElementById("bk-quiz-check");if(qc){markDone(qc);}if(typeof updateBkProgress==="function")updateBkProgress();}catch(e){}updSidebar();show("bookings");}
+function resetBkQuiz(){var u=getUser();try{localStorage.removeItem(u+"-quiz-bookings-done");localStorage.removeItem(u+"-quiz-bookings-score");}catch(e){}var qc=document.getElementById("bk-quiz-check");if(qc){qc.innerHTML="&#x25CB;";qc.style.background="transparent";qc.style.borderColor="rgba(255,255,255,0.5)";}if(typeof updateBkProgress==="function")updateBkProgress();updSidebar();show("bookings");}
 
 
 /* ════════════════════════════════════════════════════════
@@ -644,11 +642,11 @@ function resetBkQuiz(){var u=getUser();try{localStorage.removeItem(u+"-quiz-book
 function submitCirrusQuiz(){
   var answers=[0,1,0,0,0,0,0,1,0,0];
   var opts=[['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No'],['a) Yes','b) No']];
-  var score=0;var missing=[];var results=[];var savedAnswers={};
+  var score=0;var missing=[];var results=[];
   for(var i=0;i<10;i++){
     var sel=document.querySelector('input[name="cirrus-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{var val=parseInt(sel.value);savedAnswers['cirrus-q'+i]=val;var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct});}
+    else{var val=parseInt(sel.value);var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct});}
   }
   if(missing.length>0){
     var disp=document.getElementById('cirrus-score-display');
@@ -673,7 +671,7 @@ function submitCirrusQuiz(){
   }
   var u=getUser();
   try{recordModuleQuiz('Cirrus Quiz 1',score,9,Math.round(score/9*100));
-  localStorage.setItem(u+'-quiz-cirrus-done','1');localStorage.setItem(u+'-quiz-cirrus-score',score);localStorage.setItem(u+'-quiz-cirrus-answers',JSON.stringify(savedAnswers));}catch(e){}
+  localStorage.setItem(u+'-quiz-cirrus-done','1');localStorage.setItem(u+'-quiz-cirrus-score',score);}catch(e){}
   var qc1=document.getElementById('circ-quiz1-check');
   if(qc1){markDone(qc1);}
   updateCirrusProgress();
@@ -696,7 +694,7 @@ function submitCirrusQuiz(){
 
 function resetCirrusQuiz(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-cirrus-done');localStorage.removeItem(u+'-quiz-cirrus-score');localStorage.removeItem(u+'-quiz-cirrus-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-cirrus-done');localStorage.removeItem(u+'-quiz-cirrus-score');}catch(e){}
   // Reset all radio buttons and label styles
   for(var i=0;i<10;i++){
     for(var j=0;j<2;j++){
@@ -726,11 +724,11 @@ function resetCirrusQuiz(){
 function submitCirrusQuiz2(){
   var answers=[1,2,3,3,2,3,2,2,3,2,1]; // correct option indices for each question
   var nq=11;
-  var score=0;var missing=[];var results=[];var savedAnswers={};
+  var score=0;var missing=[];var results=[];
   for(var i=0;i<nq;i++){
     var sel=document.querySelector('input[name="sq2-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{var val=parseInt(sel.value);savedAnswers['sq2-q'+i]=val;var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
+    else{var val=parseInt(sel.value);var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
   }
   if(missing.length>0){
     var disp=document.getElementById('sq2-score-display');
@@ -758,7 +756,6 @@ function submitCirrusQuiz2(){
     recordModuleQuiz('Cirrus Quiz 2',score,11,Math.round(score/11*100));
   localStorage.setItem(u+'-quiz-cirrus2-done','1');
     localStorage.setItem(u+'-quiz-cirrus2-score',score);
-    localStorage.setItem(u+'-quiz-cirrus2-answers',JSON.stringify(savedAnswers));
   }catch(e){}
   var qc2=document.getElementById('circ-quiz2-check');
   if(qc2){markDone(qc2);}
@@ -782,7 +779,7 @@ function submitCirrusQuiz2(){
 
 function resetCirrusQuiz2(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-cirrus2-done');localStorage.removeItem(u+'-quiz-cirrus2-score');localStorage.removeItem(u+'-quiz-cirrus2-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-cirrus2-done');localStorage.removeItem(u+'-quiz-cirrus2-score');}catch(e){}
   // Reset all radio buttons and label styles (11 questions, 4 options each)
   for(var i=0;i<11;i++){
     for(var j=0;j<4;j++){
@@ -812,11 +809,11 @@ function resetCirrusQuiz2(){
 function submitCirrusQuiz3(){
   var answers=[2,1,3,2,0,2,2,2];
   var nq=8;
-  var score=0;var missing=[];var results=[];var savedAnswers={};
+  var score=0;var missing=[];var results=[];
   for(var i=0;i<nq;i++){
     var sel=document.querySelector('input[name="sq3-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{var val=parseInt(sel.value);savedAnswers['sq3-q'+i]=val;var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
+    else{var val=parseInt(sel.value);var correct=(val===answers[i]);if(correct)score++;results.push({qi:i,selected:val,correct:correct,correctIdx:answers[i]});}
   }
   if(missing.length>0){
     var disp=document.getElementById('sq3-score-display');
@@ -841,7 +838,7 @@ function submitCirrusQuiz3(){
   }
   var u=getUser();
   try{recordModuleQuiz('Cirrus Quiz 3',score,8,Math.round(score/8*100));
-  localStorage.setItem(u+'-quiz-cirrus3-done','1');localStorage.setItem(u+'-quiz-cirrus3-score',score);localStorage.setItem(u+'-quiz-cirrus3-answers',JSON.stringify(savedAnswers));}catch(e){}
+  localStorage.setItem(u+'-quiz-cirrus3-done','1');localStorage.setItem(u+'-quiz-cirrus3-score',score);}catch(e){}
   var qc3=document.getElementById('circ-quiz3-check');
   if(qc3){markDone(qc3);}
   updateCirrusProgress();
@@ -864,7 +861,7 @@ function submitCirrusQuiz3(){
 
 function resetCirrusQuiz3(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-cirrus3-done');localStorage.removeItem(u+'-quiz-cirrus3-score');localStorage.removeItem(u+'-quiz-cirrus3-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-cirrus3-done');localStorage.removeItem(u+'-quiz-cirrus3-score');}catch(e){}
   updSidebar();
   show('cirrus');
 }
@@ -1199,11 +1196,10 @@ function submitSecurityQuiz(){
   var answers=[1,2,1,1,1,0,1,2,1,1,1,1,1,2,2];
   var score=0;
   var missing=[];
-  var savedAnswers={};
   for(var i=0;i<15;i++){
     var sel=document.querySelector('input[name="security-q'+i+'"]:checked');
     if(!sel){missing.push(i+1);}
-    else{savedAnswers['security-q'+i]=sel.value;if(parseInt(sel.value)===answers[i]){score++;}}
+    else if(parseInt(sel.value)===answers[i]){score++;}
   }
   if(missing.length>0){
     var disp=document.getElementById('sec-score-display');
@@ -1217,7 +1213,6 @@ function submitSecurityQuiz(){
   recordModuleQuiz('Security Quiz',score,15,Math.round(score/15*100));
   localStorage.setItem(u+'-quiz-security-done','1');
   localStorage.setItem(u+'-quiz-security-score',String(score));
-  localStorage.setItem(u+'-quiz-security-answers',JSON.stringify(savedAnswers));
   updSidebar();
   show('security');
 }
@@ -1226,7 +1221,6 @@ function resetSecurityQuiz(){
   var u=getUser();
   localStorage.removeItem(u+'-quiz-security-done');
   localStorage.removeItem(u+'-quiz-security-score');
-  localStorage.removeItem(u+'-quiz-security-answers');
   updSidebar();
   show('security');
 }
@@ -1334,7 +1328,7 @@ if(msgEl)msgEl.textContent=msgs[score]||'';
 }
 var u=getUser();
 try{recordModuleQuiz('Star System Quiz',score,starsQuizData.length,Math.round(score/starsQuizData.length*100));
-  localStorage.setItem(u+'-quiz-stars-done','1');localStorage.setItem(u+'-quiz-stars-score',String(score));localStorage.setItem(u+'-quiz-stars-answers',JSON.stringify(window.starsAnswers));setCheck('stars-quiz-check');if(typeof updateStarsProgress==='function')updateStarsProgress();var rsa=document.getElementById('stars-reset-area');if(rsa)rsa.style.display='block';}catch(e){}
+  localStorage.setItem(u+'-quiz-stars-done','1');localStorage.setItem(u+'-quiz-stars-score',String(score));setCheck('stars-quiz-check');if(typeof updateStarsProgress==='function')updateStarsProgress();var rsa=document.getElementById('stars-reset-area');if(rsa)rsa.style.display='block';}catch(e){}
 updSidebar();
 }
 function resetStarsQuiz(){
@@ -1346,7 +1340,7 @@ if(submitArea)submitArea.style.display='block';
 var resultArea=document.getElementById('stars-result-area');
 if(resultArea)resultArea.style.display='none';
 var u=getUser();
-try{localStorage.removeItem(u+'-quiz-stars-done');localStorage.removeItem(u+'-quiz-stars-score');localStorage.removeItem(u+'-quiz-stars-answers');}catch(e){}
+try{localStorage.removeItem(u+'-quiz-stars-done');localStorage.removeItem(u+'-quiz-stars-score');}catch(e){}
 updSidebar();
 clearCheck('stars-quiz-check');if(typeof updateStarsProgress==='function')updateStarsProgress();var rsa=document.getElementById('stars-reset-area');if(rsa)rsa.style.display='none';var sa=document.getElementById('stars-submit-area');if(sa)sa.style.display='block';
 renderStarsQuiz();
@@ -4727,18 +4721,17 @@ function resetAHPageQuiz(){
 }
 function toggleGEAHQuiz() { toggleQuiz("ge-ah"); }
 function submitGEAHQuiz(){
-  var correct=['C','C','C','C'];var score=0;var allAnswered=true;var savedAnswers={};
+  var correct=['C','C','C','C'];var score=0;var allAnswered=true;
   for(var i=0;i<correct.length;i++){
     var radios=document.querySelectorAll('input[name="geahq'+(i+1)+'"]');var chosen=null;
     for(var r=0;r<radios.length;r++){if(radios[r].checked){chosen=radios[r].value;break;}}
-    if(chosen)savedAnswers['geahq'+(i+1)]=chosen;
     if(!chosen){allAnswered=false;}else if(chosen===correct[i])score++;
   }
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
   try{recordModuleQuiz('Guest Entry — Autohost Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-ah-done','1');localStorage.setItem(u+'-quiz-ge-ah-score',score);localStorage.setItem(u+'-quiz-ge-ah-answers',JSON.stringify(savedAnswers));}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-ah-done','1');localStorage.setItem(u+'-quiz-ge-ah-score',score);}catch(e){}
   var geahc=document.getElementById('ge-ah-check');
   if(geahc){markDone(geahc);}
   updateGEProgress();var pass=pct>=75;
@@ -4752,22 +4745,21 @@ function resetGEAHQuiz(){
   for(var i=0;i<radios.length;i++)radios[i].checked=false;
   var res=document.getElementById('ge-ah-quiz-result');
   if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-ah-done');localStorage.removeItem(u+'-quiz-ge-ah-score');localStorage.removeItem(u+'-quiz-ge-ah-answers');}catch(e){}clearCheck('ge-ah-check');updateGEProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-ah-done');localStorage.removeItem(u+'-quiz-ge-ah-score');}catch(e){}clearCheck('ge-ah-check');updateGEProgress();}
 }
 function toggleGEDCQuiz() { toggleQuiz("ge-dc"); }
 function submitGEDCQuiz(){
-  var correct=['C','C','B'];var score=0;var allAnswered=true;var savedAnswers={};
+  var correct=['C','C','B'];var score=0;var allAnswered=true;
   for(var i=0;i<correct.length;i++){
     var radios=document.querySelectorAll('input[name="gedcq'+(i+1)+'"]');var chosen=null;
     for(var r=0;r<radios.length;r++){if(radios[r].checked){chosen=radios[r].value;break;}}
-    if(chosen)savedAnswers['gedcq'+(i+1)]=chosen;
     if(!chosen){allAnswered=false;}else if(chosen===correct[i])score++;
   }
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
   try{recordModuleQuiz('Guest Entry — Door Code Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-dc-done','1');localStorage.setItem(u+'-quiz-ge-dc-score',score);localStorage.setItem(u+'-quiz-ge-dc-answers',JSON.stringify(savedAnswers));}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-dc-done','1');localStorage.setItem(u+'-quiz-ge-dc-score',score);}catch(e){}
   var gedcc=document.getElementById('ge-dc-check');
   if(gedcc){markDone(gedcc);}
   updateGEProgress();var pass=score>=2;
@@ -4779,22 +4771,21 @@ function submitGEDCQuiz(){
 function resetGEDCQuiz(){
   var r=document.querySelectorAll('#ge-dc-quiz-body input[type=radio]');for(var i=0;i<r.length;i++)r[i].checked=false;
   var res=document.getElementById('ge-dc-quiz-result');if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-dc-done');localStorage.removeItem(u+'-quiz-ge-dc-score');localStorage.removeItem(u+'-quiz-ge-dc-answers');}catch(e){}clearCheck('ge-dc-check');updateGEProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-dc-done');localStorage.removeItem(u+'-quiz-ge-dc-score');}catch(e){}clearCheck('ge-dc-check');updateGEProgress();}
 }
 function toggleGEOPQuiz() { toggleQuiz("ge-op"); }
 function submitGEOPQuiz(){
-  var correct=['C','C','B','C','C','C','C'];var score=0;var allAnswered=true;var savedAnswers={};
+  var correct=['C','C','B','C','C','C','C'];var score=0;var allAnswered=true;
   for(var i=0;i<correct.length;i++){
     var radios=document.querySelectorAll('input[name="geopq'+(i+1)+'"]');var chosen=null;
     for(var r=0;r<radios.length;r++){if(radios[r].checked){chosen=radios[r].value;break;}}
-    if(chosen)savedAnswers['geopq'+(i+1)]=chosen;
     if(!chosen){allAnswered=false;}else if(chosen===correct[i])score++;
   }
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
   try{recordModuleQuiz('Guest Entry — Operto Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-op-done','1');localStorage.setItem(u+'-quiz-ge-op-score',score);localStorage.setItem(u+'-quiz-ge-op-answers',JSON.stringify(savedAnswers));}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-op-done','1');localStorage.setItem(u+'-quiz-ge-op-score',score);}catch(e){}
   var geopc=document.getElementById('ge-op-check');
   if(geopc){markDone(geopc);}
   updateGEProgress();var pass=pct>=80;
@@ -4806,22 +4797,21 @@ function submitGEOPQuiz(){
 function resetGEOPQuiz(){
   var r=document.querySelectorAll('#ge-op-quiz-body input[type=radio]');for(var i=0;i<r.length;i++)r[i].checked=false;
   var res=document.getElementById('ge-op-quiz-result');if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-op-done');localStorage.removeItem(u+'-quiz-ge-op-score');localStorage.removeItem(u+'-quiz-ge-op-answers');}catch(e){}clearCheck('ge-op-check');updateGEProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-op-done');localStorage.removeItem(u+'-quiz-ge-op-score');}catch(e){}clearCheck('ge-op-check');updateGEProgress();}
 }
 function toggleGERLQuiz() { toggleQuiz("ge-rl"); }
 function submitGERLQuiz(){
-  var correct=['B','C','C','C','C','B'];var score=0;var allAnswered=true;var savedAnswers={};
+  var correct=['B','C','C','C','C','B'];var score=0;var allAnswered=true;
   for(var i=0;i<correct.length;i++){
     var radios=document.querySelectorAll('input[name="gerlq'+(i+1)+'"]');var chosen=null;
     for(var r=0;r<radios.length;r++){if(radios[r].checked){chosen=radios[r].value;break;}}
-    if(chosen)savedAnswers['gerlq'+(i+1)]=chosen;
     if(!chosen){allAnswered=false;}else if(chosen===correct[i])score++;
   }
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
   try{recordModuleQuiz('Guest Entry — RemoteLock Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-rl-done','1');localStorage.setItem(u+'-quiz-ge-rl-score',score);localStorage.setItem(u+'-quiz-ge-rl-answers',JSON.stringify(savedAnswers));}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-rl-done','1');localStorage.setItem(u+'-quiz-ge-rl-score',score);}catch(e){}
   var gerlc=document.getElementById('ge-rl-check');
   if(gerlc){markDone(gerlc);}
   updateGEProgress();var pass=pct>=80;
@@ -4833,7 +4823,7 @@ function submitGERLQuiz(){
 function resetGERLQuiz(){
   var r=document.querySelectorAll('#ge-rl-quiz-body input[type=radio]');for(var i=0;i<r.length;i++)r[i].checked=false;
   var res=document.getElementById('ge-rl-quiz-result');if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-rl-done');localStorage.removeItem(u+'-quiz-ge-rl-score');localStorage.removeItem(u+'-quiz-ge-rl-answers');}catch(e){}clearCheck('ge-rl-check');updateGEProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-rl-done');localStorage.removeItem(u+'-quiz-ge-rl-score');}catch(e){}clearCheck('ge-rl-check');updateGEProgress();}
 }
 
 
@@ -7903,11 +7893,11 @@ function submitInbox1Quiz(){
   var correctAnswers=[1,2,1,2,2,2,1,1,1,2,1,1];
   var total=correctAnswers.length;
   var allAnswered=true;
-  var savedAnswers=[];for(var i=0;i<total;i++){if(!document.querySelector('input[name="inbox1q-q'+i+'"]:checked')){allAnswered=false;break;}}
+  for(var i=0;i<total;i++){if(!document.querySelector('input[name="inbox1q-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="inbox1q-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="inbox1q-q'+i+'"]:checked').value);
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="inbox1q-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -7933,12 +7923,12 @@ function submitInbox1Quiz(){
     +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
     +'<div style="margin-top:16px;"><button onclick="resetInbox1Quiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
-  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox1-done','1');localStorage.setItem(u+'-quiz-inbox1-score',String(score));localStorage.setItem(u+'-quiz-inbox1-answers',JSON.stringify(savedAnswers));setCheck('ibx-quiz1-check');updateInboxProgress();}
+  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox1-done','1');setCheck('ibx-quiz1-check');updateInboxProgress();}
   recordModuleQuiz('Handling the Inbox Like a Pro — Take Quiz Part 2',score,total,Math.round(score/total*100));
   var btn=document.getElementById('inbox1-quiz-submit-area');if(btn)btn.style.display='none';
 }
 function resetInbox1Quiz(){
-  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox1-done');localStorage.removeItem(u+'-quiz-inbox1-score');localStorage.removeItem(u+'-quiz-inbox1-answers');}
+  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox1-done');}
   clearCheck('ibx-quiz1-check');
   var c=document.getElementById('inbox1-quiz-questions');if(c)c.innerHTML='';
   var r=document.getElementById('inbox1-quiz-result');if(r)r.style.display='none';
@@ -7999,11 +7989,11 @@ function submitInbox2Quiz(){
   var correctAnswers=[1,0,2,2,2,2,2,3,2];
   var total=correctAnswers.length;
   var allAnswered=true;
-  var savedAnswers=[];for(var i=0;i<total;i++){if(!document.querySelector('input[name="inbox2q-q'+i+'"]:checked')){allAnswered=false;break;}}
+  for(var i=0;i<total;i++){if(!document.querySelector('input[name="inbox2q-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="inbox2q-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="inbox2q-q'+i+'"]:checked').value);
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="inbox2q-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -8029,12 +8019,12 @@ function submitInbox2Quiz(){
     +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
     +'<div style="margin-top:16px;"><button onclick="resetInbox2Quiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
-  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox2-done','1');localStorage.setItem(u+'-quiz-inbox2-score',String(score));localStorage.setItem(u+'-quiz-inbox2-answers',JSON.stringify(savedAnswers));setCheck('ibx-quiz2-check');updateInboxProgress();}
+  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox2-done','1');setCheck('ibx-quiz2-check');updateInboxProgress();}
   recordModuleQuiz('Handling the Inbox — Take Quiz Part 2',score,total,Math.round(score/total*100));
   var btn=document.getElementById('inbox2-quiz-submit-area');if(btn)btn.style.display='none';
 }
 function resetInbox2Quiz(){
-  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox2-done');localStorage.removeItem(u+'-quiz-inbox2-score');localStorage.removeItem(u+'-quiz-inbox2-answers');}
+  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox2-done');}
   clearCheck('ibx-quiz2-check');
   var c=document.getElementById('inbox2-quiz-questions');if(c)c.innerHTML='';
   var r=document.getElementById('inbox2-quiz-result');if(r)r.style.display='none';
@@ -8092,11 +8082,11 @@ function submitSpamQuiz(){
   var correctAnswers=[1,2,1,2,2,3];
   var total=correctAnswers.length;
   var allAnswered=true;
-  var savedAnswers=[];for(var i=0;i<total;i++){if(!document.querySelector('input[name="spamq-q'+i+'"]:checked')){allAnswered=false;break;}}
+  for(var i=0;i<total;i++){if(!document.querySelector('input[name="spamq-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="spamq-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="spamq-q'+i+'"]:checked').value);
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="spamq-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -8122,12 +8112,12 @@ function submitSpamQuiz(){
     +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
     +'<div style="margin-top:16px;"><button onclick="resetSpamQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
-  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox3-done','1');localStorage.setItem(u+'-quiz-inbox3-score',String(score));localStorage.setItem(u+'-quiz-inbox3-answers',JSON.stringify(savedAnswers));setCheck('ibx-quiz3-check');updateInboxProgress();}
+  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox3-done','1');setCheck('ibx-quiz3-check');updateInboxProgress();}
   recordModuleQuiz('Take the Quiz: Checking Spam',score,total,Math.round(score/total*100));
   var btn=document.getElementById('spam-quiz-submit-area');if(btn)btn.style.display='none';
 }
 function resetSpamQuiz(){
-  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox3-done');localStorage.removeItem(u+'-quiz-inbox3-score');localStorage.removeItem(u+'-quiz-inbox3-answers');}
+  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox3-done');}
   clearCheck('ibx-quiz3-check');
   var c=document.getElementById('spam-quiz-questions');if(c)c.innerHTML='';
   var r=document.getElementById('spam-quiz-result');if(r)r.style.display='none';
@@ -8171,7 +8161,7 @@ function restoreInboxProgress(){
       if(btn){markDone(btn);}
     }
   }
-  var qmap=[['quiz-inbox1-done','ibx-quiz1-check'],['quiz-inbox2-done','ibx-quiz2-check'],['quiz-inbox3-done','ibx-quiz3-check']];var _ibxCfg=[['inbox1',[1,2,1,2,2,2,1,1,1,2,1,1],'inbox1q','inbox1','renderInbox1Quiz','Inbox1Quiz',11,8,'Excellent – inbox expert ✅'],['inbox2',[1,0,2,2,2,2,2,3,2],'inbox2q','inbox2','renderInbox2Quiz','Inbox2Quiz',8,6,'Excellent – inbox expert ✅'],['inbox3',[1,2,1,2,2,3],'spamq','spam','renderSpamQuiz','SpamQuiz',6,4,'Excellent – spam expert ✅']];_ibxCfg.forEach(function(c){if(!localStorage.getItem(u+'-quiz-'+c[0]+'-done'))return;var ca=c[1],pfx=c[2],uipfx=c[3];try{if(typeof window[c[4]]==='function')window[c[4]]();}catch(e){}var sa=[];try{var raw=localStorage.getItem(u+'-quiz-'+c[0]+'-answers');if(raw)sa=JSON.parse(raw);}catch(e){}var total=ca.length;var sc=parseInt(localStorage.getItem(u+'-quiz-'+c[0]+'-score')||'0',10);for(var i=0;i<total;i++){var chosen=(sa[i]!==undefined&&sa[i]!==null)?sa[i]:-1;var inp=document.querySelector('input[name="'+pfx+'-q'+i+'"][value="'+chosen+'"]');if(inp){inp.checked=true;}var radios=document.querySelectorAll('input[name="'+pfx+'-q'+i+'"]');for(var k=0;k<radios.length;k++){radios[k].disabled=true;}var optCount=radios.length;for(var j=0;j<optCount;j++){var lbl=document.getElementById(pfx+'-lbl-'+i+'-'+j);if(!lbl)continue;lbl.style.cursor='not-allowed';if(j===ca[i]){markCorrect(lbl);}else if(j===chosen&&chosen!==ca[i]){markWrong(lbl);}}}var feedback='';var pass=false;if(sc>=c[6]){feedback=c[8];pass=true;}else if(sc>=c[7]){feedback='Good – minor review needed';pass=true;}else{feedback='Please review and retry';pass=false;}var _r=document.getElementById(uipfx+'-quiz-result');if(_r&&!_r.innerHTML.trim()){_r.style.display='block';_r.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;"><div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div><div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+sc+' / '+total+'</div><div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(sc/total*100)+'%</div><span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span><div style="margin-top:16px;"><button onclick="reset'+c[5]+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}var _sb=document.getElementById(uipfx+'-quiz-submit-area');if(_sb)_sb.style.display='none';});
+  var qmap=[['quiz-inbox1-done','ibx-quiz1-check'],['quiz-inbox2-done','ibx-quiz2-check'],['quiz-inbox3-done','ibx-quiz3-check']];
   for(var i=0;i<qmap.length;i++){
     if(localStorage.getItem(u+'-'+qmap[i][0])){
       var qc=document.getElementById(qmap[i][1]);
@@ -9086,7 +9076,7 @@ function submitModQ1(){
   var qs=[
     {ans:1},{ans:1},{ans:2},{ans:2},{ans:1},{ans:2},{ans:1},{ans:1},{ans:1},{ans:2}
   ];
-  var score=0;var allAnswered=true;var savedAnswers=[];
+  var score=0;var allAnswered=true;
   for(var i=0;i<qs.length;i++){
     var sel=document.querySelector('input[name="modq1-q'+i+'"]:checked');
     if(!sel){allAnswered=false;break;}
@@ -9095,7 +9085,6 @@ function submitModQ1(){
   for(var i=0;i<qs.length;i++){
     var sel=document.querySelector('input[name="modq1-q'+i+'"]:checked');
     var chosen=parseInt(sel.value);
-    savedAnswers[i]=chosen;
     var correct=qs[i].ans;
     // disable all options for this question
     var radios=document.querySelectorAll('input[name="modq1-q'+i+'"]');
@@ -9112,7 +9101,7 @@ function submitModQ1(){
   }
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-mod1-done','1');localStorage.setItem(u+'-quiz-mod1-score',score);localStorage.setItem(u+'-quiz-mod1-answers',JSON.stringify(savedAnswers));}catch(e){}
+  try{localStorage.setItem(u+'-quiz-mod1-done','1');localStorage.setItem(u+'-quiz-mod1-score',score);}catch(e){}
   var qc1=document.getElementById('mod-quiz1-check');
   if(qc1){markDone(qc1);}
   updateModProgress();
@@ -9134,7 +9123,7 @@ function submitModQ1(){
 }
 function resetModQ1(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-mod1-done');localStorage.removeItem(u+'-quiz-mod1-score');localStorage.removeItem(u+'-quiz-mod1-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-mod1-done');localStorage.removeItem(u+'-quiz-mod1-score');}catch(e){}
   var qc1r=document.getElementById('mod-quiz1-check');
   if(qc1r){markUndone(qc1r);}
   updateModProgress();
@@ -9181,11 +9170,11 @@ function renderModQ2(){
 function submitModQ2(){
   var correctAnswers=[2,1,2,1,1,2,1,1,2,2];
   var allAnswered=true;
-  var savedAnswers=[];for(var i=0;i<10;i++){if(!document.querySelector('input[name="modq2-q'+i+'"]:checked')){allAnswered=false;break;}}
+  for(var i=0;i<10;i++){if(!document.querySelector('input[name="modq2-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,9))return;
   var score=0;
   for(var i=0;i<10;i++){
-    var chosen=parseInt(document.querySelector('input[name="modq2-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="modq2-q'+i+'"]:checked').value);
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="modq2-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9199,7 +9188,7 @@ function submitModQ2(){
   }
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-mod2-done','1');localStorage.setItem(u+'-quiz-mod2-score',score);localStorage.setItem(u+'-quiz-mod2-answers',JSON.stringify(savedAnswers));}catch(e){}
+  try{localStorage.setItem(u+'-quiz-mod2-done','1');localStorage.setItem(u+'-quiz-mod2-score',score);}catch(e){}
   var qc2=document.getElementById('mod-quiz2-check');
   if(qc2){markDone(qc2);}
   updateModProgress();
@@ -9220,7 +9209,7 @@ function submitModQ2(){
 }
 function resetModQ2(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-mod2-done');localStorage.removeItem(u+'-quiz-mod2-score');localStorage.removeItem(u+'-quiz-mod2-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-mod2-done');localStorage.removeItem(u+'-quiz-mod2-score');}catch(e){}
   var qc2r=document.getElementById('mod-quiz2-check');
   if(qc2r){markUndone(qc2r);}
   updateModProgress();
@@ -9265,10 +9254,9 @@ function submitAvailQuiz(){
   var allAnswered=true;
   for(var i=0;i<10;i++){if(!document.querySelector('input[name="availq-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,9))return;
-  var score=0;var savedAnswers=[];
+  var score=0;
   for(var i=0;i<10;i++){
     var chosen=parseInt(document.querySelector('input[name="availq-q'+i+'"]:checked').value);
-    savedAnswers[i]=chosen;
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="availq-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9286,7 +9274,7 @@ function submitAvailQuiz(){
   else{feedback='Please review training and retry';}
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-avail-done','1');localStorage.setItem(u+'-quiz-avail-score',score);localStorage.setItem(u+'-quiz-avail-answers',JSON.stringify(savedAnswers));}catch(e){}
+  try{localStorage.setItem(u+'-quiz-avail-done','1');localStorage.setItem(u+'-quiz-avail-score',score);}catch(e){}
   var qc=document.getElementById('avail-quiz-check');
   if(qc){markDone(qc);}
   updateAvailProgress();
@@ -9304,7 +9292,7 @@ function submitAvailQuiz(){
 }
 function resetAvailQuiz(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-avail-done');localStorage.removeItem(u+'-quiz-avail-score');localStorage.removeItem(u+'-quiz-avail-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-avail-done');localStorage.removeItem(u+'-quiz-avail-score');}catch(e){}
   var qcr=document.getElementById('avail-quiz-check');
   if(qcr){markUndone(qcr);}
   updateAvailProgress();
@@ -9346,11 +9334,11 @@ function renderModQ3(){
 function submitModQ3(){
   var ca=[2,1,2,1,2,2,1,1,2,2];
   var allAnswered=true;
-  var savedAnswers=[];for(var i=0;i<10;i++){if(!document.querySelector('input[name="modq3-q'+i+'"]:checked')){allAnswered=false;break;}}
+  for(var i=0;i<10;i++){if(!document.querySelector('input[name="modq3-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,9))return;
   var score=0;
   for(var i=0;i<10;i++){
-    var chosen=parseInt(document.querySelector('input[name="modq3-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="modq3-q'+i+'"]:checked').value);
     var correct=ca[i];
     var radios=document.querySelectorAll('input[name="modq3-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9364,7 +9352,7 @@ function submitModQ3(){
   }
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-mod3-done','1');localStorage.setItem(u+'-quiz-mod3-score',score);localStorage.setItem(u+'-quiz-mod3-answers',JSON.stringify(savedAnswers));}catch(e){}
+  try{localStorage.setItem(u+'-quiz-mod3-done','1');localStorage.setItem(u+'-quiz-mod3-score',score);}catch(e){}
   var qc3=document.getElementById('mod-quiz3-check');
   if(qc3){markDone(qc3);}
   updateModProgress();
@@ -9384,7 +9372,7 @@ function submitModQ3(){
 }
 function resetModQ3(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-mod3-done');localStorage.removeItem(u+'-quiz-mod3-score');localStorage.removeItem(u+'-quiz-mod3-answers');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-mod3-done');localStorage.removeItem(u+'-quiz-mod3-score');}catch(e){}
   var qc3r=document.getElementById('mod-quiz3-check');
   if(qc3r){markUndone(qc3r);}
   updateModProgress();
@@ -9443,12 +9431,12 @@ function renderCanQ1(){
   document.getElementById('canq1-questions').innerHTML=html;
 }
 function submitCanQ1(){
-  var ca=[1,2,2,1,2];var total=5;var allAnswered=true;var savedAnswers=[];
+  var ca=[1,2,2,1,2];var total=5;var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="canq1-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,5))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="canq1-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="canq1-q'+i+'"]:checked').value);
     var correct=ca[i];
     var radios=document.querySelectorAll('input[name="canq1-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9462,7 +9450,7 @@ function submitCanQ1(){
   }
   var pass=score>=4;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq1-done','1');localStorage.setItem(u+'-quiz-canq1-score',String(score));localStorage.setItem(u+'-quiz-canq1-answers',JSON.stringify(savedAnswers));}}catch(e){}
+  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq1-done','1');}catch(e){}
   var _chk=document.getElementById('canq1-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq1');
@@ -9483,7 +9471,7 @@ function resetCanQ1(){
   var c=document.getElementById('canq1-questions');if(c)c.innerHTML='';
   var r=document.getElementById('canq1-result');if(r)r.style.display='none';
   var s=document.getElementById('canq1-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq1-done');localStorage.removeItem(u+'-quiz-canq1-score');localStorage.removeItem(u+'-quiz-canq1-answers');}catch(e){}var qc=document.getElementById('canq1-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq1-done');}catch(e){}var qc=document.getElementById('canq1-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ1();
 }
 
@@ -9516,12 +9504,12 @@ function renderCanQ2(){
   document.getElementById('canq2-questions').innerHTML=html;
 }
 function submitCanQ2(){
-  var ca=[2,1,2,2,2,1,2,2,2];var total=9;var allAnswered=true;var savedAnswers=[];
+  var ca=[2,1,2,2,2,1,2,2,2];var total=9;var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="canq2-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,9))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="canq2-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="canq2-q'+i+'"]:checked').value);
     var correct=ca[i];
     var radios=document.querySelectorAll('input[name="canq2-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9535,7 +9523,7 @@ function submitCanQ2(){
   }
   var pass=score>=7;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq2-done','1');localStorage.setItem(u+'-quiz-canq2-score',String(score));localStorage.setItem(u+'-quiz-canq2-answers',JSON.stringify(savedAnswers));}}catch(e){}
+  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq2-done','1');}catch(e){}
   var _chk=document.getElementById('canq2-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq2');
@@ -9556,7 +9544,7 @@ function resetCanQ2(){
   var c=document.getElementById('canq2-questions');if(c)c.innerHTML='';
   var r=document.getElementById('canq2-result');if(r)r.style.display='none';
   var s=document.getElementById('canq2-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq2-done');localStorage.removeItem(u+'-quiz-canq2-score');localStorage.removeItem(u+'-quiz-canq2-answers');}catch(e){}var qc=document.getElementById('canq2-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq2-done');}catch(e){}var qc=document.getElementById('canq2-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ2();
 }
 
@@ -9589,12 +9577,12 @@ function renderCanQ3(){
   document.getElementById('canq3-questions').innerHTML=html;
 }
 function submitCanQ3(){
-  var ca=[1,1,2,1,2,2,2,2,2];var total=9;var allAnswered=true;var savedAnswers=[];
+  var ca=[1,1,2,1,2,2,2,2,2];var total=9;var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="canq3-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,9))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="canq3-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="canq3-q'+i+'"]:checked').value);
     var correct=ca[i];
     var radios=document.querySelectorAll('input[name="canq3-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9608,7 +9596,7 @@ function submitCanQ3(){
   }
   var pass=score>=7;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq3-done','1');localStorage.setItem(u+'-quiz-canq3-score',String(score));localStorage.setItem(u+'-quiz-canq3-answers',JSON.stringify(savedAnswers));}}catch(e){}
+  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq3-done','1');}catch(e){}
   var _chk=document.getElementById('canq3-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq3');
@@ -9629,7 +9617,7 @@ function resetCanQ3(){
   var c=document.getElementById('canq3-questions');if(c)c.innerHTML='';
   var r=document.getElementById('canq3-result');if(r)r.style.display='none';
   var s=document.getElementById('canq3-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq3-done');localStorage.removeItem(u+'-quiz-canq3-score');localStorage.removeItem(u+'-quiz-canq3-answers');}catch(e){}var qc=document.getElementById('canq3-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq3-done');}catch(e){}var qc=document.getElementById('canq3-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ3();
 }
 
@@ -9663,12 +9651,12 @@ function renderCanQ4(){
   document.getElementById('canq4-questions').innerHTML=html;
 }
 function submitCanQ4(){
-  var ca=[2,1,2,1,2,2,2,2,2,2];var total=10;var allAnswered=true;var savedAnswers=[];
+  var ca=[2,1,2,1,2,2,2,2,2,2];var total=10;var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="canq4-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,9))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="canq4-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="canq4-q'+i+'"]:checked').value);
     var correct=ca[i];
     var radios=document.querySelectorAll('input[name="canq4-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9682,7 +9670,7 @@ function submitCanQ4(){
   }
   var pass=score>=7;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq4-done','1');localStorage.setItem(u+'-quiz-canq4-score',String(score));localStorage.setItem(u+'-quiz-canq4-answers',JSON.stringify(savedAnswers));}}catch(e){}
+  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq4-done','1');}catch(e){}
   var _chk=document.getElementById('canq4-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq4');
@@ -9703,7 +9691,7 @@ function resetCanQ4(){
   var c=document.getElementById('canq4-questions');if(c)c.innerHTML='';
   var r=document.getElementById('canq4-result');if(r)r.style.display='none';
   var s=document.getElementById('canq4-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq4-done');localStorage.removeItem(u+'-quiz-canq4-score');localStorage.removeItem(u+'-quiz-canq4-answers');}catch(e){}var qc=document.getElementById('canq4-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq4-done');}catch(e){}var qc=document.getElementById('canq4-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ4();
 }
 
@@ -9739,12 +9727,12 @@ function renderCanQ5(){
   document.getElementById('canq5-questions').innerHTML=html;
 }
 function submitCanQ5(){
-  var ca=[2,2,2,2,2,2,2,2,1,2,2,2];var total=12;var allAnswered=true;var savedAnswers=[];
+  var ca=[2,2,2,2,2,2,2,2,1,2,2,2];var total=12;var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="canq5-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,12))return;
   var score=0;
   for(var i=0;i<total;i++){
-    var chosen=parseInt(document.querySelector('input[name="canq5-q'+i+'"]:checked').value);savedAnswers[i]=chosen;
+    var chosen=parseInt(document.querySelector('input[name="canq5-q'+i+'"]:checked').value);
     var correct=ca[i];
     var radios=document.querySelectorAll('input[name="canq5-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9758,7 +9746,7 @@ function submitCanQ5(){
   }
   var pass=score>=9;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq5-done','1');localStorage.setItem(u+'-quiz-canq5-score',String(score));localStorage.setItem(u+'-quiz-canq5-answers',JSON.stringify(savedAnswers));}}catch(e){}
+  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq5-done','1');}catch(e){}
   var _chk=document.getElementById('canq5-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq5');
@@ -9779,7 +9767,7 @@ function resetCanQ5(){
   var c=document.getElementById('canq5-questions');if(c)c.innerHTML='';
   var r=document.getElementById('canq5-result');if(r)r.style.display='none';
   var s=document.getElementById('canq5-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq5-done');localStorage.removeItem(u+'-quiz-canq5-score');localStorage.removeItem(u+'-quiz-canq5-answers');}catch(e){}var qc=document.getElementById('canq5-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq5-done');}catch(e){}var qc=document.getElementById('canq5-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ5();
 }
 
@@ -9805,10 +9793,9 @@ function submitV1V2Q(){
   var qs=v1v2QuizData;var total=qs.length;var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="v1v2q-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
-  var score=0;var savedAnswers={};
+  var score=0;
   for(var i=0;i<total;i++){
     var chosen=parseInt(document.querySelector('input[name="v1v2q-q'+i+'"]:checked').value);
-    savedAnswers[i]=chosen;
     var correct=qs[i].correct;
     var radios=document.querySelectorAll('input[name="v1v2q-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -9831,7 +9818,7 @@ function submitV1V2Q(){
     +'<div style="margin-top:16px;"><button onclick="resetV1V2Q()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
   var btn=document.getElementById('v1v2q-submit-area');if(btn)btn.style.display='none';
-  var u=getUser();try{localStorage.setItem(u+'-quiz-v1v2-done','1');localStorage.setItem(u+'-quiz-v1v2-score',String(score));localStorage.setItem(u+'-quiz-v1v2-answers',JSON.stringify(savedAnswers));}catch(e){}
+  var u=getUser();try{localStorage.setItem(u+'-quiz-v1v2-done','1');localStorage.setItem(u+'-quiz-v1v2-score',String(score));}catch(e){}
   updSidebar();
   var qc=document.getElementById('v1v2q-check');
   if(qc){markDone(qc);}
@@ -9842,7 +9829,7 @@ function resetV1V2Q(){
   var c=document.getElementById('v1v2q-questions');if(c)c.innerHTML='';
   var r=document.getElementById('v1v2q-result');if(r)r.style.display='none';
   var s=document.getElementById('v1v2q-submit-area');if(s)s.style.display='block';
-  var u=getUser();try{localStorage.removeItem(u+'-quiz-v1v2-done');localStorage.removeItem(u+'-quiz-v1v2-score');localStorage.removeItem(u+'-quiz-v1v2-answers');}catch(e){}
+  var u=getUser();try{localStorage.removeItem(u+'-quiz-v1v2-done');localStorage.removeItem(u+'-quiz-v1v2-score');}catch(e){}
   updSidebar();renderV1V2Q();
   var qc=document.getElementById('v1v2q-check');
   if(qc){markUndone(qc);}
@@ -10059,7 +10046,7 @@ function restoreCxlProgress(){
   for(var j=0;j<CXL_QUIZ_IDS.length;j++){
     var qid=CXL_QUIZ_IDS[j];
     if(localStorage.getItem(u+'-quiz-'+qid+'-done')){
-      markCxQuizCheck(qid);(function(){var _cxCfg={canq1:[[1,2,2,1,2],4,'Great work! You understand the main cancellation steps.','Review the Cancellations section and try again.'],canq2:[[2,1,2,2,2,1,2,2,2],7,'Great work! You understand OTA-specific cancellation processes.','Review the Cancellations by OTA section and try again.'],canq3:[[1,1,2,1,2,2,2,2,2],7,'Great work! You understand OTA-specific cancellation and refund processes.','Review the Cancellations by OTA section and try again.'],canq4:[[2,1,2,1,2,2,2,2,2,2],7,'Great work! You understand the manual cancellation workflow.','Review the Manual Cancellations section and try again.'],canq5:[[2,2,2,2,2,2,2,2,1,2,2,2],9,'Great work! You have mastered the cancellation and manual process knowledge.','Review the Cancellations sections and try again.']};var cf=_cxCfg[qid];if(!cf)return;var ca=cf[0],n=qid.slice(4),total=ca.length;try{if(typeof window['renderCanQ'+n]==='function')window['renderCanQ'+n]();}catch(e){}var sa=[];try{var raw=localStorage.getItem(u+'-quiz-'+qid+'-answers');if(raw)sa=JSON.parse(raw);}catch(e){}var sc=parseInt(localStorage.getItem(u+'-quiz-'+qid+'-score')||'0',10);for(var i=0;i<total;i++){var chosen=(sa[i]!==undefined&&sa[i]!==null)?sa[i]:-1;var inp=document.querySelector('input[name="'+qid+'-q'+i+'"][value="'+chosen+'"]');if(inp){inp.checked=true;}var radios=document.querySelectorAll('input[name="'+qid+'-q'+i+'"]');for(var k=0;k<radios.length;k++){radios[k].disabled=true;}for(var jj=0;jj<4;jj++){var lbl=document.getElementById(qid+'-lbl-'+i+'-'+jj);if(!lbl)continue;lbl.style.cursor='not-allowed';if(jj===ca[i]){markCorrect(lbl);}else if(jj===chosen&&chosen!==ca[i]){markWrong(lbl);}}}var pass=sc>=cf[1];var _r=document.getElementById(qid+'-result');if(_r&&!_r.innerHTML.trim()){_r.style.display='block';_r.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;"><div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div><div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+sc+' / '+total+'</div><div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(sc/total*100)+'%</div><span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'✅ PASSED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?cf[2]:cf[3])+'</div><div style="margin-top:16px;"><button onclick="resetCanQ'+n+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}var _sb=document.getElementById(qid+'-submit-area');if(_sb)_sb.style.display='none';})();
+      markCxQuizCheck(qid);
     }
   }
   updateCxlProgress();
@@ -10126,50 +10113,10 @@ function restoreAbProgress(){
   if(localStorage.getItem(u+'-quiz-airbnb-done')){
     var qc=document.getElementById('ab-quiz-check');
     if(qc){markDone(qc);}
-    var sa1={};try{var raw1=localStorage.getItem(u+'-quiz-airbnb-answers');if(raw1)sa1=JSON.parse(raw1);}catch(e){}
-    for(var q in sa1){var inp=document.querySelector('input[name="'+q+'"][value="'+sa1[q]+'"]');if(inp){inp.checked=true;}}
-    var score1=parseInt(localStorage.getItem(u+'-quiz-airbnb-score')||'10',10);var total1=10;
-    var pct1=Math.round(score1/total1*100);var pass1=score1>=7;var col1=pass1?'#276749':'#9b2235';var emoji1=pct1===100?'&#x1F3C6;':pass1?'&#x1F389;':'&#x1F4DA;';
-    var r1=document.getElementById('ab-quiz-result');
-    if(r1&&!r1.innerHTML.trim()){
-      r1.style.display='block';
-      r1.innerHTML='<div style="text-align:center;padding:28px 16px;border-top:2px solid #e2e8f0;margin-top:16px;border-radius:0 0 10px 10px;background:#f7fafc;">'
-        +'<div style="font-size:48px;margin-bottom:10px;">'+emoji1+'</div>'
-        +'<div style="font-size:30px;font-weight:800;color:'+col1+';margin-bottom:4px;">'+score1+' / '+total1+'</div>'
-        +'<div style="font-size:15px;color:#4a5568;margin:6px 0 14px;">'+pct1+'%</div>'
-        +'<span style="background:'+col1+';color:#fff;font-size:12px;font-weight:700;padding:6px 22px;border-radius:20px;letter-spacing:1px;">'+(pass1?'PASSED':'NEEDS REVIEW')+'</span>'
-        +'<div style="font-size:13px;color:#4a5568;margin-top:16px;line-height:1.6;">'+(pass1?'Great work! You know how to navigate an Airbnb listing.':'Review the listing and try again — you\'re almost there!')+'</div>'
-        +'<div style="margin-top:18px;display:flex;justify-content:center;gap:10px;">'
-        +'<button onclick="resetAirbnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button>'
-        +'<button onclick="toggleAirbnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x25B2; Close Quiz</button>'
-        +'</div>'
-        +'</div>';
-      var sb1=document.getElementById('ab-quiz-submit');if(sb1)sb1.style.display='none';
-    }
   }
   if(localStorage.getItem(u+'-quiz-airbnb-general-done')){
     var qc=document.getElementById('abg-quiz-check');
     if(qc){markDone(qc);}
-    var sa2={};try{var raw2=localStorage.getItem(u+'-quiz-airbnb-general-answers');if(raw2)sa2=JSON.parse(raw2);}catch(e){}
-    for(var q in sa2){var inp=document.querySelector('input[name="'+q+'"][value="'+sa2[q]+'"]');if(inp){inp.checked=true;}}
-    var score2=parseInt(localStorage.getItem(u+'-quiz-airbnb-general-score')||'4',10);var total2=4;
-    var pct2=Math.round(score2/total2*100);var pass2=score2>=3;var col2=pass2?'#276749':'#9b2235';var emoji2=pct2===100?'&#x1F3C6;':pass2?'&#x1F389;':'&#x1F4DA;';
-    var r2=document.getElementById('abg-quiz-result');
-    if(r2&&!r2.innerHTML.trim()){
-      r2.style.display='block';
-      r2.innerHTML='<div style="text-align:center;padding:28px 16px;border-top:2px solid #e2e8f0;margin-top:16px;border-radius:0 0 10px 10px;background:#f7fafc;">'
-        +'<div style="font-size:48px;margin-bottom:10px;">'+emoji2+'</div>'
-        +'<div style="font-size:30px;font-weight:800;color:'+col2+';margin-bottom:4px;">'+score2+' / '+total2+'</div>'
-        +'<div style="font-size:15px;color:#4a5568;margin:6px 0 14px;">'+pct2+'%</div>'
-        +'<span style="background:'+col2+';color:#fff;font-size:12px;font-weight:700;padding:6px 22px;border-radius:20px;letter-spacing:1px;">'+(pass2?'PASSED':'NEEDS REVIEW')+'</span>'
-        +'<div style="font-size:13px;color:#4a5568;margin-top:16px;line-height:1.6;">'+(pass2?'Great work! You understand Airbnb inquiry handling.':'Review the material above and try again.')+'</div>'
-        +'<div style="margin-top:18px;display:flex;justify-content:center;gap:10px;">'
-        +'<button onclick="resetAirbnbGeneralQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button>'
-        +'<button onclick="toggleAirbnbGeneralQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x25B2; Close Quiz</button>'
-        +'</div>'
-        +'</div>';
-      var sb2=document.getElementById('abg-quiz-submit');if(sb2)sb2.style.display='none';
-    }
   }
   updateAbProgress();
 }
@@ -10208,38 +10155,12 @@ function restoreCirrusProgress(){
       if(btn){markDone(btn);}
     }
   }
-  // Cirrus Quiz 1
-  if(localStorage.getItem(u+'-quiz-cirrus-done')){
-    var qc1=document.getElementById('circ-quiz1-check');if(qc1){markDone(qc1);}
-    var ans1=[0,1,0,0,0,0,0,1,0,0];
-    var saved1={};try{var r1=localStorage.getItem(u+'-quiz-cirrus-answers');if(r1)saved1=JSON.parse(r1);}catch(e){}
-    var score1=parseInt(localStorage.getItem(u+'-quiz-cirrus-score')||'0',10);
-    for(var i=0;i<10;i++){var v1=saved1['cirrus-q'+i];if(v1!==undefined){var inp1=document.querySelector('input[name="cirrus-q'+i+'"][value="'+v1+'"]');if(inp1){inp1.checked=true;}for(var j=0;j<2;j++){var lbl1=document.getElementById('cirrus-q'+i+'-opt'+j);if(lbl1){var li1=lbl1.querySelector('input');if(li1)li1.disabled=true;lbl1.style.cursor='not-allowed';if(j===v1){if(v1===ans1[i]){markCorrect(lbl1);}else{markWrong(lbl1);}}if(j===ans1[i]&&v1!==ans1[i]){markCorrect(lbl1);}}}};
-    var disp1=document.getElementById('cirrus-score-display');var pass1=score1>=7;
-    if(disp1&&!disp1.innerHTML.trim()){disp1.style.display='block';disp1.innerHTML='<div style="background:'+(pass1?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass1?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;margin-top:20px;"><div style="font-size:42px;margin-bottom:10px;">'+(pass1?'🎉':'📚')+'</div><div style="font-size:22px;font-weight:700;color:'+(pass1?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score1+' out of 10</div><div style="font-size:14px;color:'+(pass1?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score1/9*100)+'%</div><span style="background:'+(pass1?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass1?'✅ CIRRUS PAGE COMPLETED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass1?'Great work!':'Review the material above and try again when ready (passing score: 7/10).')+'</div></div>';}
-    var sb1=document.getElementById('cirrus-submit-btn');if(sb1){sb1.disabled=true;sb1.style.opacity='0.5';sb1.style.cursor='not-allowed';}
-  }
-  // Cirrus Quiz 2
-  if(localStorage.getItem(u+'-quiz-cirrus2-done')){
-    var qc2=document.getElementById('circ-quiz2-check');if(qc2){markDone(qc2);}
-    var ans2=[1,2,3,3,2,3,2,2,3,2,1];
-    var saved2={};try{var r2=localStorage.getItem(u+'-quiz-cirrus2-answers');if(r2)saved2=JSON.parse(r2);}catch(e){}
-    var score2=parseInt(localStorage.getItem(u+'-quiz-cirrus2-score')||'0',10);
-    for(var i=0;i<11;i++){var v2=saved2['sq2-q'+i];if(v2!==undefined){var inp2=document.querySelector('input[name="sq2-q'+i+'"][value="'+v2+'"]');if(inp2){inp2.checked=true;}for(var j=0;j<4;j++){var lbl2=document.getElementById('sq2-q'+i+'-opt'+j);if(lbl2){var li2=lbl2.querySelector('input');if(li2)li2.disabled=true;lbl2.style.cursor='not-allowed';if(j===v2){if(v2===ans2[i]){markCorrect(lbl2);}else{markWrong(lbl2);}}if(j===ans2[i]&&v2!==ans2[i]){markCorrect(lbl2);}}}}}
-    var disp2=document.getElementById('sq2-score-display');var pass2=score2>=8;
-    if(disp2&&!disp2.innerHTML.trim()){disp2.style.display='block';disp2.innerHTML='<div style="background:'+(pass2?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass2?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;margin-top:20px;"><div style="font-size:42px;margin-bottom:10px;">'+(pass2?'🎉':'📚')+'</div><div style="font-size:22px;font-weight:700;color:'+(pass2?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score2+' out of 11</div><div style="font-size:14px;color:'+(pass2?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score2/11*100)+'%</div><span style="background:'+(pass2?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass2?'✅ CIRRUS QUIZ 2 COMPLETED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass2?'Great work! Cirrus Quiz 2 has been marked as completed.':'Review booking 211500 in Cirrus and try again (passing score: 8/11).')+'</div></div>';}
-    var sb2=document.getElementById('sq2-submit-btn');if(sb2){sb2.disabled=true;sb2.style.opacity='0.5';sb2.style.cursor='not-allowed';}
-  }
-  // Cirrus Quiz 3
-  if(localStorage.getItem(u+'-quiz-cirrus3-done')){
-    var qc3=document.getElementById('circ-quiz3-check');if(qc3){markDone(qc3);}
-    var ans3=[2,1,3,2,0,2,2,2];
-    var saved3={};try{var r3=localStorage.getItem(u+'-quiz-cirrus3-answers');if(r3)saved3=JSON.parse(r3);}catch(e){}
-    var score3=parseInt(localStorage.getItem(u+'-quiz-cirrus3-score')||'0',10);
-    for(var i=0;i<8;i++){var v3=saved3['sq3-q'+i];if(v3!==undefined){var inp3=document.querySelector('input[name="sq3-q'+i+'"][value="'+v3+'"]');if(inp3){inp3.checked=true;}for(var j=0;j<4;j++){var lbl3=document.getElementById('sq3-q'+i+'-opt'+j);if(lbl3){var li3=lbl3.querySelector('input');if(li3)li3.disabled=true;lbl3.style.cursor='not-allowed';if(j===v3){if(v3===ans3[i]){markCorrect(lbl3);}else{markWrong(lbl3);}}if(j===ans3[i]&&v3!==ans3[i]){markCorrect(lbl3);}}}}}
-    var disp3=document.getElementById('sq3-score-display');var pass3=score3>=6;
-    if(disp3&&!disp3.innerHTML.trim()){disp3.style.display='block';disp3.innerHTML='<div style="background:'+(pass3?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass3?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;margin-top:20px;"><div style="font-size:42px;margin-bottom:10px;">'+(pass3?'🎉':'📚')+'</div><div style="font-size:22px;font-weight:700;color:'+(pass3?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score3+' out of 8</div><div style="font-size:14px;color:'+(pass3?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score3/8*100)+'%</div><span style="background:'+(pass3?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass3?'✅ CIRRUS QUIZ 3 COMPLETED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass3?'Great work!':'Review the material above and try again (passing score: 6/8).')+'</div></div>';}
-    var sb3=document.getElementById('sq3-submit-btn');if(sb3){sb3.disabled=true;sb3.style.opacity='0.5';sb3.style.cursor='not-allowed';}
+  var qmap=[['quiz-cirrus-done','circ-quiz1-check'],['quiz-cirrus2-done','circ-quiz2-check'],['quiz-cirrus3-done','circ-quiz3-check']];
+  for(var i=0;i<qmap.length;i++){
+    if(localStorage.getItem(u+'-'+qmap[i][0])){
+      var qc=document.getElementById(qmap[i][1]);
+      if(qc){markDone(qc);}
+    }
   }
   updateCirrusProgress();
 }
@@ -10287,7 +10208,6 @@ function restoreGEProgress(){
     ['quiz-ge-op-done','ge-op-check'],
     ['quiz-ge-rl-done','ge-rl-check']
   ];
-  (function(){var _geCfg=[['ge-ah','geahq',['C','C','C','C'],'pct75','Autohost screening'],['ge-dc','gedcq',['C','C','B'],'sc2','Door Code processes'],['ge-op','geopq',['C','C','B','C','C','C','C'],'pct80','Operto access management'],['ge-rl','gerlq',['B','C','C','C','C','B'],'pct80','RemoteLock processes']];_geCfg.forEach(function(c){var pfx=c[0],iname=c[1],ca=c[2],total=ca.length;if(!localStorage.getItem(u+'-quiz-'+pfx+'-done'))return;var sa={};try{var raw=localStorage.getItem(u+'-quiz-'+pfx+'-answers');if(raw)sa=JSON.parse(raw);}catch(e){}for(var i=0;i<total;i++){var k=iname+(i+1);var ans=sa[k];if(ans){var inp=document.querySelector('input[name="'+k+'"][value="'+ans+'"]');if(inp)inp.checked=true;}}var sc=parseInt(localStorage.getItem(u+'-quiz-'+pfx+'-score')||'0',10);var pct=Math.round(sc/total*100);var pass=(c[3]==='sc2')?(sc>=2):(c[3]==='pct75')?(pct>=75):(pct>=80);var bg=pass?'#f0fff4':'#fff5f5';var bord=pass?'#68d391':'#fc8181';var col=pass?'#276749':'#9b2235';var _r=document.getElementById(pfx+'-quiz-result');if(_r&&!_r.innerHTML.trim()){_r.style.display='block';_r.innerHTML=buildQuizResult(sc,total,(pass?'🎉':'📚'),(pass?'PASSED':'NEEDS REVIEW'),bg,bord,col,pct,(pass?'Great work! You have a solid understanding of '+c[4]+'.':'Review the training above and try again when ready.'));}});})();
   for(var i=0;i<qmap.length;i++){
     if(localStorage.getItem(u+'-'+qmap[i][0])){
       var el=document.getElementById(qmap[i][1]);
@@ -10334,38 +10254,6 @@ function restoreAvailProgress(){
   if(localStorage.getItem(u+'-quiz-avail-done')){
     var qc=document.getElementById('avail-quiz-check');
     if(qc){markDone(qc);}
-    var _aq=document.getElementById('avail-quiz-questions');if(_aq&&_aq.innerHTML===''&&typeof renderAvailQuiz==='function')renderAvailQuiz();
-    var correctAnswers=[1,2,2,2,2,2,2,1,2,2];
-    var savedAnswers=[];try{var raw=localStorage.getItem(u+'-quiz-avail-answers');if(raw)savedAnswers=JSON.parse(raw);}catch(e){}
-    if(savedAnswers&&savedAnswers.length){
-      for(var i=0;i<10;i++){
-        var chosen=savedAnswers[i];var correct=correctAnswers[i];
-        var inp=document.querySelector('input[name="availq-q'+i+'"][value="'+chosen+'"]');if(inp){inp.checked=true;}
-        var radios=document.querySelectorAll('input[name="availq-q'+i+'"]');
-        for(var k=0;k<radios.length;k++)radios[k].disabled=true;
-        for(var j=0;j<4;j++){
-          var lbl=document.getElementById('availq-lbl-'+i+'-'+j);if(!lbl)continue;
-          lbl.style.cursor='not-allowed';
-          if(j===correct){markCorrect(lbl);}
-          else if(j===chosen&&chosen!==correct){markWrong(lbl);}
-        }
-      }
-    }
-    var score=parseInt(localStorage.getItem(u+'-quiz-avail-score')||'9',10);
-    var feedback='';if(score>=9){feedback='Excellent – strong understanding ✅';}else if(score>=7){feedback='Good – minor review recommended';}else{feedback='Please review training and retry';}
-    var pass=score>=7;
-    var _aRes=document.getElementById('avail-quiz-result');
-    if(_aRes&&!_aRes.innerHTML.trim()){
-      _aRes.style.display='block';
-      _aRes.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
-        +'<div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div>'
-        +'<div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' / 9</div>'
-        +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/9*100)+'%</div>'
-        +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
-        +'<div style="margin-top:16px;"><button onclick="resetAvailQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
-        +'</div>';
-      var _aBtn=document.getElementById('avail-quiz-submit-area');if(_aBtn)_aBtn.style.display='none';
-    }
   }
   updateAvailProgress();
 }
@@ -10404,7 +10292,7 @@ function restoreModProgress(){
       if(btn){markDone(btn);}
     }
   }
-  var qmap=[['quiz-mod1-done','mod-quiz1-check'],['quiz-mod2-done','mod-quiz2-check'],['quiz-mod3-done','mod-quiz3-check']];var _modCfg=[['mod1',[1,1,2,2,1,2,1,1,1,2],'modq1','renderModQ1','V1 modification','Review the V1 Modifications section and try again.','ModQ1'],['mod2',[2,1,2,1,1,2,1,1,2,2],'modq2','renderModQ2','V1 modification','Review the V1 Modifications section and try again.','ModQ2'],['mod3',[2,1,2,1,2,2,1,1,2,2],'modq3','renderModQ3','V2 modification','Review the V2 Modifications section and try again.','ModQ3']];_modCfg.forEach(function(c){if(!localStorage.getItem(u+'-quiz-'+c[0]+'-done'))return;var ca=c[1],pfx=c[2];try{if(typeof window[c[3]]==='function')window[c[3]]();}catch(e){}var sa=[];try{var raw=localStorage.getItem(u+'-quiz-'+c[0]+'-answers');if(raw)sa=JSON.parse(raw);}catch(e){}var sc=parseInt(localStorage.getItem(u+'-quiz-'+c[0]+'-score')||'0',10);for(var i=0;i<ca.length;i++){var chosen=(sa[i]!==undefined&&sa[i]!==null)?sa[i]:-1;var inp=document.querySelector('input[name="'+pfx+'-q'+i+'"][value="'+chosen+'"]');if(inp){inp.checked=true;}var radios=document.querySelectorAll('input[name="'+pfx+'-q'+i+'"]');for(var k=0;k<radios.length;k++){radios[k].disabled=true;}for(var j=0;j<4;j++){var lbl=document.getElementById(pfx+'-lbl-'+i+'-'+j);if(!lbl)continue;lbl.style.cursor='not-allowed';if(j===ca[i]){markCorrect(lbl);}else if(j===chosen&&chosen!==ca[i]){markWrong(lbl);}}}var pass=sc>=7;var _r=document.getElementById(pfx+'-result');if(_r&&!_r.innerHTML.trim()){_r.style.display='block';_r.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;"><div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div><div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+sc+' / 9</div><div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(sc/9*100)+'%</div><span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'✅ PASSED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! You have demonstrated solid '+c[4]+' knowledge.':c[5])+'</div><div style="margin-top:16px;"><button onclick="reset'+c[6]+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}var _sb=document.getElementById(pfx+'-submit-area');if(_sb)_sb.style.display='none';});
+  var qmap=[['quiz-mod1-done','mod-quiz1-check'],['quiz-mod2-done','mod-quiz2-check'],['quiz-mod3-done','mod-quiz3-check']];
   for(var i=0;i<qmap.length;i++){
     if(localStorage.getItem(u+'-'+qmap[i][0])){
       var qc=document.getElementById(qmap[i][1]);
@@ -10449,23 +10337,6 @@ function restoreVrboProgress(){
   if(localStorage.getItem(u+'-quiz-vrbo-done')){
     var qc=document.getElementById('vrbo-quiz-check');
     if(qc){markDone(qc);}
-    var savedAnswers={};try{var raw=localStorage.getItem(u+'-quiz-vrbo-answers');if(raw)savedAnswers=JSON.parse(raw);}catch(e){}
-    for(var q in savedAnswers){var inp=document.querySelector('input[name="'+q+'"][value="'+savedAnswers[q]+'"]');if(inp){inp.checked=true;}}
-    var score=parseInt(localStorage.getItem(u+'-quiz-vrbo-score')||'5',10);
-    var pct=Math.round(score/5*100);var pass=score>=4;var col=pass?'#276749':'#9b2235';var emoji=pct===100?'🏆':pass?'🎉':'📚';
-    var _vRes=document.getElementById('vrbo-quiz-result');
-    if(_vRes&&!_vRes.innerHTML.trim()){
-      var resultHTML='<div style="text-align:center;padding:22px 10px;">';
-      resultHTML+='<div style="font-size:48px;margin-bottom:10px;">'+emoji+'</div>';
-      resultHTML+='<div style="font-size:22px;font-weight:800;color:'+col+';margin-bottom:6px;">You scored '+score+' / 5</div>';
-      resultHTML+='<div style="font-size:14px;color:'+col+';margin-bottom:16px;">'+pct+'%</div>';
-      resultHTML+='<span style="background:'+col+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'✅ VRBO QUIZ COMPLETED':'NEEDS REVIEW')+'</span>';
-      resultHTML+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! The VRBO quiz has been marked as completed.':'Review the material above and try again when ready (passing score: 4/5).')+'</div>';
-      resultHTML+='<div style="margin-top:16px;"><button onclick="resetVrboQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-      resultHTML+='</div>';
-      _vRes.style.display='block';_vRes.innerHTML=resultHTML;
-      var _vSubmit=document.getElementById('vrbo-quiz-submit');if(_vSubmit)_vSubmit.style.display='none';
-    }
   }
   updateVrboProgress();
 }
@@ -10505,30 +10376,8 @@ function restoreBcomProgress(){
   if(localStorage.getItem(u+'-quiz-bcom-checkin-done')){
     var qc=document.getElementById('bcom-quiz-check');
     if(qc){markDone(qc);}
-    restoreBcomQuizState(u);
   }
   updateBcomProgress();
-}
-function restoreBcomQuizState(u){
-  var saB={};try{var rawB=localStorage.getItem(u+'-quiz-bcom-checkin-answers');if(rawB)saB=JSON.parse(rawB);}catch(e){}
-  for(var q in saB){var inp=document.querySelector('input[name="'+q+'"][value="'+saB[q]+'"]');if(inp){inp.checked=true;}}
-  var scoreB=parseInt(localStorage.getItem(u+'-quiz-bcom-checkin-score')||'5',10);var totalB=5;
-  var pctB=Math.round(scoreB/totalB*100);var passB=scoreB>=4;var colB=passB?'#276749':'#9b2235';var emojiB=pctB===100?'&#x1F3C6;':passB?'&#x1F389;':'&#x1F4DA;';
-  var rB=document.getElementById('bcom-quiz-result');
-  if(rB&&!rB.innerHTML.trim()){
-    rB.style.display='block';
-    rB.innerHTML='<div style="text-align:center;padding:28px 16px;border-top:2px solid #e2e8f0;margin-top:16px;border-radius:0 0 10px 10px;background:#f7fafc;">'
-      +'<div style="font-size:48px;margin-bottom:10px;">'+emojiB+'</div>'
-      +'<div style="font-size:30px;font-weight:800;color:'+colB+';margin-bottom:4px;">'+scoreB+' / '+totalB+'</div>'
-      +'<div style="font-size:15px;color:#4a5568;margin:6px 0 14px;">'+pctB+'%</div>'
-      +'<span style="background:'+colB+';color:#fff;font-size:12px;font-weight:700;padding:6px 22px;border-radius:20px;letter-spacing:1px;">'+(passB?'PASSED':'NEEDS REVIEW')+'</span>'
-      +'<div style="font-size:13px;color:#4a5568;margin-top:16px;line-height:1.6;">'+(passB?'Great work! The Booking.com quiz has been marked as completed.':'Review the material above and try again.')+'</div>'
-      +'<div style="margin-top:18px;display:flex;justify-content:center;gap:10px;">'
-      +'<button onclick="resetBcomQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button>'
-      +'</div>'
-      +'</div>';
-    var sbB=document.getElementById('bcom-quiz-submit');if(sbB)sbB.style.display='none';
-  }
 }
 function markPnbSection(id){
   var u=getUser();if(!u)return;
@@ -10566,10 +10415,8 @@ function restorePnbProgress(){
   if(localStorage.getItem(u+'-quiz-pnb-done')){
     var qc=document.getElementById('pnb-quiz-check');
     if(qc){markDone(qc);}
-    var _pnbCorrect={pnbq1:"C",pnbq2:"C",pnbq3:"C",pnbq4:"D"};var _pnbSaved={};try{var _pnbRaw=localStorage.getItem(u+'-quiz-pnb-answers');if(_pnbRaw)_pnbSaved=JSON.parse(_pnbRaw);}catch(e){}for(var pq in _pnbSaved){var _pinp=document.querySelector("input[name="+pq+"][value="+_pnbSaved[pq]+"]");if(_pinp){_pinp.checked=true;var _plbl=_pinp.closest("label");if(_plbl){var _pic=_pnbSaved[pq]===_pnbCorrect[pq];_plbl.style.background=_pic?"#f0fff4":"#fff5f5";_plbl.style.borderColor=_pic?"#68d391":"#fc8181";}}}
-    var _pnbScore=parseInt(localStorage.getItem(u+'-quiz-pnb-score')||'4',10);var _pnbPct=Math.round(_pnbScore/4*100);var _pnbMsg,_pnbIcon,_pnbBg,_pnbBord,_pnbCol;if(_pnbScore===4){_pnbMsg="Perfect – you\'re ready ✅";_pnbIcon="🎉";_pnbBg="#f0fff4";_pnbBord="#68d391";_pnbCol="#276749";}else if(_pnbScore>=3){_pnbMsg="Almost there – review and retry";_pnbIcon="📚";_pnbBg="#fffbeb";_pnbBord="#f6e05e";_pnbCol="#744216";}else{_pnbMsg="Please review the training and try again";_pnbIcon="📖";_pnbBg="#fff5f5";_pnbBord="#fc8181";_pnbCol="#9b2235";}
     var _pnbRes=document.getElementById('pnb-quiz-result');
-    if(_pnbRes&&!_pnbRes.innerHTML.trim()){_pnbRes.style.display='block';_pnbRes.innerHTML=buildQuizResult(_pnbScore,4,_pnbIcon,_pnbMsg,_pnbBg,_pnbBord,_pnbCol,_pnbPct);}
+    if(_pnbRes&&!_pnbRes.innerHTML.trim()){_pnbRes.style.display='block';_pnbRes.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:20px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">&#x2705;</div><div style="font-size:17px;font-weight:800;color:#276749;margin-bottom:4px;">Quiz Completed</div><div style="font-size:12px;color:#276749;margin-bottom:12px;">Your progress is saved.</div><button onclick="resetPnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>';}
     var _pnbRow=document.getElementById('pnb-quiz-submit-row');
     if(_pnbRow)_pnbRow.style.display='none';
   }
@@ -10707,26 +10554,8 @@ function restoreV1V2Progress(){
   if(localStorage.getItem(u+'-quiz-v1v2-done')){
     var qc=document.getElementById('v1v2q-check');
     if(qc){markDone(qc);}
-    if(typeof renderV1V2Q==='function'){var _v2qc=document.getElementById('v1v2q-questions');if(_v2qc&&!_v2qc.innerHTML.trim())renderV1V2Q();}
-    var _v2Saved={};try{var _v2Raw=localStorage.getItem(u+'-quiz-v1v2-answers');if(_v2Raw)_v2Saved=JSON.parse(_v2Raw);}catch(e){}
-    var _v2qs=v1v2QuizData;var _v2total=_v2qs.length;
-    for(var _vi=0;_vi<_v2total;_vi++){
-      if(!(_vi in _v2Saved))continue;
-      var _vchosen=parseInt(_v2Saved[_vi]);var _vcorrect=_v2qs[_vi].correct;
-      var _vradios=document.querySelectorAll('input[name="v1v2q-q'+_vi+'"]');
-      for(var _vk=0;_vk<_vradios.length;_vk++){if(parseInt(_vradios[_vk].value)===_vchosen)_vradios[_vk].checked=true;_vradios[_vk].disabled=true;}
-      for(var _vj=0;_vj<_v2qs[_vi].opts.length;_vj++){var _vlbl=document.getElementById('v1v2q-lbl-'+_vi+'-'+_vj);if(!_vlbl)continue;_vlbl.style.cursor='not-allowed';if(_vj===_vcorrect){markCorrect(_vlbl);}else if(_vj===_vchosen&&_vchosen!==_vcorrect){markWrong(_vlbl);}}
-    }
-    var _v2score=parseInt(localStorage.getItem(u+'-quiz-v1v2-score')||String(_v2total),10);var _v2pass=_v2score>=7;
     var _v2Res=document.getElementById('v1v2q-result');
-    if(_v2Res&&!_v2Res.innerHTML.trim()){_v2Res.style.display='block';_v2Res.innerHTML='<div style="background:'+(_v2pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_v2pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
-      +'<div style="font-size:42px;margin-bottom:10px;">'+(_v2pass?'&#x1F389;':'&#x1F4DA;')+'</div>'
-      +'<div style="font-size:24px;font-weight:800;color:'+(_v2pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+_v2score+' / '+_v2total+'</div>'
-      +'<div style="font-size:14px;color:'+(_v2pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(_v2score/_v2total*100)+'%</div>'
-      +'<span style="background:'+(_v2pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_v2pass?'✅ PASSED':'NEEDS REVIEW')+'</span>'
-      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_v2pass?'Great work! You understand V1 and V2 partner rules.':'Review the V1 and V2 Partners section and try again.')+'</div>'
-      +'<div style="margin-top:16px;"><button onclick="resetV1V2Q()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
-      +'</div>';}
+    if(_v2Res&&!_v2Res.innerHTML.trim()){_v2Res.style.display='block';_v2Res.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:20px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">&#x2705;</div><div style="font-size:17px;font-weight:800;color:#276749;margin-bottom:4px;">Quiz Completed</div><div style="font-size:12px;color:#276749;">Your progress is saved. Use Reset Quiz to try again.</div></div>';}
     var _v2Sub=document.getElementById('v1v2q-submit-area');
     if(_v2Sub)_v2Sub.style.display='none';
   }
@@ -10849,11 +10678,10 @@ function toggleVrboQuiz(){
 }
 function submitVrboQuiz(){
   var answers={1:'B',2:'C',3:'C',4:'C',5:'C'};
-  var score=0;var total=5;var unanswered=0;var savedAnswers={};
+  var score=0;var total=5;var unanswered=0;
   for(var q=1;q<=total;q++){
     var sel=document.querySelector('input[name="vrbo-q'+q+'"]:checked');
     if(!sel){unanswered++;continue;}
-    savedAnswers['vrbo-q'+q]=sel.value;
     if(sel.value===answers[q])score++;
   }
   if(unanswered>0){
@@ -10863,7 +10691,7 @@ function submitVrboQuiz(){
   }
   var u=getUser();
   if(u){
-    try{localStorage.setItem(u+'-quiz-vrbo-done','1');localStorage.setItem(u+'-quiz-vrbo-score',score);localStorage.setItem(u+'-quiz-vrbo-answers',JSON.stringify(savedAnswers));}catch(e){}
+    try{localStorage.setItem(u+'-quiz-vrbo-done','1');localStorage.setItem(u+'-quiz-vrbo-score',score);}catch(e){}
   }
   var qc=document.getElementById('vrbo-quiz-check');
   if(qc){markDone(qc);}
@@ -10892,7 +10720,7 @@ function submitVrboQuiz(){
 function resetVrboQuiz(){
   var u=getUser();
   if(u){
-    try{localStorage.removeItem(u+'-quiz-vrbo-done');localStorage.removeItem(u+'-quiz-vrbo-score');localStorage.removeItem(u+'-quiz-vrbo-answers');}catch(e){}
+    try{localStorage.removeItem(u+'-quiz-vrbo-done');localStorage.removeItem(u+'-quiz-vrbo-score');}catch(e){}
   }
   show('vrbo');
 }
@@ -10942,11 +10770,11 @@ function toggleAirbnbQuiz(){
   else{body.dataset.open='1';body.style.maxHeight='4000px';body.style.opacity='1';if(arrow)arrow.style.transform='rotate(180deg)';if(btn)btn.style.borderRadius='12px 12px 0 0';}
 }
 function submitAirbnbQuiz(){
-  var total=10;var unanswered=0;var savedAnswers={};
-  for(var q=1;q<=total;q++){var _s=document.querySelector('input[name="abq'+q+'"]:checked');if(!_s)unanswered++;else savedAnswers['abq'+q]=_s.value;}
+  var total=10;var unanswered=0;
+  for(var q=1;q<=total;q++){if(!document.querySelector('input[name="abq'+q+'"]:checked'))unanswered++;}
   if(unanswered>0){var r=document.getElementById('ab-quiz-result');if(r){r.style.display='block';r.innerHTML='<p style="color:#9b2235;font-weight:700;text-align:center;">Please answer all '+total+' questions.</p>';}return;}
   var score=total;
-  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-done','1');localStorage.setItem(u+'-quiz-airbnb-score',score);localStorage.setItem(u+'-quiz-airbnb-answers',JSON.stringify(savedAnswers));}catch(e){}}
+  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-done','1');localStorage.setItem(u+'-quiz-airbnb-score',score);}catch(e){}}
   var qc=document.getElementById('ab-quiz-check');
   if(qc){markDone(qc);}
   updateAbProgress();
@@ -10971,7 +10799,7 @@ function submitAirbnbQuiz(){
   var sb=document.getElementById('ab-quiz-submit');if(sb)sb.style.display='none';
 }
 function resetAirbnbQuiz(){
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-done');localStorage.removeItem(u+'-quiz-airbnb-score');localStorage.removeItem(u+'-quiz-airbnb-answers');}catch(e){}}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-done');localStorage.removeItem(u+'-quiz-airbnb-score');}catch(e){}}
   show('airbnb');
 }
 function toggleAirbnbGeneralQuiz(){
@@ -10984,11 +10812,11 @@ function toggleAirbnbGeneralQuiz(){
   else{body.dataset.open='1';body.style.maxHeight=(body.scrollHeight+200)+'px';body.style.opacity='1';if(arrow)arrow.style.transform='rotate(180deg)';if(btn)btn.style.borderRadius='12px 12px 0 0';}
 }
 function submitAirbnbGeneralQuiz(){
-  var total=4;var unanswered=0;var savedAnswers={};
-  for(var q=1;q<=total;q++){var _s=document.querySelector('input[name="abgq'+q+'"]:checked');if(!_s)unanswered++;else savedAnswers['abgq'+q]=_s.value;}
+  var total=4;var unanswered=0;
+  for(var q=1;q<=total;q++){if(!document.querySelector('input[name="abgq'+q+'"]:checked'))unanswered++;}
   if(unanswered>0){var r=document.getElementById('abg-quiz-result');if(r){r.style.display='block';r.innerHTML='<p style="color:#9b2235;font-weight:700;text-align:center;">Please answer all '+total+' questions.</p>';}return;}
   var score=total;
-  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-general-done','1');localStorage.setItem(u+'-quiz-airbnb-general-score',score);localStorage.setItem(u+'-quiz-airbnb-general-answers',JSON.stringify(savedAnswers));}catch(e){}}
+  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-general-done','1');localStorage.setItem(u+'-quiz-airbnb-general-score',score);}catch(e){}}
   var qc=document.getElementById('abg-quiz-check');
   if(qc){markDone(qc);}
   updateAbProgress();
@@ -11013,7 +10841,7 @@ function submitAirbnbGeneralQuiz(){
   var sb=document.getElementById('abg-quiz-submit');if(sb)sb.style.display='none';
 }
 function resetAirbnbGeneralQuiz(){
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-general-done');localStorage.removeItem(u+'-quiz-airbnb-general-score');localStorage.removeItem(u+'-quiz-airbnb-general-answers');}catch(e){}}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-general-done');localStorage.removeItem(u+'-quiz-airbnb-general-score');}catch(e){}}
   show('airbnb');
 }
 function toggleAirbnbSlides(){
@@ -11035,15 +10863,15 @@ function toggleBcomQuiz(){
   else{body.dataset.open='1';body.style.maxHeight=(body.scrollHeight+200)+'px';body.style.opacity='1';if(arrow)arrow.style.transform='rotate(180deg)';if(btn)btn.style.borderRadius='12px 12px 0 0';}
 }
 function submitBcomQuiz(){
-  var total=5;var unanswered=0;var savedAnswers={};
-  for(var q=1;q<=total;q++){var _s=document.querySelector('input[name="bcom-q'+q+'"]:checked');if(!_s)unanswered++;else savedAnswers['bcom-q'+q]=_s.value;}
+  var total=5;var unanswered=0;
+  for(var q=1;q<=total;q++){if(!document.querySelector('input[name="bcom-q'+q+'"]:checked'))unanswered++;}
   if(unanswered>0){var r=document.getElementById('bcom-quiz-result');if(r){r.style.display='block';r.innerHTML='<p style="color:#9b2235;font-weight:700;text-align:center;">Please answer all '+total+' questions.</p>';}return;}
-  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-bcom-checkin-done','1');localStorage.setItem(u+'-quiz-bcom-checkin-score',total);localStorage.setItem(u+'-quiz-bcom-checkin-answers',JSON.stringify(savedAnswers));}catch(e){}}
+  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-bcom-checkin-done','1');localStorage.setItem(u+'-quiz-bcom-checkin-score',total);}catch(e){}}
   recordModuleQuiz('Booking.com Quiz',total,total,100);
   show('bookingcom');
 }
 function resetBcomQuiz(){
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-bcom-checkin-done');localStorage.removeItem(u+'-quiz-bcom-checkin-score');localStorage.removeItem(u+'-quiz-bcom-checkin-answers');}catch(e){}}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-bcom-checkin-done');localStorage.removeItem(u+'-quiz-bcom-checkin-score');}catch(e){}}
   show('bookingcom');
 }
 
