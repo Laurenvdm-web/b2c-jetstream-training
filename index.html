@@ -694,31 +694,9 @@ function submitCirrusQuiz(){
 
 function resetCirrusQuiz(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-cirrus-done');localStorage.removeItem(u+'-quiz-cirrus-score');}catch(e){}
-  // Reset all radio buttons and label styles
-  for(var i=0;i<10;i++){
-    for(var j=0;j<2;j++){
-      var lbl=document.getElementById('cirrus-q'+i+'-opt'+j);
-      if(lbl){
-        lbl.style.background='#fff';
-        lbl.style.borderColor='#e2e8f0';
-        lbl.style.color='#1a1a2e';
-        lbl.style.cursor='pointer';
-        var inp=lbl.querySelector('input');
-        if(inp){inp.checked=false;inp.disabled=false;}
-      }
-    }
-  }
-  // Hide score display and clear it
-  var qc1r=document.getElementById('circ-quiz1-check');
-  if(qc1r){markUndone(qc1r);}
-  updateCirrusProgress();
-  var disp=document.getElementById('cirrus-score-display');
-  if(disp){disp.style.display='none';disp.innerHTML='';}
-  // Re-enable submit button
-  var btn=document.getElementById('cirrus-submit-btn');
-  if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
+  try{localStorage.removeItem(u+'-quiz-cirrus-done');localStorage.removeItem(u+'-quiz-cirrus-score');localStorage.removeItem(u+'-quiz-cirrus-answers');}catch(e){}
   updSidebar();
+  show('cirrus');
 }
 
 function submitCirrusQuiz2(){
@@ -780,31 +758,9 @@ function submitCirrusQuiz2(){
 
 function resetCirrusQuiz2(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-cirrus2-done');localStorage.removeItem(u+'-quiz-cirrus2-score');}catch(e){}
-  // Reset all radio buttons and label styles (11 questions, 4 options each)
-  for(var i=0;i<11;i++){
-    for(var j=0;j<4;j++){
-      var lbl=document.getElementById('sq2-q'+i+'-opt'+j);
-      if(lbl){
-        lbl.style.background='#fff';
-        lbl.style.borderColor='#e2e8f0';
-        lbl.style.color='#1a1a2e';
-        lbl.style.cursor='pointer';
-        var inp=lbl.querySelector('input');
-        if(inp){inp.checked=false;inp.disabled=false;}
-      }
-    }
-  }
-  // Hide and clear score display
-  var qc2r=document.getElementById('circ-quiz2-check');
-  if(qc2r){markUndone(qc2r);}
-  updateCirrusProgress();
-  var disp=document.getElementById('sq2-score-display');
-  if(disp){disp.style.display='none';disp.innerHTML='';}
-  // Re-enable submit button
-  var btn=document.getElementById('sq2-submit-btn');
-  if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
+  try{localStorage.removeItem(u+'-quiz-cirrus2-done');localStorage.removeItem(u+'-quiz-cirrus2-score');localStorage.removeItem(u+'-quiz-cirrus2-answers');}catch(e){}
   updSidebar();
+  show('cirrus');
 }
 
 function submitCirrusQuiz3(){
@@ -862,7 +818,7 @@ function submitCirrusQuiz3(){
 
 function resetCirrusQuiz3(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-cirrus3-done');localStorage.removeItem(u+'-quiz-cirrus3-score');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-cirrus3-done');localStorage.removeItem(u+'-quiz-cirrus3-score');localStorage.removeItem(u+'-quiz-cirrus3-answers');}catch(e){}
   updSidebar();
   show('cirrus');
 }
