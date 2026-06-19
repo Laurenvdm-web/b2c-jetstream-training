@@ -3062,16 +3062,17 @@ function submitCommsQuiz(){
       alert('Please answer all '+total+' questions before submitting.');return;
     }
   }
-  var score=0;
+  var score=0;var savedAnswers={};
   for(var i=1;i<=total;i++){
     var chosen=document.querySelector('input[name="cmq'+i+'"]:checked').value;
+    savedAnswers['cmq'+i]=chosen;
+    var lbl=document.querySelector('input[name="cmq'+i+'"]:checked').closest('label');
+    if(lbl){lbl.style.background=chosen===ca[i-1]?'#f0fff4':'#fff5f5';lbl.style.borderColor=chosen===ca[i-1]?'#68d391':'#fc8181';}
     if(chosen===ca[i-1])score++;
   }
   var pct=Math.round(score/total*100);
   var pass=score>=4;
-  // Mark quiz complete regardless of score
-  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-comms-done','1');}catch(e){}
-  var chk=document.getElementById('comm-quiz-check');
+  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-comms-done','1');localStorage.setItem(u+'-quiz-comms-answers',JSON.stringify(savedAnswers));localStorage.setItem(u+'-quiz-comms-score',String(score));}}catch(e){}
   setCheck('comm-quiz-check');
   if(typeof updateCommProgress==='function')updateCommProgress();
   var result=document.getElementById('comms-quiz-result');
@@ -3091,11 +3092,11 @@ function submitCommsQuiz(){
 function resetCommsQuiz(){
   for(var i=1;i<=5;i++){
     var radios=document.querySelectorAll('input[name="cmq'+i+'"]');
-    for(var k=0;k<radios.length;k++)radios[k].checked=false;
+    for(var k=0;k<radios.length;k++){radios[k].checked=false;var lbl=radios[k].closest('label');if(lbl){lbl.style.background='';lbl.style.borderColor='';}}
   }
   var r=document.getElementById('comms-quiz-result');if(r){r.style.display='none';r.innerHTML='';}
   var b=document.getElementById('comms-quiz-submit-btn');if(b)b.style.display='inline-block';
-  try{var u=getUser();if(u)localStorage.removeItem(u+'-quiz-comms-done');}catch(e){}
+  try{var u=getUser();if(u){localStorage.removeItem(u+'-quiz-comms-done');localStorage.removeItem(u+'-quiz-comms-answers');localStorage.removeItem(u+'-quiz-comms-score');}}catch(e){}
   var chk=document.getElementById('comm-quiz-check');
   if(chk){chk.innerHTML='&#x25CB;';chk.style.background='';chk.style.borderColor='rgba(255,255,255,0.5)';chk.style.color='';}
   if(typeof updateCommProgress==='function')updateCommProgress();
@@ -10063,8 +10064,13 @@ function restoreCommProgress(){
   if(localStorage.getItem(u+'-quiz-comms-done')){
     var qc=document.getElementById('comm-quiz-check');
     if(qc){markDone(qc);}
+    var ca=['B','C','B','C','C'];
+    var savedAnswers={};try{var raw=localStorage.getItem(u+'-quiz-comms-answers');if(raw)savedAnswers=JSON.parse(raw);}catch(e){}
+    for(var i=1;i<=5;i++){var ans=savedAnswers['cmq'+i];if(ans){var inp=document.querySelector('input[name="cmq'+i+'"][value="'+ans+'"]');if(inp){inp.checked=true;var lbl=inp.closest('label');if(lbl){var isCorrect=ans===ca[i-1];lbl.style.background=isCorrect?'#f0fff4':'#fff5f5';lbl.style.borderColor=isCorrect?'#68d391':'#fc8181';}}}}
+    var score=parseInt(localStorage.getItem(u+'-quiz-comms-score')||'5',10);
+    var pct=Math.round(score/5*100);var pass=score>=4;
     var _cmRes=document.getElementById('comms-quiz-result');
-    if(_cmRes&&!_cmRes.innerHTML.trim()){_cmRes.style.display='block';_cmRes.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:20px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">&#x2705;</div><div style="font-size:17px;font-weight:800;color:#276749;margin-bottom:4px;">Quiz Completed</div><div style="font-size:12px;color:#276749;">Your progress is saved. Use Reset &amp; Try Again to redo.</div></div>';}
+    if(_cmRes&&!_cmRes.innerHTML.trim()){_cmRes.style.display='block';_cmRes.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;"><div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div><div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' / 5</div><div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+pct+'%</div><span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'&#x2705; PASSED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! You understand our communication platforms.':'Review the Communication Platforms section and try again.')+'</div></div>';}
     var _cmBtn=document.getElementById('comms-quiz-submit-btn');
     if(_cmBtn)_cmBtn.style.display='none';
   }
