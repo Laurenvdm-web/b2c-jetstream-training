@@ -9323,6 +9323,7 @@ function renderCanQ1(){
     html+='</div></div>';
   }
   document.getElementById('canq1-questions').innerHTML=html;
+  var _cq1u=getUser();if(_cq1u&&localStorage.getItem(_cq1u+'-quiz-canq1-done'))_restoreCanQuiz(1,[1,2,2,1,2],5,5,4,'Great work! You understand the main cancellation steps.','Review the Cancellations section and try again.');
 }
 function submitCanQ1(){
   var ca=[1,2,2,1,2];var total=5;var allAnswered=true;
@@ -9344,7 +9345,8 @@ function submitCanQ1(){
   }
   var pass=score>=4;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq1-done','1');}catch(e){}
+  var _cq1SA={};for(var _cq1si=0;_cq1si<5;_cq1si++){var _cq1sc=document.querySelector('input[name="canq1-q'+_cq1si+'"]:checked');if(_cq1sc)_cq1SA[_cq1si]=parseInt(_cq1sc.value);}
+  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq1-done','1');localStorage.setItem(u+'-quiz-canq1-score',score);localStorage.setItem(u+'-quiz-canq1-answers',JSON.stringify(_cq1SA));}}catch(e){}
   var _chk=document.getElementById('canq1-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq1');
@@ -9363,9 +9365,9 @@ function submitCanQ1(){
 }
 function resetCanQ1(){
   var c=document.getElementById('canq1-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('canq1-result');if(r)r.style.display='none';
-  var s=document.getElementById('canq1-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq1-done');}catch(e){}var qc=document.getElementById('canq1-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var r=document.getElementById('canq1-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('canq1-submit-area');if(s)s.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq1-done');localStorage.removeItem(u+'-quiz-canq1-score');localStorage.removeItem(u+'-quiz-canq1-answers');}catch(e){}var qc=document.getElementById('canq1-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ1();
 }
 
@@ -9396,6 +9398,7 @@ function renderCanQ2(){
     html+='</div></div>';
   }
   document.getElementById('canq2-questions').innerHTML=html;
+  var _cq2u=getUser();if(_cq2u&&localStorage.getItem(_cq2u+'-quiz-canq2-done'))_restoreCanQuiz(2,[2,1,2,2,2,1,2,2,2],9,9,7,'Great work! You understand OTA-specific cancellation processes.','Review the Cancellations by OTA section and try again.');
 }
 function submitCanQ2(){
   var ca=[2,1,2,2,2,1,2,2,2];var total=9;var allAnswered=true;
@@ -9417,7 +9420,8 @@ function submitCanQ2(){
   }
   var pass=score>=7;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq2-done','1');}catch(e){}
+  var _cq2SA={};for(var _cq2si=0;_cq2si<9;_cq2si++){var _cq2sc=document.querySelector('input[name="canq2-q'+_cq2si+'"]:checked');if(_cq2sc)_cq2SA[_cq2si]=parseInt(_cq2sc.value);}
+  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq2-done','1');localStorage.setItem(u+'-quiz-canq2-score',score);localStorage.setItem(u+'-quiz-canq2-answers',JSON.stringify(_cq2SA));}}catch(e){}
   var _chk=document.getElementById('canq2-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq2');
@@ -9436,9 +9440,9 @@ function submitCanQ2(){
 }
 function resetCanQ2(){
   var c=document.getElementById('canq2-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('canq2-result');if(r)r.style.display='none';
-  var s=document.getElementById('canq2-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq2-done');}catch(e){}var qc=document.getElementById('canq2-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var r=document.getElementById('canq2-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('canq2-submit-area');if(s)s.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq2-done');localStorage.removeItem(u+'-quiz-canq2-score');localStorage.removeItem(u+'-quiz-canq2-answers');}catch(e){}var qc=document.getElementById('canq2-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ2();
 }
 
@@ -9469,6 +9473,7 @@ function renderCanQ3(){
     html+='</div></div>';
   }
   document.getElementById('canq3-questions').innerHTML=html;
+  var _cq3u=getUser();if(_cq3u&&localStorage.getItem(_cq3u+'-quiz-canq3-done'))_restoreCanQuiz(3,[1,1,2,1,2,2,2,2,2],9,9,7,'Great work! You understand OTA-specific cancellation and refund processes.','Review the Cancellations by OTA section and try again.');
 }
 function submitCanQ3(){
   var ca=[1,1,2,1,2,2,2,2,2];var total=9;var allAnswered=true;
@@ -9490,7 +9495,8 @@ function submitCanQ3(){
   }
   var pass=score>=7;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq3-done','1');}catch(e){}
+  var _cq3SA={};for(var _cq3si=0;_cq3si<9;_cq3si++){var _cq3sc=document.querySelector('input[name="canq3-q'+_cq3si+'"]:checked');if(_cq3sc)_cq3SA[_cq3si]=parseInt(_cq3sc.value);}
+  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq3-done','1');localStorage.setItem(u+'-quiz-canq3-score',score);localStorage.setItem(u+'-quiz-canq3-answers',JSON.stringify(_cq3SA));}}catch(e){}
   var _chk=document.getElementById('canq3-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq3');
@@ -9509,9 +9515,9 @@ function submitCanQ3(){
 }
 function resetCanQ3(){
   var c=document.getElementById('canq3-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('canq3-result');if(r)r.style.display='none';
-  var s=document.getElementById('canq3-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq3-done');}catch(e){}var qc=document.getElementById('canq3-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var r=document.getElementById('canq3-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('canq3-submit-area');if(s)s.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq3-done');localStorage.removeItem(u+'-quiz-canq3-score');localStorage.removeItem(u+'-quiz-canq3-answers');}catch(e){}var qc=document.getElementById('canq3-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ3();
 }
 
@@ -9543,6 +9549,7 @@ function renderCanQ4(){
     html+='</div></div>';
   }
   document.getElementById('canq4-questions').innerHTML=html;
+  var _cq4u=getUser();if(_cq4u&&localStorage.getItem(_cq4u+'-quiz-canq4-done'))_restoreCanQuiz(4,[2,1,2,1,2,2,2,2,2,2],10,9,7,'Great work! You understand the manual cancellation workflow.','Review the Manual Cancellations section and try again.');
 }
 function submitCanQ4(){
   var ca=[2,1,2,1,2,2,2,2,2,2];var total=10;var allAnswered=true;
@@ -9564,7 +9571,8 @@ function submitCanQ4(){
   }
   var pass=score>=7;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq4-done','1');}catch(e){}
+  var _cq4SA={};for(var _cq4si=0;_cq4si<10;_cq4si++){var _cq4sc=document.querySelector('input[name="canq4-q'+_cq4si+'"]:checked');if(_cq4sc)_cq4SA[_cq4si]=parseInt(_cq4sc.value);}
+  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq4-done','1');localStorage.setItem(u+'-quiz-canq4-score',score);localStorage.setItem(u+'-quiz-canq4-answers',JSON.stringify(_cq4SA));}}catch(e){}
   var _chk=document.getElementById('canq4-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq4');
@@ -9583,9 +9591,9 @@ function submitCanQ4(){
 }
 function resetCanQ4(){
   var c=document.getElementById('canq4-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('canq4-result');if(r)r.style.display='none';
-  var s=document.getElementById('canq4-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq4-done');}catch(e){}var qc=document.getElementById('canq4-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var r=document.getElementById('canq4-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('canq4-submit-area');if(s)s.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq4-done');localStorage.removeItem(u+'-quiz-canq4-score');localStorage.removeItem(u+'-quiz-canq4-answers');}catch(e){}var qc=document.getElementById('canq4-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ4();
 }
 
@@ -9619,6 +9627,7 @@ function renderCanQ5(){
     html+='</div></div>';
   }
   document.getElementById('canq5-questions').innerHTML=html;
+  var _cq5u=getUser();if(_cq5u&&localStorage.getItem(_cq5u+'-quiz-canq5-done'))_restoreCanQuiz(5,[2,2,2,2,2,2,2,2,1,2,2,2],12,12,9,'Great work! You have mastered the cancellation and manual process knowledge.','Review the Cancellations sections and try again.');
 }
 function submitCanQ5(){
   var ca=[2,2,2,2,2,2,2,2,1,2,2,2];var total=12;var allAnswered=true;
@@ -9640,7 +9649,8 @@ function submitCanQ5(){
   }
   var pass=score>=9;
   // Mark quiz as completed regardless of score (any submission counts)
-  try{var u=getUser();if(u)localStorage.setItem(u+'-quiz-canq5-done','1');}catch(e){}
+  var _cq5SA={};for(var _cq5si=0;_cq5si<12;_cq5si++){var _cq5sc=document.querySelector('input[name="canq5-q'+_cq5si+'"]:checked');if(_cq5sc)_cq5SA[_cq5si]=parseInt(_cq5sc.value);}
+  try{var u=getUser();if(u){localStorage.setItem(u+'-quiz-canq5-done','1');localStorage.setItem(u+'-quiz-canq5-score',score);localStorage.setItem(u+'-quiz-canq5-answers',JSON.stringify(_cq5SA));}}catch(e){}
   var _chk=document.getElementById('canq5-quiz-check');
   if(_chk){_chk.innerHTML='&#x2713;';_chk.style.background='#48bb78';_chk.style.borderColor='#48bb78';_chk.style.color='#fff';}
   if(typeof markCxQuizCheck==='function')markCxQuizCheck('canq5');
@@ -9659,10 +9669,40 @@ function submitCanQ5(){
 }
 function resetCanQ5(){
   var c=document.getElementById('canq5-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('canq5-result');if(r)r.style.display='none';
-  var s=document.getElementById('canq5-submit-area');if(s)s.style.display='block';
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq5-done');}catch(e){}var qc=document.getElementById('canq5-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
+  var r=document.getElementById('canq5-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('canq5-submit-area');if(s)s.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-canq5-done');localStorage.removeItem(u+'-quiz-canq5-score');localStorage.removeItem(u+'-quiz-canq5-answers');}catch(e){}var qc=document.getElementById('canq5-quiz-check');if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}if(typeof updateCxlProgress==='function')updateCxlProgress();}
   renderCanQ5();
+}
+function _restoreCanQuiz(n,ca,total,dispTotal,passScore,passMsg,failMsg){
+  var u=getUser();if(!u)return;
+  var _cSaved=JSON.parse(localStorage.getItem(u+'-quiz-canq'+n+'-answers')||'{}');
+  for(var _ci=0;_ci<total;_ci++){
+    var _cRadios=document.querySelectorAll('input[name="canq'+n+'-q'+_ci+'"]');
+    for(var _ck=0;_ck<_cRadios.length;_ck++){_cRadios[_ck].disabled=true;var _cL=document.getElementById('canq'+n+'-lbl-'+_ci+'-'+_ck);if(_cL)_cL.style.cursor='not-allowed';}
+    var _cChosen=_cSaved.hasOwnProperty(_ci)?parseInt(_cSaved[_ci]):-1;
+    var _cCorr=ca[_ci];
+    for(var _cj=0;_cj<4;_cj++){
+      var _cLbl=document.getElementById('canq'+n+'-lbl-'+_ci+'-'+_cj);if(!_cLbl)continue;
+      if(_cj===_cCorr){markCorrect(_cLbl);}
+      else if(_cj===_cChosen&&_cChosen!==_cCorr){markWrong(_cLbl);}
+    }
+  }
+  var _cScore=parseInt(localStorage.getItem(u+'-quiz-canq'+n+'-score')||String(dispTotal),10);
+  var _cPass=_cScore>=passScore;
+  var _cRes=document.getElementById('canq'+n+'-result');
+  if(_cRes&&!_cRes.innerHTML.trim()){
+    _cRes.style.display='block';
+    _cRes.innerHTML='<div style="background:'+(_cPass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_cPass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
+      +'<div style="font-size:42px;margin-bottom:10px;">'+(_cPass?'&#x1F389;':'&#x1F4DA;')+'</div>'
+      +'<div style="font-size:24px;font-weight:800;color:'+(_cPass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+_cScore+' / '+dispTotal+'</div>'
+      +'<div style="font-size:14px;color:'+(_cPass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(_cScore/dispTotal*100)+'%</div>'
+      +'<span style="background:'+(_cPass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_cPass?'✅ PASSED':'NEEDS REVIEW')+'</span>'
+      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_cPass?passMsg:failMsg)+'</div>'
+      +'<div style="margin-top:16px;"><button onclick="resetCanQ'+n+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
+      +'</div>';
+  }
+  var _cBtn=document.getElementById('canq'+n+'-submit-area');if(_cBtn)_cBtn.style.display='none';
 }
 
 
