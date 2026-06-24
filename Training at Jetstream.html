@@ -1324,122 +1324,85 @@ var partnersQuizData=[
   {text:"What type of requests should be sent to the \"full name\" contact?",opts:["Refunds and cancellations","Pricing and rate issues","Property-related and guest-specific requests (e.g., views, bedding, check-in details)","Payment processing"],correct:2,explanation:"The full name contact is for the on-site team who handle property and guest-specific requests such as room preferences, bedding configurations, and check-in details."},
   {text:"When should you contact the reservations team (email block)?",opts:["Only for guest check-in requests","For booking-related matters such as modifications, cancellations, refunds, and pricing concerns","Only for property-related requests","Only when the guest asks"],correct:1,explanation:"The reservations team handles all booking-related matters including modifications, cancellations, refunds, and pricing concerns."}
 ];
-var partnersScore=0,partnersAnswers={};
-function startPartnersQuiz(){
-  partnersScore=0;partnersAnswers={};
-  // Clear quiz completion when redoing
-  var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-partners-done');localStorage.removeItem(u+'-quiz-partners-score');}catch(e){}
-  var qc=document.getElementById('pa-quiz-check');
-  if(qc){markUndone(qc);}
-  updateCpProgress();
-  var s=document.getElementById('partners-start-area');
-  var aq=document.getElementById('partners-all-questions');
-  var r=document.getElementById('partners-results');
-  if(s)s.style.display='none';
-  if(r)r.style.display='none';
-  if(aq){aq.style.display='block';aq.innerHTML='';renderAllPartnersQuestions();}
-}
-function renderAllPartnersQuestions(){
-  var aq=document.getElementById('partners-all-questions');
-  var labels=['A','B','C','D'];
+function renderCpQ(){
+  var qs=partnersQuizData;
   var html='';
-  for(var i=0;i<partnersQuizData.length;i++){
-    var q=partnersQuizData[i];
-    html+='<div id="pq-card-'+i+'" style="background:#f7f9fc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 18px;margin-bottom:12px;">';
-    html+='<div style="font-size:11px;font-weight:700;color:#667eea;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.7px;">Question '+(i+1)+' of '+partnersQuizData.length+'</div>';
-    html+='<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:12px;line-height:1.5;">'+q.text+'</div>';
-    html+='<div id="pq-opts-'+i+'">';
+  for(var i=0;i<qs.length;i++){
+    var q=qs[i];var isLast=(i===qs.length-1);
+    html+='<div id="cpq-q-'+i+'" style="margin-bottom:22px;'+(isLast?'':'padding-bottom:22px;border-bottom:1px solid #f0f4f8;')+'">';
+    html+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:12px;">'+(i+1)+'. '+q.text+'</div>';
+    html+='<div style="display:flex;flex-direction:column;gap:8px;">';
     for(var j=0;j<q.opts.length;j++){
-      html+='<div class="quiz-opt" style="cursor:pointer;margin-bottom:6px;" onclick="partnersSelectAnswer('+i+','+j+')">';
-      html+='<span style="font-weight:700;min-width:20px;display:inline-block;">'+labels[j]+'.</span> '+q.opts[j];
-      html+='</div>';
+      html+='<label id="cpq-lbl-'+i+'-'+j+'" style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#f7fafc;cursor:pointer;font-size:13px;color:#1a1a2e;">';
+      html+='<input type="radio" name="cpq-q'+i+'" value="'+j+'" style="margin-top:2px;accent-color:#667eea;flex-shrink:0;" onclick="document.getElementById(\'cpq-lbl-'+i+'-'+j+'\').style.borderColor=\'#667eea\';document.getElementById(\'cpq-lbl-'+i+'-'+j+'\').style.background=\'#ebf4ff\';">';
+      html+=q.opts[j];html+='</label>';
     }
-    html+='</div>';
-    html+='<div id="pq-fb-'+i+'" style="display:none;"></div>';
-    html+='</div>';
+    html+='</div></div>';
   }
-  html+='<div style="text-align:center;padding:10px 0 4px;">';
-  html+='<button id="partners-submit-btn" onclick="partnersSubmitAll()" class="quiz-submit" style="opacity:0.45;cursor:not-allowed;" disabled>Submit Answers</button>';
-  html+='<div id="partners-answered-count" style="font-size:12px;color:#718096;margin-top:8px;">0 of '+partnersQuizData.length+' answered</div>';
-  html+='</div>';
-  aq.innerHTML=html;
-}
-function partnersSelectAnswer(qIdx,aIdx){
-  if(partnersAnswers.hasOwnProperty(qIdx))return;
-  partnersAnswers[qIdx]=aIdx;
-  var opts=document.querySelectorAll('#pq-opts-'+qIdx+' .quiz-opt');
-  for(var i=0;i<opts.length;i++){opts[i].onclick=null;opts[i].style.cursor='not-allowed';}
-  // Neutral selection highlight only — correct/wrong revealed on submit
-  opts[aIdx].style.background='#ebf4ff';
-  opts[aIdx].style.borderLeft='4px solid #667eea';
-  opts[aIdx].style.fontWeight='700';
-  var count=Object.keys(partnersAnswers).length;
-  var countEl=document.getElementById('partners-answered-count');
-  if(countEl)countEl.textContent=count+' of '+partnersQuizData.length+' answered';
-  if(count===partnersQuizData.length){
-    var btn=document.getElementById('partners-submit-btn');
-    if(btn){btn.style.opacity='1';btn.style.cursor='pointer';btn.disabled=false;}
-  }
-}
-function partnersSubmitAll(){
-  partnersScore=0;
-  for(var i=0;i<partnersQuizData.length;i++){
-    if(partnersAnswers[i]===partnersQuizData[i].correct)partnersScore++;
-  }
-  // Reveal correct/wrong highlighting and feedback for every question
-  for(var i=0;i<partnersQuizData.length;i++){
-    var q=partnersQuizData[i];
-    var aIdx=partnersAnswers[i];
-    var opts=document.querySelectorAll('#pq-opts-'+i+' .quiz-opt');
-    for(var j=0;j<opts.length;j++){
-      opts[j].style.background='';
-      opts[j].style.borderLeft='';
-      opts[j].style.fontWeight='';
-    }
-    if(aIdx===q.correct){
-      opts[aIdx].classList.add('correct');
-    }else{
-      opts[aIdx].classList.add('wrong');
-      opts[q.correct].classList.add('correct');
-    }
-    var fb=document.getElementById('pq-fb-'+i);
-    if(fb){
-      if(aIdx===q.correct){
-        fb.style.cssText='display:block;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.6;background:#f0fff4;border:1px solid #9ae6b4;color:#276749;';
-        fb.innerHTML='<strong>&#x2705; Correct!</strong> '+q.explanation;
-      }else{
-        fb.style.cssText='display:block;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.6;background:#fff5f5;border:1px solid #fed7d7;color:#9b2235;';
-        fb.innerHTML='<strong>&#x274C; Not quite.</strong> '+q.explanation;
+  document.getElementById('cpq-questions').innerHTML=html;
+  var _cpU=getUser();
+  if(_cpU&&localStorage.getItem(_cpU+'-quiz-partners-done')){
+    var _cpSaved=JSON.parse(localStorage.getItem(_cpU+'-quiz-partners-answers')||'{}');
+    for(var _cpi=0;_cpi<qs.length;_cpi++){
+      var _cpq=qs[_cpi];var _cpchosen=_cpSaved[_cpi];
+      var _cpradios=document.querySelectorAll('input[name="cpq-q'+_cpi+'"]');
+      for(var _cpk=0;_cpk<_cpradios.length;_cpk++)_cpradios[_cpk].disabled=true;
+      for(var _cpj=0;_cpj<_cpq.opts.length;_cpj++){
+        var _cplbl=document.getElementById('cpq-lbl-'+_cpi+'-'+_cpj);if(!_cplbl)continue;
+        _cplbl.style.cursor='not-allowed';
+        if(_cpj===_cpq.correct){markCorrect(_cplbl);}
+        else if(_cpj===_cpchosen&&_cpchosen!==_cpq.correct){markWrong(_cplbl);}
       }
+      if(_cpchosen!==undefined){var _cpcr=document.querySelector('input[name="cpq-q'+_cpi+'"][value="'+_cpchosen+'"]');if(_cpcr)_cpcr.checked=true;}
     }
   }
-  partnersShowResults();
 }
-function partnersShowResults(){
-  var aq=document.getElementById('partners-all-questions');
-  var r=document.getElementById('partners-results');
-  if(aq)aq.style.display='none';
-  if(r)r.style.display='block';
-  document.getElementById('partners-score-display').textContent=partnersScore+' / '+partnersQuizData.length;
-  var msgs=['Keep reviewing the sections above and give it another go!','Good effort — a couple to brush up on.','Getting there — review any missed questions.','Great work — almost perfect!','Perfect score! Excellent work!'];
-  document.getElementById('partners-score-msg').textContent=msgs[partnersScore]||'';
-  var labels=['A','B','C','D'];
-  var rev=document.getElementById('partners-review-list');
-  rev.innerHTML='';
-  for(var i=0;i<partnersQuizData.length;i++){
-    var q=partnersQuizData[i];
-    var div=document.createElement('div');
-    div.style.cssText='border-left:3px solid #68d391;padding:10px 14px;margin-bottom:10px;border-radius:0 8px 8px 0;background:#f7fafc;font-size:13px;';
-    div.innerHTML='<strong>Q'+(i+1)+':</strong> '+q.text+'<br><span style="color:#4a5568;display:block;margin-top:4px;">Correct answer: <strong>'+labels[q.correct]+' — '+q.opts[q.correct]+'</strong></span>';
-    rev.appendChild(div);
+function submitCpQ(){
+  var qs=partnersQuizData;var total=qs.length;var allAnswered=true;
+  for(var i=0;i<total;i++){if(!document.querySelector('input[name="cpq-q'+i+'"]:checked')){allAnswered=false;break;}}
+  if(!checkAllAnswered(allAnswered,total))return;
+  var score=0;
+  for(var i=0;i<total;i++){
+    var chosen=parseInt(document.querySelector('input[name="cpq-q'+i+'"]:checked').value);
+    var correct=qs[i].correct;
+    var radios=document.querySelectorAll('input[name="cpq-q'+i+'"]');
+    for(var k=0;k<radios.length;k++)radios[k].disabled=true;
+    for(var j=0;j<qs[i].opts.length;j++){
+      var lbl=document.getElementById('cpq-lbl-'+i+'-'+j);if(!lbl)continue;
+      lbl.style.cursor='not-allowed';
+      if(j===correct){markCorrect(lbl);}
+      else if(j===chosen&&chosen!==correct){markWrong(lbl);}
+    }
+    if(chosen===correct)score++;
   }
+  var pass=score>=3;
+  var result=document.getElementById('cpq-result');result.style.display='block';
+  result.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
+    +'<div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div>'
+    +'<div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' / '+total+'</div>'
+    +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/total*100)+'%</div>'
+    +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'&#x2705; PASSED':'NEEDS REVIEW')+'</span>'
+    +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! You understand how to contact partners.':'Review the sections above and try again.')+'</div>'
+    +'<div style="margin-top:16px;"><button onclick="resetCpQ()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
+    +'</div>';
+  var btn=document.getElementById('cpq-submit-area');if(btn)btn.style.display='none';
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-partners-done','1');localStorage.setItem(u+'-quiz-partners-score',String(partnersScore));recordModuleQuiz('Contacting Partners Quiz',partnersScore,partnersQuizData.length,Math.round(partnersScore/partnersQuizData.length*100));}catch(e){}
+  try{var savedCpA={};for(var _si=0;_si<total;_si++){var _ss=document.querySelector('input[name="cpq-q'+_si+'"]:checked');if(_ss)savedCpA[_si]=parseInt(_ss.value);}localStorage.setItem(u+'-quiz-partners-answers',JSON.stringify(savedCpA));localStorage.setItem(u+'-quiz-partners-done','1');localStorage.setItem(u+'-quiz-partners-score',String(score));recordModuleQuiz('Contacting Partners Quiz',score,total,Math.round(score/total*100));}catch(e){}
   var qc=document.getElementById('pa-quiz-check');
   if(qc){markDone(qc);}
   updateCpProgress();
   updSidebar();
+}
+function resetCpQ(){
+  var c=document.getElementById('cpq-questions');if(c)c.innerHTML='';
+  var r=document.getElementById('cpq-result');if(r)r.style.display='none';
+  var s=document.getElementById('cpq-submit-area');if(s)s.style.display='block';
+  var u=getUser();
+  try{localStorage.removeItem(u+'-quiz-partners-done');localStorage.removeItem(u+'-quiz-partners-score');localStorage.removeItem(u+'-quiz-partners-answers');}catch(e){}
+  updSidebar();renderCpQ();
+  var qc=document.getElementById('pa-quiz-check');
+  if(qc){markUndone(qc);}
+  if(typeof updateCpProgress==='function')updateCpProgress();
 }
 
 var v1v2QuizData=[
@@ -2843,25 +2806,18 @@ function partnersPage(){
   h+='</div>';
 
   h+='<div style="margin-top:8px;">';
-  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'pa-quiz-drop\');var a=document.getElementById(\'pa-quiz-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'\u25ba\':\'\u25bc\'" style="justify-content:space-between;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'pa-quiz-drop\');var a=document.getElementById(\'pa-quiz-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'\u25ba\':\'\u25bc\'; if(!isOpen&&!document.getElementById(\'cpq-q-0\')){renderCpQ();}" style="justify-content:space-between;">';
   h+='<span onclick="event.stopPropagation();" id="pa-quiz-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:default;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Completed automatically when quiz is submitted">&#x25CB;</span>';
   h+='<span>&#x1F4DD; Knowledge Check &#x2014; Contacting Partners</span>';
   h+='<span id="pa-quiz-arr" style="font-size:16px;">&#9654;</span>';
   h+='</button>';
   h+='<div id="pa-quiz-drop" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
-  h+='<p class="quiz-intro" style="margin-bottom:16px;">Test your knowledge on how and when to contact partners. All questions are shown below \u2014 answer each one and submit when you\'re done.</p>';
-  var _paU=getUser();var _paDone=_paU&&!!localStorage.getItem(_paU+'-quiz-partners-done');var _paSc=_paDone?parseInt(localStorage.getItem(_paU+'-quiz-partners-score')||'0'):0;var _paTot=partnersQuizData.length;var _paMsgs=['Keep reviewing the sections above and give it another go!','Good effort — a couple to brush up on.','Getting there — review any missed questions.','Great work — almost perfect!','Perfect score! Excellent work!'];
-  h+='<div id="partners-start-area" style="text-align:center;padding:8px 0 4px;'+(_paDone?'display:none;':'')+'\">';
-  h+='<button onclick="startPartnersQuiz()" class="quiz-submit">Start Quiz</button>';
+  h+='<p class="quiz-intro" style="margin-bottom:16px;">Test your knowledge on how and when to contact partners. All questions are shown below — answer each one and submit when you\'re done.</p>';
+  h+='<div id="cpq-questions"></div>';
+  h+='<div id="cpq-submit-area" style="text-align:center;margin-top:20px;">';
+  h+='<button onclick="submitCpQ()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(102,126,234,0.4);">Submit Answers</button>';
   h+='</div>';
-  h+='<div id="partners-all-questions" style="display:none;"></div>';
-  h+='<div id="partners-results" style="'+(_paDone?'display:block;':'display:none;')+'">';
-  h+='<div class="quiz-result show"><div class="quiz-score" id="partners-score-display">'+(_paDone?_paSc+' / '+_paTot:'')+'</div><div class="quiz-msg" id="partners-score-msg">'+(_paDone?(_paMsgs[_paSc]||''):'')+'</div></div>';
-  h+='<div id="partners-review-list" style="margin-top:14px;">';
-  if(_paDone){var _paLabels=['A','B','C','D'];for(var _pi=0;_pi<partnersQuizData.length;_pi++){var _pq=partnersQuizData[_pi];h+='<div style="border-left:3px solid #68d391;padding:10px 14px;margin-bottom:10px;border-radius:0 8px 8px 0;background:#f7fafc;font-size:13px;"><strong>Q'+(_pi+1)+':</strong> '+_pq.text+'<br><span style="color:#4a5568;display:block;margin-top:4px;">Correct answer: <strong>'+_paLabels[_pq.correct]+' — '+_pq.opts[_pq.correct]+'</strong></span></div>';}}
-  h+='</div>';
-  h+='<div style="text-align:center;margin-top:14px;"><button onclick="startPartnersQuiz()" class="quiz-submit">Redo Quiz for Practice</button></div>';
-  h+='</div>';
+  h+='<div id="cpq-result" style="display:none;margin-top:16px;"></div>';
   h+='</div>';
   h+='</div>';
 
@@ -10042,6 +9998,15 @@ function restoreCpProgress(){
   if(localStorage.getItem(u+'-quiz-partners-done')){
     var qc=document.getElementById('pa-quiz-check');
     if(qc){markDone(qc);}
+  }
+  renderCpQ();
+  var _cpDone=getUser()&&!!localStorage.getItem(getUser()+'-quiz-partners-done');
+  if(_cpDone){
+    var _cpSub=document.getElementById('cpq-submit-area');if(_cpSub)_cpSub.style.display='none';
+    var _cpSc=parseInt(localStorage.getItem(getUser()+'-quiz-partners-score')||'0');
+    var _cpTot=partnersQuizData.length;var _cpPass=_cpSc>=3;
+    var _cpRes=document.getElementById('cpq-result');
+    if(_cpRes){_cpRes.style.display='block';_cpRes.innerHTML='<div style="background:'+(_cpPass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_cpPass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;"><div style="font-size:42px;margin-bottom:10px;">'+(_cpPass?'&#x1F389;':'&#x1F4DA;')+'</div><div style="font-size:24px;font-weight:800;color:'+(_cpPass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+_cpSc+' / '+_cpTot+'</div><div style="font-size:14px;color:'+(_cpPass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(_cpSc/_cpTot*100)+'%</div><span style="background:'+(_cpPass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_cpPass?'&#x2705; PASSED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_cpPass?'Great work! You understand how to contact partners.':'Review the sections above and try again.')+'</div><div style="margin-top:16px;"><button onclick="resetCpQ()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}
   }
   updateCpProgress();
 }
