@@ -4004,17 +4004,6 @@ function bookingComPage(){
   h+='</button>';
   h+='<div id="bcom-quiz-body" data-open="0" style="overflow:hidden;max-height:0;opacity:0;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1),opacity 0.4s ease;background:#fff;border-left:2px solid #1e3a5c;border-right:2px solid #1e3a5c;border-bottom:2px solid #1e3a5c;border-radius:0 0 12px 12px;box-sizing:border-box;">';
   h+='<div style="padding:24px 20px;">';
-  if(_bqdone){
-    var _bqpct=Math.round(_bqscore/5*100);var _bqpass=_bqscore>=4;var _bqcol=_bqpass?'#276749':'#9b2235';var _bqemoji=_bqpct===100?'🏆':_bqpass?'🎉':'📚';
-    h+='<div style="text-align:center;padding:22px 10px;">';
-    h+='<div style="font-size:48px;margin-bottom:10px;">'+_bqemoji+'</div>';
-    h+='<div style="font-size:22px;font-weight:800;color:'+_bqcol+';margin-bottom:6px;">You scored '+_bqscore+' / 5</div>';
-    h+='<div style="font-size:14px;color:'+_bqcol+';margin-bottom:16px;">'+_bqpct+'%</div>';
-    h+='<span style="background:'+_bqcol+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_bqpass?'✅ QUIZ COMPLETED':'NEEDS REVIEW')+'</span>';
-    h+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_bqpass?'Great work! The Booking.com Check-in Requests quiz has been marked as completed.':'Review the material above and try again when ready (passing score: 4/5).')+'</div>';
-    h+='<div style="margin-top:16px;"><button onclick="resetBcomQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-    h+='</div>';
-  } else {
     h+='<h2 style="font-size:16px;font-weight:700;margin-bottom:6px;color:#1a1a2e;">Booking.com Check-in Requests Quiz</h2>';
     h+='<p class="quiz-intro">Test your knowledge of Booking.com check-in request procedures.</p>';
     h+='<div class="quiz-q">';
@@ -4057,12 +4046,13 @@ function bookingComPage(){
     h+='<label class="quiz-opt"><input type="radio" name="bcom-q5" value="C"> C) Confirm without checking</label>';
     h+='<label class="quiz-opt"><input type="radio" name="bcom-q5" value="D"> D) Confirm after official check-in time and review partner notes and availability</label>';
     h+='</div></div>';
-    h+='<div style="text-align:center;margin-top:10px;">';
+    h+='<div id="bcom-submit-area" style="text-align:center;margin-top:10px;display:'+(_bqdone?'none':'block')+'">';
     h+='<button id="bcom-quiz-submit" onclick="submitBcomQuiz()" style="background:linear-gradient(135deg,#003580,#0071c2);color:#fff;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,53,128,0.35);">Submit Quiz</button>';
     h+='</div>';
-    h+='<div id="bcom-quiz-result" style="display:none;margin-top:20px;"></div>';
+    h+='<div id="bcom-quiz-result" style="display:'+(_bqdone?'block':'none')+';margin-top:20px;">';
+    if(_bqdone){var _bqpct=Math.round(_bqscore/5*100);var _bqpass=_bqscore>=4;var _bqcol=_bqpass?'#276749':'#9b2235';var _bqemoji=_bqpct===100?'🏆':_bqpass?'🎉':'📚';h+='<div style="text-align:center;padding:22px 10px;"><div style="font-size:48px;margin-bottom:10px;">'+_bqemoji+'</div><div style="font-size:22px;font-weight:800;color:'+_bqcol+';margin-bottom:6px;">You scored '+_bqscore+' / 5</div><div style="font-size:14px;color:'+_bqcol+';margin-bottom:16px;">'+_bqpct+'%</div><span style="background:'+_bqcol+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_bqpass?'✅ QUIZ COMPLETED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_bqpass?'Great work! The Booking.com Check-in Requests quiz has been marked as completed.':'Review the material above and try again when ready (passing score: 4/5).')+'</div></div>';}
+    h+='</div>';
     h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetBcomQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-  }
   h+='</div>';
   h+='</div>';
   h+='</div>';
@@ -10327,6 +10317,9 @@ function restoreBcomProgress(){
   if(localStorage.getItem(u+'-quiz-bcom-checkin-done')){
     var qc=document.getElementById('bcom-quiz-check');
     if(qc){markDone(qc);}
+    var savedA=JSON.parse(localStorage.getItem(u+'-quiz-bcom-checkin-answers')||'{}');
+    for(var _brq=1;_brq<=5;_brq++){var _bro=document.querySelectorAll('input[name="bcom-q'+_brq+'"]');for(var _brk=0;_brk<_bro.length;_brk++){_bro[_brk].disabled=true;var _brl=_bro[_brk].closest('label');if(_brl)_brl.style.cursor='not-allowed';if(_bro[_brk].value===savedA['bcom-q'+_brq]){_bro[_brk].checked=true;if(_brl){_brl.style.background='#f0fff4';_brl.style.borderColor='#68d391';}}}}
+    var _bsa=document.getElementById('bcom-submit-area');if(_bsa)_bsa.style.display='none';
   }
   updateBcomProgress();
 }
@@ -10824,12 +10817,19 @@ function submitBcomQuiz(){
   var total=5;var unanswered=0;
   for(var q=1;q<=total;q++){if(!document.querySelector('input[name="bcom-q'+q+'"]:checked'))unanswered++;}
   if(unanswered>0){var r=document.getElementById('bcom-quiz-result');if(r){r.style.display='block';r.innerHTML='<p style="color:#9b2235;font-weight:700;text-align:center;">Please answer all '+total+' questions.</p>';}return;}
-  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-bcom-checkin-done','1');localStorage.setItem(u+'-quiz-bcom-checkin-score',total);}catch(e){}}
+  var savedA={};
+  for(var _bsq=1;_bsq<=total;_bsq++){var _bss=document.querySelector('input[name="bcom-q'+_bsq+'"]:checked');if(_bss)savedA['bcom-q'+_bsq]=_bss.value;}
+  for(var _bdq=1;_bdq<=total;_bdq++){var _bdo=document.querySelectorAll('input[name="bcom-q'+_bdq+'"]');for(var _bdk=0;_bdk<_bdo.length;_bdk++){_bdo[_bdk].disabled=true;var _bdl=_bdo[_bdk].closest('label');if(_bdl)_bdl.style.cursor='not-allowed';if(_bdo[_bdk].checked&&_bdl){_bdl.style.background='#f0fff4';_bdl.style.borderColor='#68d391';}}}
+  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-bcom-checkin-done','1');localStorage.setItem(u+'-quiz-bcom-checkin-score',total);localStorage.setItem(u+'-quiz-bcom-checkin-answers',JSON.stringify(savedA));}catch(e){}}
   recordModuleQuiz('Booking.com Quiz',total,total,100);
-  show('bookingcom');
+  var _bsa=document.getElementById('bcom-submit-area');if(_bsa)_bsa.style.display='none';
+  var _bsr=document.getElementById('bcom-quiz-result');
+  if(_bsr){_bsr.style.display='block';_bsr.innerHTML='<div style="text-align:center;padding:22px 10px;"><div style="font-size:48px;margin-bottom:10px;">🏆</div><div style="font-size:22px;font-weight:800;color:#276749;margin-bottom:6px;">You scored '+total+' / '+total+'</div><div style="font-size:14px;color:#276749;margin-bottom:16px;">100%</div><span style="background:#276749;color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">✅ QUIZ COMPLETED</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">Great work! The Booking.com Check-in Requests quiz has been marked as completed.</div></div>';}
+  var qc=document.getElementById('bcom-quiz-check');if(qc){markDone(qc);}
+  updateBcomProgress();
 }
 function resetBcomQuiz(){
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-bcom-checkin-done');localStorage.removeItem(u+'-quiz-bcom-checkin-score');}catch(e){}}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-bcom-checkin-done');localStorage.removeItem(u+'-quiz-bcom-checkin-score');localStorage.removeItem(u+'-quiz-bcom-checkin-answers');}catch(e){}}
   show('bookingcom');
 }
 
