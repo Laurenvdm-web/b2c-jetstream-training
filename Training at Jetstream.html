@@ -632,8 +632,8 @@ function startBkQuiz(){var b=document.getElementById("bkq-start-area");var w=doc
 /* ════════════════════════════════════════════════════════
    BOOKINGS OVERVIEW — quiz & progress logic
    ════════════════════════════════════════════════════════ */
-function submitBkQuiz(){var correct={bkq1:"B",bkq2:"C",bkq3:"B"};var score=0;var allDone=true;for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allDone=false;break;}if(sel.value===correct[q])score++;}if(!allDone){alert("Please answer all 3 questions before submitting.");return;}var u=getUser();try{localStorage.setItem(u+"-quiz-bookings-done","1");recordModuleQuiz('Tech Quiz — Bookings Overview',score,3,Math.round(score/3*100));localStorage.setItem(u+"-quiz-bookings-score",score);var qc=document.getElementById("bk-quiz-check");if(qc){markDone(qc);}if(typeof updateBkProgress==="function")updateBkProgress();}catch(e){}updSidebar();show("bookings");}
-function resetBkQuiz(){var u=getUser();try{localStorage.removeItem(u+"-quiz-bookings-done");localStorage.removeItem(u+"-quiz-bookings-score");}catch(e){}var qc=document.getElementById("bk-quiz-check");if(qc){qc.innerHTML="&#x25CB;";qc.style.background="transparent";qc.style.borderColor="rgba(255,255,255,0.5)";}if(typeof updateBkProgress==="function")updateBkProgress();updSidebar();show("bookings");}
+function submitBkQuiz(){var correct={bkq1:"B",bkq2:"C",bkq3:"B"};var score=0;var allDone=true;for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allDone=false;break;}if(sel.value===correct[q])score++;}if(!allDone){alert("Please answer all 3 questions before submitting.");return;}var u=getUser();try{var savedBkA={};for(var bak in correct){var basel=document.querySelector("input[name="+bak+"]:checked");if(basel)savedBkA[bak]=basel.value;}localStorage.setItem(u+"-quiz-bookings-answers",JSON.stringify(savedBkA));localStorage.setItem(u+"-quiz-bookings-done","1");recordModuleQuiz('Tech Quiz — Bookings Overview',score,3,Math.round(score/3*100));localStorage.setItem(u+"-quiz-bookings-score",score);var qc=document.getElementById("bk-quiz-check");if(qc){markDone(qc);}if(typeof updateBkProgress==="function")updateBkProgress();}catch(e){}updSidebar();show("bookings");}
+function resetBkQuiz(){var u=getUser();try{localStorage.removeItem(u+"-quiz-bookings-done");localStorage.removeItem(u+"-quiz-bookings-score");localStorage.removeItem(u+"-quiz-bookings-answers");}catch(e){}var qc=document.getElementById("bk-quiz-check");if(qc){qc.innerHTML="&#x25CB;";qc.style.background="transparent";qc.style.borderColor="rgba(255,255,255,0.5)";}if(typeof updateBkProgress==="function")updateBkProgress();updSidebar();show("bookings");}
 
 
 /* ════════════════════════════════════════════════════════
@@ -1994,52 +1994,41 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='</button>';
   h+='</div>';
   h+='<div id="bk-quiz" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:24px 22px;background:#fff;">';
-  if(_bqdone){
-    var _bqpass=_bqscore>=2;
-    var _bqpct=Math.round(_bqscore/3*100);
-    var _bqbg=_bqpass?'#f0fff4':'#fff5f5';
-    var _bqbord=_bqpass?'#68d391':'#fc8181';
-    var _bqcol=_bqpass?'#276749':'#9b2235';
-    h+='<div style="background:'+_bqbg+';border:2px solid '+_bqbord+';border-radius:12px;padding:24px;text-align:center;">';
-    h+='<div style="font-size:46px;margin-bottom:12px;">'+(_bqpass?'&#x1F389;':'&#x1F4DA;')+'</div>';
-    h+='<div style="font-size:24px;font-weight:800;color:'+_bqcol+';margin-bottom:4px;">'+_bqscore+' / 3</div>';
-    h+='<div style="font-size:14px;color:#4a5568;margin-bottom:12px;">'+_bqpct+'%</div>';
-    h+=_bqpass?'<span style="background:'+_bqcol+';color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px;">PASSED</span>':'';
-    h+=_bqpass?'<div style="font-size:13px;color:#4a5568;margin-top:14px;">Great work! You understand how bookings enter the system.</div>':'';
-    h+='<div style="margin-top:16px;"><button onclick="resetBkQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset for practice</button></div>';
-    h+='</div>';
-  } else {
-    h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
-    h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">1. Which of the following platforms is a sales channel where guests can book?</div>';
-    h+='<div style="display:flex;flex-direction:column;gap:8px;">';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="A" style="accent-color:#667eea;"> A. Google Drive</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="B" style="accent-color:#667eea;"> B. Airbnb</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="C" style="accent-color:#667eea;"> C. Slack</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="D" style="accent-color:#667eea;"> D. Zoom</label>';
-    h+='</div>';
-    h+='</div>';
-    h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
-    h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">2. What happens to most bookings made through sales channels?</div>';
-    h+='<div style="display:flex;flex-direction:column;gap:8px;">';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="A" style="accent-color:#667eea;"> A. They must always be entered manually</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="B" style="accent-color:#667eea;"> B. They are emailed to guests only</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="C" style="accent-color:#667eea;"> C. They are automatically imported into Cirrus</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="D" style="accent-color:#667eea;"> D. They are deleted after booking</label>';
-    h+='</div>';
-    h+='</div>';
-    h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
-    h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">3. Which of the following is a reason a booking may NOT automatically sync to Cirrus?</div>';
-    h+='<div style="display:flex;flex-direction:column;gap:8px;">';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="A" style="accent-color:#667eea;"> A. Guest cancels immediately</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="B" style="accent-color:#667eea;"> B. Failed booking from Booking.com via NextPax</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="C" style="accent-color:#667eea;"> C. Booking made on Airbnb</label>';
-    h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="D" style="accent-color:#667eea;"> D. Payment is successful</label>';
-    h+='</div>';
-    h+='</div>';
-    h+='<div style="text-align:center;margin-top:20px;">';
-    h+='<button onclick="submitBkQuiz()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(102,126,234,0.4);">Submit Quiz</button>';
-    h+='</div>';
-  }
+  var _bqdis=_bqdone?' disabled':'';
+  h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+  h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">1. Which of the following platforms is a sales channel where guests can book?</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="A"'+_bqdis+' style="accent-color:#667eea;"> A. Google Drive</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="B"'+_bqdis+' style="accent-color:#667eea;"> B. Airbnb</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="C"'+_bqdis+' style="accent-color:#667eea;"> C. Slack</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq1" value="D"'+_bqdis+' style="accent-color:#667eea;"> D. Zoom</label>';
+  h+='</div>';
+  h+='</div>';
+  h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+  h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">2. What happens to most bookings made through sales channels?</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="A"'+_bqdis+' style="accent-color:#667eea;"> A. They must always be entered manually</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="B"'+_bqdis+' style="accent-color:#667eea;"> B. They are emailed to guests only</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="C"'+_bqdis+' style="accent-color:#667eea;"> C. They are automatically imported into Cirrus</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq2" value="D"'+_bqdis+' style="accent-color:#667eea;"> D. They are deleted after booking</label>';
+  h+='</div>';
+  h+='</div>';
+  h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+  h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">3. Which of the following is a reason a booking may NOT automatically sync to Cirrus?</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="A"'+_bqdis+' style="accent-color:#667eea;"> A. Guest cancels immediately</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="B"'+_bqdis+' style="accent-color:#667eea;"> B. Failed booking from Booking.com via NextPax</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="C"'+_bqdis+' style="accent-color:#667eea;"> C. Booking made on Airbnb</label>';
+  h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="bkq3" value="D"'+_bqdis+' style="accent-color:#667eea;"> D. Payment is successful</label>';
+  h+='</div>';
+  h+='</div>';
+  if(!_bqdone){h+='<div style="text-align:center;margin-top:20px;">';h+='<button onclick="submitBkQuiz()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(102,126,234,0.4);">Submit Quiz</button>';h+='</div>';}
+  h+='<div class="quiz-result';if(_bqdone)h+=' show';h+='" id="bk-quiz-result">';
+  h+='<div class="quiz-score" id="bk-quiz-score">';if(_bqdone)h+=_bqscore+'/3';h+='</div>';
+  h+='<div class="quiz-msg" id="bk-quiz-msg">';if(_bqdone){if(_bqscore===3)h+='Perfect score! Outstanding work.';else if(_bqscore>=2)h+='Great job! You have a solid understanding.';else h+='Keep studying and revisit the material above.';}h+='</div>';
+  h+='<div class="quiz-done-badge">&#x2713; Quiz completed</div>';
+  h+='<div style="margin-top:14px;text-align:center;"><button onclick="resetBkQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:11px;color:#718096;cursor:pointer;">&#x21BA; Reset for practice</button></div>';
+  h+='</div>';
   h+='</div>';
   return h;
 }   
@@ -9968,6 +9957,17 @@ function restoreBkProgress(){
   if(localStorage.getItem(u+'-quiz-bookings-done')){
     var qc=document.getElementById('bk-quiz-check');
     if(qc){markDone(qc);}
+    var savedBkA=JSON.parse(localStorage.getItem(u+'-quiz-bookings-answers')||'{}');
+    var correctBkA={"bkq1":"B","bkq2":"C","bkq3":"B"};
+    for(var bqk in correctBkA){
+      var bqopts=document.querySelectorAll("input[name='"+bqk+"']");
+      for(var bqi=0;bqi<bqopts.length;bqi++){
+        bqopts[bqi].disabled=true;
+        var bqlbl=bqopts[bqi].closest("label");
+        if(bqopts[bqi].value===correctBkA[bqk]){if(bqlbl){bqlbl.style.background='#f0fff4';bqlbl.style.borderColor='#68d391';}}
+        else if(bqopts[bqi].value===savedBkA[bqk]){bqopts[bqi].checked=true;if(bqlbl){bqlbl.style.background='#fff5f5';bqlbl.style.borderColor='#fc8181';}}
+      }
+    }
   }
   updateBkProgress();
 }
