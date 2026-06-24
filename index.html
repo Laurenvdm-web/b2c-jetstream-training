@@ -3129,17 +3129,6 @@ function airbnbPage(){
   h+='<div style="padding:24px 20px;">';
   var _abu=getUser();var _abdone=false;var _abscore=0;
   try{_abdone=!!localStorage.getItem(_abu+'-quiz-airbnb-done');_abscore=parseInt(localStorage.getItem(_abu+'-quiz-airbnb-score'))||0;}catch(e){}
-  if(_abdone){
-    var _abpct=Math.round(_abscore/10*100);var _abpass=_abscore>=7;var _abcol=_abpass?'#276749':'#9b2235';var _abemoji=_abpct===100?'🏆':_abpass?'🎉':'📚';
-    h+='<div style="text-align:center;padding:22px 10px;">';
-    h+='<div style="font-size:44px;margin-bottom:10px;">'+_abemoji+'</div>';
-    h+='<div style="font-size:28px;font-weight:800;color:'+_abcol+';">'+_abscore+' / 10</div>';
-    h+='<div style="font-size:15px;color:#4a5568;margin:6px 0 12px;">'+_abpct+'%</div>';
-    h+='<span style="background:'+_abcol+';color:#fff;font-size:12px;font-weight:700;padding:5px 20px;border-radius:20px;letter-spacing:1px;">'+(_abpass?'PASSED':'NEEDS REVIEW')+'</span>';
-    h+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_abpass?'Great work! You know how to navigate an Airbnb listing.':'Review the listing and try again — you\'re almost there!')+'</div>';
-    h+='<div style="margin-top:18px;"><button onclick="resetAirbnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-    h+='</div>';
-  } else {
   h+='<div style="margin-bottom:20px;text-align:center;">';
   h+='<a href="https://www.airbnb.co.za/rooms/848420918089306251?c=.pi80.pkYm9va2luZy9ob3N0L1Jlc2VydmF0aW9uSG9zdENvbmZpcm1hdGlvblRlbXBsYXRl&euid=2829561d-80a6-182e-7ad3-6ca18fb357ad&locale=en&_set_bev_on_new_domain=1759326079_EAMTM5NWIxOWVhYj&set_everest_cookie_on_new_domain=1759326079.EAZGMxYmY4ZTNhYWJhND.T7f_8eLgYJX2Qt_mioSEFph8i0aP-xKZrNqsZnHdBLg&source_impression_id=p3_1777272241_P3QxWFgthr1E0Psc" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;box-shadow:0 4px 14px rgba(102,126,234,0.4);transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.86\'" onmouseout="this.style.opacity=\'1\'">&#x1F3E0; Open Airbnb Listing &#8599;</a>';
   h+='<div style="font-size:11px;color:#718096;margin-top:8px;">Open the real listing in a new tab to answer the questions below</div>';
@@ -3228,12 +3217,11 @@ function airbnbPage(){
   h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;transition:border-color 0.2s;"><input type="radio" name="abq10" value="C" style="accent-color:#667eea;flex-shrink:0;"> C. No, we do not have this</label>';
   h+='</div>';
   h+='</div>';
-  h+='<div style="text-align:center;margin-top:10px;">';
+  h+='<div id="ab-quiz-submit-area" style="text-align:center;margin-top:10px;display:'+(_abdone?'none':'block')+'">';
   h+='<button id="ab-quiz-submit" onclick="submitAirbnbQuiz()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(102,126,234,0.4);transition:opacity 0.18s;" onmouseover="this.style.opacity=\'0.86\'" onmouseout="this.style.opacity=\'1\'">Submit Quiz</button>';
   h+='</div>';
-  h+='<div id="ab-quiz-result" style="display:none;margin-top:20px;"></div>';
+  h+='<div id="ab-quiz-result" style="display:'+(_abdone?'block':'none')+';margin-top:20px;"></div>';
   h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetAirbnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-  }
   h+='</div>';
   h+='</div>';
   h+='</div>';
@@ -3247,17 +3235,6 @@ function airbnbPage(){
   h+='<div style="padding:24px 20px;">';
   var _abgu=getUser();var _abgdone=false;var _abgscore=0;
   try{_abgdone=!!localStorage.getItem(_abgu+'-quiz-airbnb-general-done');_abgscore=parseInt(localStorage.getItem(_abgu+'-quiz-airbnb-general-score'))||0;}catch(e){}
-  if(_abgdone){
-    var _abgpct=Math.round(_abgscore/4*100);var _abgpass=_abgscore>=3;var _abgcol=_abgpass?'#276749':'#9b2235';var _abgemoji=_abgpct===100?'🏆':_abgpass?'🎉':'📚';
-    h+='<div style="text-align:center;padding:22px 10px;">';
-    h+='<div style="font-size:44px;margin-bottom:10px;">'+_abgemoji+'</div>';
-    h+='<div style="font-size:28px;font-weight:800;color:'+_abgcol+';">'+_abgscore+' / 4</div>';
-    h+='<div style="font-size:15px;color:#4a5568;margin:6px 0 12px;">'+_abgpct+'%</div>';
-    h+='<span style="background:'+_abgcol+';color:#fff;font-size:12px;font-weight:700;padding:5px 20px;border-radius:20px;letter-spacing:1px;">'+(_abgpass?'PASSED':'NEEDS REVIEW')+'</span>';
-    h+='<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_abgpass?'Great work! You understand Airbnb inquiry handling.':'Review the material above and try again.')+'</div>';
-    h+='<div style="margin-top:18px;"><button onclick="resetAirbnbGeneralQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-    h+='</div>';
-  } else {
   h+='<div style="background:#fffbeb;border:2px solid #f6ad55;border-radius:12px;padding:14px 18px;margin-bottom:22px;display:flex;gap:12px;align-items:flex-start;">';
   h+='<span style="font-size:20px;">&#x26A0;&#xFE0F;</span>';
   h+='<div style="font-size:13px;color:#744210;line-height:1.6;"><strong>Before you begin:</strong> Answer all 4 questions and click Submit. Your result will be saved to your progress tracker.</div>';
@@ -3298,12 +3275,11 @@ function airbnbPage(){
   h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;transition:border-color 0.2s;"><input type="radio" name="abgq4" value="D" style="accent-color:#667eea;flex-shrink:0;"> D. Via Jetchat</label>';
   h+='</div>';
   h+='</div>';
-  h+='<div style="text-align:center;margin-top:10px;">';
+  h+='<div id="abg-quiz-submit-area" style="text-align:center;margin-top:10px;display:'+(_abgdone?'none':'block')+'">';
   h+='<button id="abg-quiz-submit" onclick="submitAirbnbGeneralQuiz()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(102,126,234,0.4);transition:opacity 0.18s;" onmouseover="this.style.opacity=\'0.86\'" onmouseout="this.style.opacity=\'1\'">Submit Quiz</button>';
   h+='</div>';
-  h+='<div id="abg-quiz-result" style="display:none;margin-top:20px;"></div>';
+  h+='<div id="abg-quiz-result" style="display:'+(_abgdone?'block':'none')+';margin-top:20px;"></div>';
   h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetAirbnbGeneralQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
-  }
   h+='</div>';
   h+='</div>';
   h+='</div>';
@@ -10144,12 +10120,20 @@ function restoreAbProgress(){
     }
   }
   if(localStorage.getItem(u+'-quiz-airbnb-done')){
-    var qc=document.getElementById('ab-quiz-check');
-    if(qc){markDone(qc);}
+    var qc=document.getElementById('ab-quiz-check');if(qc){markDone(qc);}
+    var savedAbR=JSON.parse(localStorage.getItem(u+'-quiz-airbnb-answers')||'{}');
+    for(var abri=1;abri<=10;abri++){var abrads=document.querySelectorAll('input[name="abq'+abri+'"]');for(var abrk=0;abrk<abrads.length;abrk++){abrads[abrk].disabled=true;var abrl=abrads[abrk].closest('label');if(abrl)abrl.style.cursor='not-allowed';if(abrads[abrk].value===savedAbR['abq'+abri]){abrads[abrk].checked=true;if(abrl){abrl.style.background='#f0fff4';abrl.style.borderColor='#68d391';}}}}
+    var abSubArea=document.getElementById('ab-quiz-submit-area');if(abSubArea)abSubArea.style.display='none';
+    var abScr=parseInt(localStorage.getItem(u+'-quiz-airbnb-score')||'10');
+    var abResDiv=document.getElementById('ab-quiz-result');if(abResDiv&&!abResDiv.innerHTML.trim()){abResDiv.style.display='block';abResDiv.innerHTML='<div style="text-align:center;padding:28px 16px;border-top:2px solid #e2e8f0;margin-top:16px;border-radius:0 0 10px 10px;background:#f7fafc;"><div style="font-size:48px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:30px;font-weight:800;color:#276749;margin-bottom:4px;">'+abScr+' / 10</div><div style="font-size:15px;color:#4a5568;margin:6px 0 14px;">'+Math.round(abScr/10*100)+'%</div><span style="background:#276749;color:#fff;font-size:12px;font-weight:700;padding:6px 22px;border-radius:20px;letter-spacing:1px;">PASSED</span><div style="font-size:13px;color:#4a5568;margin-top:16px;line-height:1.6;">Great work! You know how to navigate an Airbnb listing.</div><div style="margin-top:18px;"><button onclick="resetAirbnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div></div>';}
   }
   if(localStorage.getItem(u+'-quiz-airbnb-general-done')){
-    var qc=document.getElementById('abg-quiz-check');
-    if(qc){markDone(qc);}
+    var qcg=document.getElementById('abg-quiz-check');if(qcg){markDone(qcg);}
+    var savedAbgR=JSON.parse(localStorage.getItem(u+'-quiz-airbnb-general-answers')||'{}');
+    for(var abgri=1;abgri<=4;abgri++){var abgrads=document.querySelectorAll('input[name="abgq'+abgri+'"]');for(var abgrk=0;abgrk<abgrads.length;abgrk++){abgrads[abgrk].disabled=true;var abgrl=abgrads[abgrk].closest('label');if(abgrl)abgrl.style.cursor='not-allowed';if(abgrads[abgrk].value===savedAbgR['abgq'+abgri]){abgrads[abgrk].checked=true;if(abgrl){abgrl.style.background='#f0fff4';abgrl.style.borderColor='#68d391';}}}}
+    var abgSubArea=document.getElementById('abg-quiz-submit-area');if(abgSubArea)abgSubArea.style.display='none';
+    var abgScr=parseInt(localStorage.getItem(u+'-quiz-airbnb-general-score')||'4');
+    var abgResDiv=document.getElementById('abg-quiz-result');if(abgResDiv&&!abgResDiv.innerHTML.trim()){abgResDiv.style.display='block';abgResDiv.innerHTML='<div style="text-align:center;padding:28px 16px;border-top:2px solid #e2e8f0;margin-top:16px;border-radius:0 0 10px 10px;background:#f7fafc;"><div style="font-size:48px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:30px;font-weight:800;color:#276749;margin-bottom:4px;">'+abgScr+' / 4</div><div style="font-size:15px;color:#4a5568;margin:6px 0 14px;">'+Math.round(abgScr/4*100)+'%</div><span style="background:#276749;color:#fff;font-size:12px;font-weight:700;padding:6px 22px;border-radius:20px;letter-spacing:1px;">PASSED</span><div style="font-size:13px;color:#4a5568;margin-top:16px;line-height:1.6;">Great work! You understand Airbnb inquiry handling.</div><div style="margin-top:18px;"><button onclick="resetAirbnbGeneralQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:8px 20px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div></div>';}
   }
   updateAbProgress();
 }
@@ -10843,7 +10827,9 @@ function submitAirbnbQuiz(){
   for(var q=1;q<=total;q++){if(!document.querySelector('input[name="abq'+q+'"]:checked'))unanswered++;}
   if(unanswered>0){var r=document.getElementById('ab-quiz-result');if(r){r.style.display='block';r.innerHTML='<p style="color:#9b2235;font-weight:700;text-align:center;">Please answer all '+total+' questions.</p>';}return;}
   var score=total;
-  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-done','1');localStorage.setItem(u+'-quiz-airbnb-score',score);}catch(e){}}
+  var savedAbA={};for(var _sai=1;_sai<=total;_sai++){var _sas=document.querySelector('input[name="abq'+_sai+'"]:checked');if(_sas)savedAbA['abq'+_sai]=_sas.value;}
+  for(var _dai=1;_dai<=total;_dai++){var _dar=document.querySelectorAll('input[name="abq'+_dai+'"]');for(var _dak=0;_dak<_dar.length;_dak++){_dar[_dak].disabled=true;var _dal=_dar[_dak].closest('label');if(_dal)_dal.style.cursor='not-allowed';if(_dar[_dak].checked&&_dal){_dal.style.background='#f0fff4';_dal.style.borderColor='#68d391';}}}
+  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-done','1');localStorage.setItem(u+'-quiz-airbnb-score',score);localStorage.setItem(u+'-quiz-airbnb-answers',JSON.stringify(savedAbA));}catch(e){}}
   var qc=document.getElementById('ab-quiz-check');
   if(qc){markDone(qc);}
   updateAbProgress();
@@ -10868,7 +10854,7 @@ function submitAirbnbQuiz(){
   var sb=document.getElementById('ab-quiz-submit');if(sb)sb.style.display='none';
 }
 function resetAirbnbQuiz(){
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-done');localStorage.removeItem(u+'-quiz-airbnb-score');}catch(e){}}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-done');localStorage.removeItem(u+'-quiz-airbnb-score');localStorage.removeItem(u+'-quiz-airbnb-answers');}catch(e){}}
   show('airbnb');
 }
 function toggleAirbnbGeneralQuiz(){
@@ -10885,7 +10871,9 @@ function submitAirbnbGeneralQuiz(){
   for(var q=1;q<=total;q++){if(!document.querySelector('input[name="abgq'+q+'"]:checked'))unanswered++;}
   if(unanswered>0){var r=document.getElementById('abg-quiz-result');if(r){r.style.display='block';r.innerHTML='<p style="color:#9b2235;font-weight:700;text-align:center;">Please answer all '+total+' questions.</p>';}return;}
   var score=total;
-  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-general-done','1');localStorage.setItem(u+'-quiz-airbnb-general-score',score);}catch(e){}}
+  var savedAbgA={};for(var _sbgi=1;_sbgi<=total;_sbgi++){var _sbgs=document.querySelector('input[name="abgq'+_sbgi+'"]:checked');if(_sbgs)savedAbgA['abgq'+_sbgi]=_sbgs.value;}
+  for(var _dbgi=1;_dbgi<=total;_dbgi++){var _dbgr=document.querySelectorAll('input[name="abgq'+_dbgi+'"]');for(var _dbgk=0;_dbgk<_dbgr.length;_dbgk++){_dbgr[_dbgk].disabled=true;var _dbgl=_dbgr[_dbgk].closest('label');if(_dbgl)_dbgl.style.cursor='not-allowed';if(_dbgr[_dbgk].checked&&_dbgl){_dbgl.style.background='#f0fff4';_dbgl.style.borderColor='#68d391';}}}
+  var u=getUser();if(u){try{localStorage.setItem(u+'-quiz-airbnb-general-done','1');localStorage.setItem(u+'-quiz-airbnb-general-score',score);localStorage.setItem(u+'-quiz-airbnb-general-answers',JSON.stringify(savedAbgA));}catch(e){}}
   var qc=document.getElementById('abg-quiz-check');
   if(qc){markDone(qc);}
   updateAbProgress();
@@ -10910,7 +10898,7 @@ function submitAirbnbGeneralQuiz(){
   var sb=document.getElementById('abg-quiz-submit');if(sb)sb.style.display='none';
 }
 function resetAirbnbGeneralQuiz(){
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-general-done');localStorage.removeItem(u+'-quiz-airbnb-general-score');}catch(e){}}
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-airbnb-general-done');localStorage.removeItem(u+'-quiz-airbnb-general-score');localStorage.removeItem(u+'-quiz-airbnb-general-answers');}catch(e){}}
   show('airbnb');
 }
 function toggleAirbnbSlides(){
