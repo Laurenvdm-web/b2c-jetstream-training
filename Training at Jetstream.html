@@ -9815,6 +9815,23 @@ function renderV1V2Q(){
     html+='</div></div>';
   }
   document.getElementById('v1v2q-questions').innerHTML=html;
+  var _v2U=getUser();
+  if(_v2U&&localStorage.getItem(_v2U+'-quiz-v1v2-done')){
+    var _v2Saved=JSON.parse(localStorage.getItem(_v2U+'-quiz-v1v2-answers')||'{}');
+    var _v2Qs=v1v2QuizData;
+    for(var _v2i=0;_v2i<_v2Qs.length;_v2i++){
+      var _v2q=_v2Qs[_v2i];var _v2chosen=_v2Saved[_v2i];
+      var _v2radios=document.querySelectorAll('input[name="v1v2q-q'+_v2i+'"]');
+      for(var _v2k=0;_v2k<_v2radios.length;_v2k++)_v2radios[_v2k].disabled=true;
+      for(var _v2j=0;_v2j<_v2q.opts.length;_v2j++){
+        var _v2lbl=document.getElementById('v1v2q-lbl-'+_v2i+'-'+_v2j);if(!_v2lbl)continue;
+        _v2lbl.style.cursor='not-allowed';
+        if(_v2j===_v2q.correct){markCorrect(_v2lbl);}
+        else if(_v2j===_v2chosen&&_v2chosen!==_v2q.correct){markWrong(_v2lbl);}
+      }
+      if(_v2chosen!==undefined){var _v2cr=document.querySelector('input[name="v1v2q-q'+_v2i+'"][value="'+_v2chosen+'"]');if(_v2cr)_v2cr.checked=true;}
+    }
+  }
 }
 function submitV1V2Q(){
   var qs=v1v2QuizData;var total=qs.length;var allAnswered=true;
@@ -9845,7 +9862,7 @@ function submitV1V2Q(){
     +'<div style="margin-top:16px;"><button onclick="resetV1V2Q()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
   var btn=document.getElementById('v1v2q-submit-area');if(btn)btn.style.display='none';
-  var u=getUser();try{localStorage.setItem(u+'-quiz-v1v2-done','1');localStorage.setItem(u+'-quiz-v1v2-score',String(score));}catch(e){}
+  var u=getUser();try{var _v2SaveA={};for(var _v2i=0;_v2i<total;_v2i++){var _v2sel=document.querySelector('input[name="v1v2q-q'+_v2i+'"]:checked');if(_v2sel)_v2SaveA[_v2i]=parseInt(_v2sel.value);}localStorage.setItem(u+'-quiz-v1v2-answers',JSON.stringify(_v2SaveA));localStorage.setItem(u+'-quiz-v1v2-done','1');localStorage.setItem(u+'-quiz-v1v2-score',String(score));}catch(e){}
   updSidebar();
   var qc=document.getElementById('v1v2q-check');
   if(qc){markDone(qc);}
@@ -9856,7 +9873,7 @@ function resetV1V2Q(){
   var c=document.getElementById('v1v2q-questions');if(c)c.innerHTML='';
   var r=document.getElementById('v1v2q-result');if(r)r.style.display='none';
   var s=document.getElementById('v1v2q-submit-area');if(s)s.style.display='block';
-  var u=getUser();try{localStorage.removeItem(u+'-quiz-v1v2-done');localStorage.removeItem(u+'-quiz-v1v2-score');}catch(e){}
+  var u=getUser();try{localStorage.removeItem(u+'-quiz-v1v2-done');localStorage.removeItem(u+'-quiz-v1v2-score');localStorage.removeItem(u+'-quiz-v1v2-answers');}catch(e){}
   updSidebar();renderV1V2Q();
   var qc=document.getElementById('v1v2q-check');
   if(qc){markUndone(qc);}
@@ -10638,10 +10655,13 @@ function restoreV1V2Progress(){
   if(localStorage.getItem(u+'-quiz-v1v2-done')){
     var qc=document.getElementById('v1v2q-check');
     if(qc){markDone(qc);}
-    var _v2Res=document.getElementById('v1v2q-result');
-    if(_v2Res&&!_v2Res.innerHTML.trim()){_v2Res.style.display='block';_v2Res.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:20px;text-align:center;"><div style="font-size:30px;margin-bottom:8px;">&#x2705;</div><div style="font-size:17px;font-weight:800;color:#276749;margin-bottom:4px;">Quiz Completed</div><div style="font-size:12px;color:#276749;">Your progress is saved. Use Reset Quiz to try again.</div></div>';}
+    renderV1V2Q();
     var _v2Sub=document.getElementById('v1v2q-submit-area');
     if(_v2Sub)_v2Sub.style.display='none';
+    var _v2Sc=parseInt(localStorage.getItem(u+'-quiz-v1v2-score')||'0');
+    var _v2Tot=v1v2QuizData.length;var _v2Pass=_v2Sc>=7;
+    var _v2Res=document.getElementById('v1v2q-result');
+    if(_v2Res){_v2Res.style.display='block';_v2Res.innerHTML='<div style="background:'+(_v2Pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_v2Pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;"><div style="font-size:42px;margin-bottom:10px;">'+(_v2Pass?'&#x1F389;':'&#x1F4DA;')+'</div><div style="font-size:24px;font-weight:800;color:'+(_v2Pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+_v2Sc+' / '+_v2Tot+'</div><div style="font-size:14px;color:'+(_v2Pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(_v2Sc/_v2Tot*100)+'%</div><span style="background:'+(_v2Pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_v2Pass?'&#x2705; PASSED':'NEEDS REVIEW')+'</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_v2Pass?'Great work! You understand V1 and V2 partner rules.':'Review the V1 and V2 Partners section and try again.')+'</div><div style="margin-top:16px;"><button onclick="resetV1V2Q()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}
   }
   updateV1V2Progress();
 }
