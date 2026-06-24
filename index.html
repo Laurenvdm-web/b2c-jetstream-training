@@ -9109,6 +9109,7 @@ function renderAvailQuiz(){
     html+='</div></div>';
   }
   document.getElementById('avail-quiz-questions').innerHTML=html;
+  var _avu=getUser();if(_avu&&localStorage.getItem(_avu+'-quiz-avail-done'))restoreAvailColors();
 }
 function submitAvailQuiz(){
   var correctAnswers=[1,2,2,2,2,2,2,1,2,2];
@@ -9135,7 +9136,8 @@ function submitAvailQuiz(){
   else{feedback='Please review training and retry';}
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-avail-done','1');localStorage.setItem(u+'-quiz-avail-score',score);}catch(e){}
+  var _availSA={};for(var _avsi=0;_avsi<10;_avsi++){var _avsc=document.querySelector('input[name="availq-q'+_avsi+'"]:checked');if(_avsc)_availSA[_avsi]=parseInt(_avsc.value);}
+  try{localStorage.setItem(u+'-quiz-avail-done','1');localStorage.setItem(u+'-quiz-avail-score',score);localStorage.setItem(u+'-quiz-avail-answers',JSON.stringify(_availSA));}catch(e){}
   var qc=document.getElementById('avail-quiz-check');
   if(qc){markDone(qc);}
   updateAvailProgress();
@@ -9153,14 +9155,45 @@ function submitAvailQuiz(){
 }
 function resetAvailQuiz(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-avail-done');localStorage.removeItem(u+'-quiz-avail-score');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-avail-done');localStorage.removeItem(u+'-quiz-avail-score');localStorage.removeItem(u+'-quiz-avail-answers');}catch(e){}
   var qcr=document.getElementById('avail-quiz-check');
   if(qcr){markUndone(qcr);}
   updateAvailProgress();
   var c=document.getElementById('avail-quiz-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('avail-quiz-result');if(r)r.style.display='none';
+  var r=document.getElementById('avail-quiz-result');if(r){r.style.display='none';r.innerHTML='';}
   var s=document.getElementById('avail-quiz-submit-area');if(s)s.style.display='block';
   renderAvailQuiz();
+}
+function restoreAvailColors(){
+  var u=getUser();if(!u)return;
+  var _avCorr=[1,2,2,2,2,2,2,1,2,2];
+  var _avSaved=JSON.parse(localStorage.getItem(u+'-quiz-avail-answers')||'{}');
+  for(var _avi=0;_avi<10;_avi++){
+    var _avRadios=document.querySelectorAll('input[name="availq-q'+_avi+'"]');
+    for(var _avk=0;_avk<_avRadios.length;_avk++){_avRadios[_avk].disabled=true;var _avLbl=document.getElementById('availq-lbl-'+_avi+'-'+_avk);if(_avLbl)_avLbl.style.cursor='not-allowed';}
+    var _avChosen=_avSaved.hasOwnProperty(_avi)?_avSaved[_avi]:-1;
+    var _avC=_avCorr[_avi];
+    for(var _avj=0;_avj<4;_avj++){
+      var _avL=document.getElementById('availq-lbl-'+_avi+'-'+_avj);if(!_avL)continue;
+      if(_avj===_avC){markCorrect(_avL);}
+      else if(_avj===_avChosen&&_avChosen!==_avC){markWrong(_avL);}
+    }
+  }
+  var _avScore=parseInt(localStorage.getItem(u+'-quiz-avail-score')||'9',10);
+  var _avPass=_avScore>=7;
+  var _avFb=_avScore>=9?'Excellent – strong understanding ✅':_avScore>=7?'Good – minor review recommended':'Please review training and retry';
+  var _avRes=document.getElementById('avail-quiz-result');
+  if(_avRes&&!_avRes.innerHTML.trim()){
+    _avRes.style.display='block';
+    _avRes.innerHTML='<div style="background:'+(_avPass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_avPass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
+      +'<div style="font-size:42px;margin-bottom:10px;">'+(_avPass?'&#x1F389;':'&#x1F4DA;')+'</div>'
+      +'<div style="font-size:24px;font-weight:800;color:'+(_avPass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+_avScore+' / 9</div>'
+      +'<div style="font-size:14px;color:'+(_avPass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(_avScore/9*100)+'%</div>'
+      +'<span style="background:'+(_avPass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+_avFb+'</span>'
+      +'<div style="margin-top:16px;"><button onclick="resetAvailQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
+      +'</div>';
+  }
+  var _avBtn=document.getElementById('avail-quiz-submit-area');if(_avBtn)_avBtn.style.display='none';
 }
 
 
