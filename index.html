@@ -1219,6 +1219,21 @@ html+='<div id="stars-fb-'+i+'" style="display:none;margin-top:10px;padding:10px
 html+='</div>';
 }
 container.innerHTML=html;
+var _stU=getUser();
+if(_stU&&localStorage.getItem(_stU+'-quiz-stars-done')){
+  var _stSaved=JSON.parse(localStorage.getItem(_stU+'-quiz-stars-answers')||'{}');
+  window.starsAnswers=_stSaved;
+  for(var _si=0;_si<starsQuizData.length;_si++){
+    var _sq=starsQuizData[_si];
+    var _ssel=_stSaved[_si];
+    for(var _sj=0;_sj<_sq.opts.length;_sj++){var _so=document.getElementById('stars-opt-'+_si+'-'+_sj);if(_so){_so.onclick=null;_so.style.cursor='not-allowed';}}
+    var _scEl=document.getElementById('stars-opt-'+_si+'-'+_sq.correct);
+    if(_scEl){_scEl.style.background='#f0fff4';_scEl.style.borderColor='#68d391';_scEl.style.color='#276749';}
+    if(_ssel!==undefined&&_ssel!==_sq.correct){var _swEl=document.getElementById('stars-opt-'+_si+'-'+_ssel);if(_swEl){_swEl.style.background='#fff5f5';_swEl.style.borderColor='#fc8181';_swEl.style.color='#9b2235';}}
+    var _sfb=document.getElementById('stars-fb-'+_si);
+    if(_sfb){if(_ssel===_sq.correct){_sfb.style.cssText='display:block;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6;background:#f0fff4;border:1px solid #9ae6b4;color:#276749;';_sfb.innerHTML='<strong>✅ Correct!</strong> '+_sq.explanation;}else{_sfb.style.cssText='display:block;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6;background:#fff5f5;border:1px solid #fed7d7;color:#9b2235;';_sfb.innerHTML='<strong>❌ Not quite.</strong> '+_sq.explanation;}}
+  }
+}
 }
 function starsSelectOpt(qIdx,optIdx){
 var resultArea=document.getElementById('stars-result-area');
@@ -1284,7 +1299,7 @@ var msgs=['Keep reviewing the material and give it another go!','Good effort —
 if(msgEl)msgEl.textContent=msgs[score]||'';
 }
 var u=getUser();
-try{recordModuleQuiz('Star System Quiz',score,starsQuizData.length,Math.round(score/starsQuizData.length*100));
+try{localStorage.setItem(u+'-quiz-stars-answers',JSON.stringify(window.starsAnswers));recordModuleQuiz('Star System Quiz',score,starsQuizData.length,Math.round(score/starsQuizData.length*100));
   localStorage.setItem(u+'-quiz-stars-done','1');localStorage.setItem(u+'-quiz-stars-score',String(score));setCheck('stars-quiz-check');if(typeof updateStarsProgress==='function')updateStarsProgress();var rsa=document.getElementById('stars-reset-area');if(rsa)rsa.style.display='block';}catch(e){}
 updSidebar();
 }
@@ -1297,7 +1312,7 @@ if(submitArea)submitArea.style.display='block';
 var resultArea=document.getElementById('stars-result-area');
 if(resultArea)resultArea.style.display='none';
 var u=getUser();
-try{localStorage.removeItem(u+'-quiz-stars-done');localStorage.removeItem(u+'-quiz-stars-score');}catch(e){}
+try{localStorage.removeItem(u+'-quiz-stars-done');localStorage.removeItem(u+'-quiz-stars-score');localStorage.removeItem(u+'-quiz-stars-answers');}catch(e){}
 updSidebar();
 clearCheck('stars-quiz-check');if(typeof updateStarsProgress==='function')updateStarsProgress();var rsa=document.getElementById('stars-reset-area');if(rsa)rsa.style.display='none';var sa=document.getElementById('stars-submit-area');if(sa)sa.style.display='block';
 renderStarsQuiz();
