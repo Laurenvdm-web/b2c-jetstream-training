@@ -4140,10 +4140,10 @@ function guestEntryPage(){
     if(geahi<geahQs.length-1)h+='<div style="height:1px;background:#f0f4f8;margin-bottom:14px;"></div>';
   }
   h+='<div id="ge-ah-quiz-result" style="display:none;margin-bottom:16px;"></div>';
-  h+='<div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
+  h+='<div id="ge-ah-quiz-submit-row" style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
   h+='<button onclick="submitGEAHQuiz()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(102,126,234,0.4);">Submit Quiz</button>';
-  h+='<button onclick="resetGEAHQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:13px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset</button>';
   h+='</div>';
+  h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetGEAHQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
   h+='</div>'
   // ── Door Code Quiz inline toggle ──────────────────────────────────────────
   h+='<div style="margin-top:12px;">';
@@ -4171,10 +4171,10 @@ function guestEntryPage(){
     if(gedci<gedcQs.length-1)h+='<div style="height:1px;background:#f0f4f8;margin-bottom:14px;"></div>';
   }
   h+='<div id="ge-dc-quiz-result" style="display:none;margin-bottom:16px;"></div>';
-  h+='<div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
+  h+='<div id="ge-dc-quiz-submit-row" style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
   h+='<button onclick="submitGEDCQuiz()" style="background:linear-gradient(135deg,#38a169,#276749);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(56,161,105,0.4);">Submit Quiz</button>';
-  h+='<button onclick="resetGEDCQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:13px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset</button>';
   h+='</div>';
+  h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetGEDCQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
   h+='</div>'
 
     // ── Operto Access Quiz inline toggle ────────────────────────────────────────
@@ -4207,10 +4207,10 @@ function guestEntryPage(){
     if(geopi<geopQs.length-1)h+='<div style="height:1px;background:#f0f4f8;margin-bottom:14px;"></div>';
   }
   h+='<div id="ge-op-quiz-result" style="display:none;margin-bottom:16px;"></div>';
-  h+='<div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
+  h+='<div id="ge-op-quiz-submit-row" style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
   h+='<button onclick="submitGEOPQuiz()" style="background:linear-gradient(135deg,#e53e3e,#9b2235);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(229,62,62,0.4);">Submit Quiz</button>';
-  h+='<button onclick="resetGEOPQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:13px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset</button>';
   h+='</div>';
+  h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetGEOPQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
   h+='</div>'
 
     // ── RemoteLock Quiz inline toggle ───────────────────────────────────────────
@@ -4242,10 +4242,10 @@ function guestEntryPage(){
     if(gerli<gerlQs.length-1)h+='<div style="height:1px;background:#f0f4f8;margin-bottom:14px;"></div>';
   }
   h+='<div id="ge-rl-quiz-result" style="display:none;margin-bottom:16px;"></div>';
-  h+='<div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
+  h+='<div id="ge-rl-quiz-submit-row" style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
   h+='<button onclick="submitGERLQuiz()" style="background:linear-gradient(135deg,#d69e2e,#744210);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(214,158,46,0.4);">Submit Quiz</button>';
-  h+='<button onclick="resetGERLQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:13px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset</button>';
   h+='</div>';
+  h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetGERLQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
   h+='</div>';
   return h;
 }
@@ -4583,8 +4583,9 @@ function submitGEAHQuiz(){
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
+  var _geahSA={};for(var _geahi2=0;_geahi2<correct.length;_geahi2++){var _geahSel=document.querySelector('input[name="geahq'+(_geahi2+1)+'"]:checked');if(_geahSel)_geahSA['geahq'+(_geahi2+1)]=_geahSel.value;}
   try{recordModuleQuiz('Guest Entry — Autohost Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-ah-done','1');localStorage.setItem(u+'-quiz-ge-ah-score',score);}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-ah-done','1');localStorage.setItem(u+'-quiz-ge-ah-score',score);localStorage.setItem(u+'-quiz-ge-ah-answers',JSON.stringify(_geahSA));}catch(e){}
   var geahc=document.getElementById('ge-ah-check');
   if(geahc){markDone(geahc);}
   updateGEProgress();var pass=pct>=75;
@@ -4595,10 +4596,11 @@ function submitGEAHQuiz(){
 }
 function resetGEAHQuiz(){
   var radios=document.querySelectorAll('#ge-ah-quiz-body input[type=radio]');
-  for(var i=0;i<radios.length;i++)radios[i].checked=false;
+  for(var i=0;i<radios.length;i++){radios[i].checked=false;radios[i].disabled=false;var lbl=radios[i].closest('label');if(lbl){lbl.style.background='';lbl.style.borderColor='';lbl.style.cursor='pointer';}}
   var res=document.getElementById('ge-ah-quiz-result');
   if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-ah-done');localStorage.removeItem(u+'-quiz-ge-ah-score');}catch(e){}clearCheck('ge-ah-check');updateGEProgress();}
+  var row=document.getElementById('ge-ah-quiz-submit-row');if(row)row.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-ah-done');localStorage.removeItem(u+'-quiz-ge-ah-score');localStorage.removeItem(u+'-quiz-ge-ah-answers');}catch(e){}clearCheck('ge-ah-check');updateGEProgress();}
 }
 function toggleGEDCQuiz() { toggleQuiz("ge-dc"); }
 function submitGEDCQuiz(){
@@ -4611,8 +4613,9 @@ function submitGEDCQuiz(){
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
+  var _gedcSA={};for(var _gedci2=0;_gedci2<correct.length;_gedci2++){var _gedcSel=document.querySelector('input[name="gedcq'+(_gedci2+1)+'"]:checked');if(_gedcSel)_gedcSA['gedcq'+(_gedci2+1)]=_gedcSel.value;}
   try{recordModuleQuiz('Guest Entry — Door Code Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-dc-done','1');localStorage.setItem(u+'-quiz-ge-dc-score',score);}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-dc-done','1');localStorage.setItem(u+'-quiz-ge-dc-score',score);localStorage.setItem(u+'-quiz-ge-dc-answers',JSON.stringify(_gedcSA));}catch(e){}
   var gedcc=document.getElementById('ge-dc-check');
   if(gedcc){markDone(gedcc);}
   updateGEProgress();var pass=score>=2;
@@ -4622,9 +4625,10 @@ function submitGEDCQuiz(){
     res.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
 function resetGEDCQuiz(){
-  var r=document.querySelectorAll('#ge-dc-quiz-body input[type=radio]');for(var i=0;i<r.length;i++)r[i].checked=false;
+  var r=document.querySelectorAll('#ge-dc-quiz-body input[type=radio]');for(var i=0;i<r.length;i++){r[i].checked=false;r[i].disabled=false;var lbl=r[i].closest('label');if(lbl){lbl.style.background='';lbl.style.borderColor='';lbl.style.cursor='pointer';}}
   var res=document.getElementById('ge-dc-quiz-result');if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-dc-done');localStorage.removeItem(u+'-quiz-ge-dc-score');}catch(e){}clearCheck('ge-dc-check');updateGEProgress();}
+  var row=document.getElementById('ge-dc-quiz-submit-row');if(row)row.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-dc-done');localStorage.removeItem(u+'-quiz-ge-dc-score');localStorage.removeItem(u+'-quiz-ge-dc-answers');}catch(e){}clearCheck('ge-dc-check');updateGEProgress();}
 }
 function toggleGEOPQuiz() { toggleQuiz("ge-op"); }
 function submitGEOPQuiz(){
@@ -4637,8 +4641,9 @@ function submitGEOPQuiz(){
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
+  var _geopSA={};for(var _geopi2=0;_geopi2<correct.length;_geopi2++){var _geopSel=document.querySelector('input[name="geopq'+(_geopi2+1)+'"]:checked');if(_geopSel)_geopSA['geopq'+(_geopi2+1)]=_geopSel.value;}
   try{recordModuleQuiz('Guest Entry — Operto Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-op-done','1');localStorage.setItem(u+'-quiz-ge-op-score',score);}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-op-done','1');localStorage.setItem(u+'-quiz-ge-op-score',score);localStorage.setItem(u+'-quiz-ge-op-answers',JSON.stringify(_geopSA));}catch(e){}
   var geopc=document.getElementById('ge-op-check');
   if(geopc){markDone(geopc);}
   updateGEProgress();var pass=pct>=80;
@@ -4648,9 +4653,10 @@ function submitGEOPQuiz(){
     res.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
 function resetGEOPQuiz(){
-  var r=document.querySelectorAll('#ge-op-quiz-body input[type=radio]');for(var i=0;i<r.length;i++)r[i].checked=false;
+  var r=document.querySelectorAll('#ge-op-quiz-body input[type=radio]');for(var i=0;i<r.length;i++){r[i].checked=false;r[i].disabled=false;var lbl=r[i].closest('label');if(lbl){lbl.style.background='';lbl.style.borderColor='';lbl.style.cursor='pointer';}}
   var res=document.getElementById('ge-op-quiz-result');if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-op-done');localStorage.removeItem(u+'-quiz-ge-op-score');}catch(e){}clearCheck('ge-op-check');updateGEProgress();}
+  var row=document.getElementById('ge-op-quiz-submit-row');if(row)row.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-op-done');localStorage.removeItem(u+'-quiz-ge-op-score');localStorage.removeItem(u+'-quiz-ge-op-answers');}catch(e){}clearCheck('ge-op-check');updateGEProgress();}
 }
 function toggleGERLQuiz() { toggleQuiz("ge-rl"); }
 function submitGERLQuiz(){
@@ -4663,8 +4669,9 @@ function submitGERLQuiz(){
   if(!checkAllAnswered(allAnswered,correct.length))return;
   var u=getUser();
   var total=correct.length;var pct=Math.round(score/total*100);
+  var _gerlSA={};for(var _gerli2=0;_gerli2<correct.length;_gerli2++){var _gerlSel=document.querySelector('input[name="gerlq'+(_gerli2+1)+'"]:checked');if(_gerlSel)_gerlSA['gerlq'+(_gerli2+1)]=_gerlSel.value;}
   try{recordModuleQuiz('Guest Entry — RemoteLock Quiz',score,total,pct);
-  localStorage.setItem(u+'-quiz-ge-rl-done','1');localStorage.setItem(u+'-quiz-ge-rl-score',score);}catch(e){}
+  localStorage.setItem(u+'-quiz-ge-rl-done','1');localStorage.setItem(u+'-quiz-ge-rl-score',score);localStorage.setItem(u+'-quiz-ge-rl-answers',JSON.stringify(_gerlSA));}catch(e){}
   var gerlc=document.getElementById('ge-rl-check');
   if(gerlc){markDone(gerlc);}
   updateGEProgress();var pass=pct>=80;
@@ -4674,9 +4681,10 @@ function submitGERLQuiz(){
     res.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
 function resetGERLQuiz(){
-  var r=document.querySelectorAll('#ge-rl-quiz-body input[type=radio]');for(var i=0;i<r.length;i++)r[i].checked=false;
+  var r=document.querySelectorAll('#ge-rl-quiz-body input[type=radio]');for(var i=0;i<r.length;i++){r[i].checked=false;r[i].disabled=false;var lbl=r[i].closest('label');if(lbl){lbl.style.background='';lbl.style.borderColor='';lbl.style.cursor='pointer';}}
   var res=document.getElementById('ge-rl-quiz-result');if(res){res.style.display='none';res.innerHTML='';}
-  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-rl-done');localStorage.removeItem(u+'-quiz-ge-rl-score');}catch(e){}clearCheck('ge-rl-check');updateGEProgress();}
+  var row=document.getElementById('ge-rl-quiz-submit-row');if(row)row.style.display='flex';
+  var u=getUser();if(u){try{localStorage.removeItem(u+'-quiz-ge-rl-done');localStorage.removeItem(u+'-quiz-ge-rl-score');localStorage.removeItem(u+'-quiz-ge-rl-answers');}catch(e){}clearCheck('ge-rl-check');updateGEProgress();}
 }
 
 
@@ -10149,17 +10157,58 @@ function restoreGEProgress(){
       if(sb){sb.innerHTML='&#x2713;';sb.style.background='rgba(102,234,102,0.35)';sb.style.borderColor='rgba(100,220,100,0.9)';}
     }
   }
-  var qmap=[
-    ['quiz-ge-ah-done','ge-ah-check'],
-    ['quiz-ge-dc-done','ge-dc-check'],
-    ['quiz-ge-op-done','ge-op-check'],
-    ['quiz-ge-rl-done','ge-rl-check']
+  // Restore each quiz: colors, disabled state, result card, hide submit row
+  var _geQuizzes=[
+    {doneKey:'quiz-ge-ah-done',answersKey:'quiz-ge-ah-answers',scoreKey:'quiz-ge-ah-score',
+     correct:{geahq1:'C',geahq2:'C',geahq3:'C',geahq4:'C'},prefix:'geahq',total:4,
+     checkId:'ge-ah-check',resultId:'ge-ah-quiz-result',rowId:'ge-ah-quiz-submit-row',
+     passScore:3,passMsg:'Great work! You have a solid understanding of Autohost screening.',
+     failMsg:'Review the Autohost training above and try again when ready.',icon:'🎉',failIcon:'📚'},
+    {doneKey:'quiz-ge-dc-done',answersKey:'quiz-ge-dc-answers',scoreKey:'quiz-ge-dc-score',
+     correct:{gedcq1:'C',gedcq2:'C',gedcq3:'B'},prefix:'gedcq',total:3,
+     checkId:'ge-dc-check',resultId:'ge-dc-quiz-result',rowId:'ge-dc-quiz-submit-row',
+     passScore:2,passMsg:'Great work! You have a solid understanding of Door Code processes.',
+     failMsg:'Review the Door Code training above and try again when ready.',icon:'🎉',failIcon:'📚'},
+    {doneKey:'quiz-ge-op-done',answersKey:'quiz-ge-op-answers',scoreKey:'quiz-ge-op-score',
+     correct:{geopq1:'C',geopq2:'C',geopq3:'B',geopq4:'C',geopq5:'C',geopq6:'C',geopq7:'C'},prefix:'geopq',total:7,
+     checkId:'ge-op-check',resultId:'ge-op-quiz-result',rowId:'ge-op-quiz-submit-row',
+     passScore:6,passMsg:'Great work! You have a solid understanding of Operto access management.',
+     failMsg:'Review the Operto training above and try again when ready.',icon:'🎉',failIcon:'📚'},
+    {doneKey:'quiz-ge-rl-done',answersKey:'quiz-ge-rl-answers',scoreKey:'quiz-ge-rl-score',
+     correct:{gerlq1:'B',gerlq2:'C',gerlq3:'C',gerlq4:'C',gerlq5:'C',gerlq6:'B'},prefix:'gerlq',total:6,
+     checkId:'ge-rl-check',resultId:'ge-rl-quiz-result',rowId:'ge-rl-quiz-submit-row',
+     passScore:5,passMsg:'Great work! You have a solid understanding of RemoteLock processes.',
+     failMsg:'Review the RemoteLock training above and try again when ready.',icon:'🎉',failIcon:'📚'}
   ];
-  for(var i=0;i<qmap.length;i++){
-    if(localStorage.getItem(u+'-'+qmap[i][0])){
-      var el=document.getElementById(qmap[i][1]);
-      if(el){markDone(el);}
+  for(var qi=0;qi<_geQuizzes.length;qi++){
+    var _gq=_geQuizzes[qi];
+    if(!localStorage.getItem(u+'-'+_gq.doneKey))continue;
+    var _gqChk=document.getElementById(_gq.checkId);if(_gqChk)markDone(_gqChk);
+    // Disable all inputs
+    for(var _gqn=1;_gqn<=_gq.total;_gqn++){
+      document.querySelectorAll('input[name="'+_gq.prefix+_gqn+'"]').forEach(function(inp){
+        inp.disabled=true;var lbl=inp.closest('label');if(lbl)lbl.style.cursor='not-allowed';
+      });
     }
+    // Color saved answers green/red
+    var _gqSaved=JSON.parse(localStorage.getItem(u+'-'+_gq.answersKey)||'{}');
+    for(var _gqk in _gqSaved){
+      var _gqSel=document.querySelector('input[name="'+_gqk+'"][value="'+_gqSaved[_gqk]+'"]');
+      if(_gqSel){var _gqLbl=_gqSel.closest('label');if(_gqLbl){_gqLbl.style.background=(_gqSaved[_gqk]===_gq.correct[_gqk])?'#f0fff4':'#fff5f5';_gqLbl.style.borderColor=(_gqSaved[_gqk]===_gq.correct[_gqk])?'#68d391':'#fc8181';}}
+    }
+    // Fallback: always mark correct answers green
+    for(var _gqc in _gq.correct){
+      var _gqCI=document.querySelector('input[name="'+_gqc+'"][value="'+_gq.correct[_gqc]+'"]');
+      if(_gqCI){_gqCI.checked=true;var _gqCL=_gqCI.closest('label');if(_gqCL&&_gqCL.style.background!=='rgb(255, 245, 245)'){_gqCL.style.background='#f0fff4';_gqCL.style.borderColor='#68d391';}}
+    }
+    // Show result card
+    var _gqScore=parseInt(localStorage.getItem(u+'-'+_gq.scoreKey)||String(_gq.total),10);
+    var _gqPct=Math.round(_gqScore/_gq.total*100);
+    var _gqPass=_gqScore>=_gq.passScore;
+    var _gqRes=document.getElementById(_gq.resultId);
+    if(_gqRes&&!_gqRes.innerHTML.trim()){_gqRes.style.display='block';_gqRes.innerHTML=buildQuizResult(_gqScore,_gq.total,(_gqPass?_gq.icon:_gq.failIcon),(_gqPass?'PASSED':'NEEDS REVIEW'),(_gqPass?'#f0fff4':'#fff5f5'),(_gqPass?'#68d391':'#fc8181'),(_gqPass?'#276749':'#9b2235'),_gqPct,(_gqPass?_gq.passMsg:_gq.failMsg));}
+    // Hide submit row
+    var _gqRow=document.getElementById(_gq.rowId);if(_gqRow)_gqRow.style.display='none';
   }
   updateGEProgress();
 }
