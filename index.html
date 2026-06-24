@@ -8932,6 +8932,7 @@ function renderModQ1(){
     html+='</div></div>';
   }
   document.getElementById('modq1-questions').innerHTML=html;
+  var _mq1u=getUser();if(_mq1u&&localStorage.getItem(_mq1u+'-quiz-mod1-done'))_restoreModQuiz(1,[1,1,2,2,1,2,1,1,1,2],10,9,7,'Great work! You have demonstrated solid V1 modification knowledge.','Review the V1 Modifications section and try again.');
 }
 function submitModQ1(){
   var qs=[
@@ -8962,7 +8963,8 @@ function submitModQ1(){
   }
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-mod1-done','1');localStorage.setItem(u+'-quiz-mod1-score',score);}catch(e){}
+  var _mq1SA={};for(var _mq1si=0;_mq1si<10;_mq1si++){var _mq1sc=document.querySelector('input[name="modq1-q'+_mq1si+'"]:checked');if(_mq1sc)_mq1SA[_mq1si]=parseInt(_mq1sc.value);}
+  try{localStorage.setItem(u+'-quiz-mod1-done','1');localStorage.setItem(u+'-quiz-mod1-score',score);localStorage.setItem(u+'-quiz-mod1-answers',JSON.stringify(_mq1SA));}catch(e){}
   var qc1=document.getElementById('mod-quiz1-check');
   if(qc1){markDone(qc1);}
   updateModProgress();
@@ -8984,16 +8986,16 @@ function submitModQ1(){
 }
 function resetModQ1(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-mod1-done');localStorage.removeItem(u+'-quiz-mod1-score');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-mod1-done');localStorage.removeItem(u+'-quiz-mod1-score');localStorage.removeItem(u+'-quiz-mod1-answers');}catch(e){}
   var qc1r=document.getElementById('mod-quiz1-check');
   if(qc1r){markUndone(qc1r);}
   updateModProgress();
   var container=document.getElementById('modq1-questions');
   if(container)container.innerHTML='';
   var result=document.getElementById('modq1-result');
-  if(result)result.style.display='none';
+  if(result){result.style.display='none';result.innerHTML='';}
   var submitArea=document.getElementById('modq1-submit-area');
-  if(submitArea)submitArea.style.display='block';
+  if(submitArea)submitArea.style.display='flex';
   renderModQ1();
 }
 
@@ -9027,6 +9029,7 @@ function renderModQ2(){
     html+='</div></div>';
   }
   document.getElementById('modq2-questions').innerHTML=html;
+  var _mq2u=getUser();if(_mq2u&&localStorage.getItem(_mq2u+'-quiz-mod2-done'))_restoreModQuiz(2,[2,1,2,1,1,2,1,1,2,2],10,9,7,'Great work! You have demonstrated solid V1 modification knowledge.','Review the V1 Modifications section and try again.');
 }
 function submitModQ2(){
   var correctAnswers=[2,1,2,1,1,2,1,1,2,2];
@@ -9049,7 +9052,8 @@ function submitModQ2(){
   }
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-mod2-done','1');localStorage.setItem(u+'-quiz-mod2-score',score);}catch(e){}
+  var _mq2SA={};for(var _mq2si=0;_mq2si<10;_mq2si++){var _mq2sc=document.querySelector('input[name="modq2-q'+_mq2si+'"]:checked');if(_mq2sc)_mq2SA[_mq2si]=parseInt(_mq2sc.value);}
+  try{localStorage.setItem(u+'-quiz-mod2-done','1');localStorage.setItem(u+'-quiz-mod2-score',score);localStorage.setItem(u+'-quiz-mod2-answers',JSON.stringify(_mq2SA));}catch(e){}
   var qc2=document.getElementById('mod-quiz2-check');
   if(qc2){markDone(qc2);}
   updateModProgress();
@@ -9070,13 +9074,13 @@ function submitModQ2(){
 }
 function resetModQ2(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-mod2-done');localStorage.removeItem(u+'-quiz-mod2-score');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-mod2-done');localStorage.removeItem(u+'-quiz-mod2-score');localStorage.removeItem(u+'-quiz-mod2-answers');}catch(e){}
   var qc2r=document.getElementById('mod-quiz2-check');
   if(qc2r){markUndone(qc2r);}
   updateModProgress();
   var c=document.getElementById('modq2-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('modq2-result');if(r)r.style.display='none';
-  var s=document.getElementById('modq2-submit-area');if(s)s.style.display='block';
+  var r=document.getElementById('modq2-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('modq2-submit-area');if(s)s.style.display='flex';
   renderModQ2();
 }
 
@@ -9224,6 +9228,7 @@ function renderModQ3(){
     html+='</div></div>';
   }
   document.getElementById('modq3-questions').innerHTML=html;
+  var _mq3u=getUser();if(_mq3u&&localStorage.getItem(_mq3u+'-quiz-mod3-done'))_restoreModQuiz(3,[2,1,2,1,2,2,1,1,2,2],10,9,7,'Great work! You have demonstrated solid V2 modification knowledge.','Review the V2 Modifications section and try again.');
 }
 function submitModQ3(){
   var ca=[2,1,2,1,2,2,1,1,2,2];
@@ -9246,7 +9251,8 @@ function submitModQ3(){
   }
   var pass=score>=7;
   var u=getUser();
-  try{localStorage.setItem(u+'-quiz-mod3-done','1');localStorage.setItem(u+'-quiz-mod3-score',score);}catch(e){}
+  var _mq3SA={};for(var _mq3si=0;_mq3si<10;_mq3si++){var _mq3sc=document.querySelector('input[name="modq3-q'+_mq3si+'"]:checked');if(_mq3sc)_mq3SA[_mq3si]=parseInt(_mq3sc.value);}
+  try{localStorage.setItem(u+'-quiz-mod3-done','1');localStorage.setItem(u+'-quiz-mod3-score',score);localStorage.setItem(u+'-quiz-mod3-answers',JSON.stringify(_mq3SA));}catch(e){}
   var qc3=document.getElementById('mod-quiz3-check');
   if(qc3){markDone(qc3);}
   updateModProgress();
@@ -9266,14 +9272,44 @@ function submitModQ3(){
 }
 function resetModQ3(){
   var u=getUser();
-  try{localStorage.removeItem(u+'-quiz-mod3-done');localStorage.removeItem(u+'-quiz-mod3-score');}catch(e){}
+  try{localStorage.removeItem(u+'-quiz-mod3-done');localStorage.removeItem(u+'-quiz-mod3-score');localStorage.removeItem(u+'-quiz-mod3-answers');}catch(e){}
   var qc3r=document.getElementById('mod-quiz3-check');
   if(qc3r){markUndone(qc3r);}
   updateModProgress();
   var c=document.getElementById('modq3-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('modq3-result');if(r)r.style.display='none';
-  var s=document.getElementById('modq3-submit-area');if(s)s.style.display='block';
+  var r=document.getElementById('modq3-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('modq3-submit-area');if(s)s.style.display='flex';
   renderModQ3();
+}
+function _restoreModQuiz(n,ca,total,dispTotal,passScore,passMsg,failMsg){
+  var u=getUser();if(!u)return;
+  var _mSaved=JSON.parse(localStorage.getItem(u+'-quiz-mod'+n+'-answers')||'{}');
+  for(var _mi=0;_mi<total;_mi++){
+    var _mRadios=document.querySelectorAll('input[name="modq'+n+'-q'+_mi+'"]');
+    for(var _mk=0;_mk<_mRadios.length;_mk++){_mRadios[_mk].disabled=true;var _mL=document.getElementById('modq'+n+'-lbl-'+_mi+'-'+_mk);if(_mL)_mL.style.cursor='not-allowed';}
+    var _mChosen=_mSaved.hasOwnProperty(_mi)?parseInt(_mSaved[_mi]):-1;
+    var _mCorr=ca[_mi];
+    for(var _mj=0;_mj<4;_mj++){
+      var _mLbl=document.getElementById('modq'+n+'-lbl-'+_mi+'-'+_mj);if(!_mLbl)continue;
+      if(_mj===_mCorr){markCorrect(_mLbl);}
+      else if(_mj===_mChosen&&_mChosen!==_mCorr){markWrong(_mLbl);}
+    }
+  }
+  var _mScore=parseInt(localStorage.getItem(u+'-quiz-mod'+n+'-score')||String(dispTotal),10);
+  var _mPass=_mScore>=passScore;
+  var _mRes=document.getElementById('modq'+n+'-result');
+  if(_mRes&&!_mRes.innerHTML.trim()){
+    _mRes.style.display='block';
+    _mRes.innerHTML='<div style="background:'+(_mPass?'#f0fff4':'#fff5f5')+';border:2px solid '+(_mPass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
+      +'<div style="font-size:42px;margin-bottom:10px;">'+(_mPass?'&#x1F389;':'&#x1F4DA;')+'</div>'
+      +'<div style="font-size:24px;font-weight:800;color:'+(_mPass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+_mScore+' / '+dispTotal+'</div>'
+      +'<div style="font-size:14px;color:'+(_mPass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(_mScore/dispTotal*100)+'%</div>'
+      +'<span style="background:'+(_mPass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(_mPass?'✅ PASSED':'NEEDS REVIEW')+'</span>'
+      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(_mPass?passMsg:failMsg)+'</div>'
+      +'<div style="margin-top:16px;"><button onclick="resetModQ'+n+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
+      +'</div>';
+  }
+  var _mBtn=document.getElementById('modq'+n+'-submit-area');if(_mBtn)_mBtn.style.display='none';
 }
 function openModQuiz(qnum){
   var id='modq'+qnum;
