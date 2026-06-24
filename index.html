@@ -7715,7 +7715,6 @@ function toggleInbox1Quiz(){
     if(btn)btn.style.borderRadius='12px 12px 0 0';
     var qc=document.getElementById('inbox1-quiz-questions');
     if(qc&&qc.innerHTML==='')renderInbox1Quiz();
-    var _u1=getUser();if(_u1&&localStorage.getItem(_u1+'-quiz-inbox1-done')){var _sa1=document.getElementById('inbox1-quiz-submit-area');if(_sa1)_sa1.style.display='none';var _res1=document.getElementById('inbox1-quiz-result');if(_res1&&_res1.style.display==='none'){_res1.style.display='block';_res1.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:24px;text-align:center;"><div style="font-size:36px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:20px;font-weight:800;color:#276749;margin-bottom:6px;">Quiz already completed &#x2705;</div><div style="font-size:13px;color:#276749;margin-bottom:14px;">Your progress has been saved.</div><div style="margin-top:16px;"><button onclick="resetInbox1Quiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}}
   }
 }
 function renderInbox1Quiz(){
@@ -7749,6 +7748,7 @@ function renderInbox1Quiz(){
     html+='</div></div>';
   }
   document.getElementById('inbox1-quiz-questions').innerHTML=html;
+  _restoreInboxQuiz('inbox1q','inbox1',[1,2,1,2,2,2,1,1,1,2,1,1],12,11,8,'Excellent – inbox expert ✅','Good – minor review needed','Please review and retry','quiz-inbox1-done','inbox1-quiz-result','inbox1-quiz-submit-area','resetInbox1Quiz');
 }
 function submitInbox1Quiz(){
   var correctAnswers=[1,2,1,2,2,2,1,1,1,2,1,1];
@@ -7756,9 +7756,10 @@ function submitInbox1Quiz(){
   var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="inbox1q-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
-  var score=0;
+  var score=0;var _ibx1SA={};
   for(var i=0;i<total;i++){
     var chosen=parseInt(document.querySelector('input[name="inbox1q-q'+i+'"]:checked').value);
+    _ibx1SA[i]=chosen;
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="inbox1q-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -7784,16 +7785,16 @@ function submitInbox1Quiz(){
     +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
     +'<div style="margin-top:16px;"><button onclick="resetInbox1Quiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
-  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox1-done','1');setCheck('ibx-quiz1-check');updateInboxProgress();}
+  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox1-done','1');localStorage.setItem(u+'-quiz-inbox1-answers',JSON.stringify(_ibx1SA));setCheck('ibx-quiz1-check');updateInboxProgress();}
   recordModuleQuiz('Handling the Inbox Like a Pro — Take Quiz Part 2',score,total,Math.round(score/total*100));
   var btn=document.getElementById('inbox1-quiz-submit-area');if(btn)btn.style.display='none';
 }
 function resetInbox1Quiz(){
-  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox1-done');}
+  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox1-done');localStorage.removeItem(u+'-quiz-inbox1-answers');}
   clearCheck('ibx-quiz1-check');
   var c=document.getElementById('inbox1-quiz-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('inbox1-quiz-result');if(r)r.style.display='none';
-  var s=document.getElementById('inbox1-quiz-submit-area');if(s)s.style.display='block';
+  var r=document.getElementById('inbox1-quiz-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('inbox1-quiz-submit-area');if(s)s.style.display='flex';
   renderInbox1Quiz();
   if(typeof updateInboxProgress==='function')updateInboxProgress();
 }
@@ -7814,7 +7815,6 @@ function toggleInbox2Quiz(){
     if(btn)btn.style.borderRadius='12px 12px 0 0';
     var qc=document.getElementById('inbox2-quiz-questions');
     if(qc&&qc.innerHTML==='')renderInbox2Quiz();
-    var _u2=getUser();if(_u2&&localStorage.getItem(_u2+'-quiz-inbox2-done')){var _sa2=document.getElementById('inbox2-quiz-submit-area');if(_sa2)_sa2.style.display='none';var _res2=document.getElementById('inbox2-quiz-result');if(_res2&&_res2.style.display==='none'){_res2.style.display='block';_res2.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:24px;text-align:center;"><div style="font-size:36px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:20px;font-weight:800;color:#276749;margin-bottom:6px;">Quiz already completed &#x2705;</div><div style="font-size:13px;color:#276749;margin-bottom:14px;">Your progress has been saved.</div><div style="margin-top:16px;"><button onclick="resetInbox2Quiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}}
   }
 }
 function renderInbox2Quiz(){
@@ -7845,6 +7845,7 @@ function renderInbox2Quiz(){
     html+='</div></div>';
   }
   document.getElementById('inbox2-quiz-questions').innerHTML=html;
+  _restoreInboxQuiz('inbox2q','inbox2',[1,0,2,2,2,2,2,3,2],9,8,6,'Excellent – inbox expert ✅','Good – minor review needed','Please review and retry','quiz-inbox2-done','inbox2-quiz-result','inbox2-quiz-submit-area','resetInbox2Quiz');
 }
 function submitInbox2Quiz(){
   var correctAnswers=[1,0,2,2,2,2,2,3,2];
@@ -7852,9 +7853,10 @@ function submitInbox2Quiz(){
   var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="inbox2q-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
-  var score=0;
+  var score=0;var _ibx2SA={};
   for(var i=0;i<total;i++){
     var chosen=parseInt(document.querySelector('input[name="inbox2q-q'+i+'"]:checked').value);
+    _ibx2SA[i]=chosen;
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="inbox2q-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -7880,16 +7882,16 @@ function submitInbox2Quiz(){
     +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
     +'<div style="margin-top:16px;"><button onclick="resetInbox2Quiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
-  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox2-done','1');setCheck('ibx-quiz2-check');updateInboxProgress();}
+  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox2-done','1');localStorage.setItem(u+'-quiz-inbox2-answers',JSON.stringify(_ibx2SA));setCheck('ibx-quiz2-check');updateInboxProgress();}
   recordModuleQuiz('Handling the Inbox — Take Quiz Part 2',score,total,Math.round(score/total*100));
   var btn=document.getElementById('inbox2-quiz-submit-area');if(btn)btn.style.display='none';
 }
 function resetInbox2Quiz(){
-  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox2-done');}
+  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox2-done');localStorage.removeItem(u+'-quiz-inbox2-answers');}
   clearCheck('ibx-quiz2-check');
   var c=document.getElementById('inbox2-quiz-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('inbox2-quiz-result');if(r)r.style.display='none';
-  var s=document.getElementById('inbox2-quiz-submit-area');if(s)s.style.display='block';
+  var r=document.getElementById('inbox2-quiz-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('inbox2-quiz-submit-area');if(s)s.style.display='flex';
   renderInbox2Quiz();
   if(typeof updateInboxProgress==='function')updateInboxProgress();
 }
@@ -7910,7 +7912,6 @@ function toggleSpamQuiz(){
     if(btn)btn.style.borderRadius='12px 12px 0 0';
     var qc=document.getElementById('spam-quiz-questions');
     if(qc&&qc.innerHTML==='')renderSpamQuiz();
-    var _u3=getUser();if(_u3&&localStorage.getItem(_u3+'-quiz-inbox3-done')){var _sa3=document.getElementById('spam-quiz-submit-area');if(_sa3)_sa3.style.display='none';var _res3=document.getElementById('spam-quiz-result');if(_res3&&_res3.style.display==='none'){_res3.style.display='block';_res3.innerHTML='<div style="background:#f0fff4;border:2px solid #68d391;border-radius:12px;padding:24px;text-align:center;"><div style="font-size:36px;margin-bottom:10px;">&#x1F389;</div><div style="font-size:20px;font-weight:800;color:#276749;margin-bottom:6px;">Quiz already completed &#x2705;</div><div style="font-size:13px;color:#276749;margin-bottom:14px;">Your progress has been saved.</div><div style="margin-top:16px;"><button onclick="resetSpamQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div></div>';}}
   }
 }
 function renderSpamQuiz(){
@@ -7938,6 +7939,7 @@ function renderSpamQuiz(){
     html+='</div></div>';
   }
   document.getElementById('spam-quiz-questions').innerHTML=html;
+  _restoreInboxQuiz('spamq','inbox3',[1,2,1,2,2,3],6,6,4,'Excellent – spam expert ✅','Good – minor review needed','Please review and retry','quiz-inbox3-done','spam-quiz-result','spam-quiz-submit-area','resetSpamQuiz');
 }
 function submitSpamQuiz(){
   var correctAnswers=[1,2,1,2,2,3];
@@ -7945,9 +7947,10 @@ function submitSpamQuiz(){
   var allAnswered=true;
   for(var i=0;i<total;i++){if(!document.querySelector('input[name="spamq-q'+i+'"]:checked')){allAnswered=false;break;}}
   if(!checkAllAnswered(allAnswered,total))return;
-  var score=0;
+  var score=0;var _spamSA={};
   for(var i=0;i<total;i++){
     var chosen=parseInt(document.querySelector('input[name="spamq-q'+i+'"]:checked').value);
+    _spamSA[i]=chosen;
     var correct=correctAnswers[i];
     var radios=document.querySelectorAll('input[name="spamq-q'+i+'"]');
     for(var k=0;k<radios.length;k++)radios[k].disabled=true;
@@ -7973,18 +7976,52 @@ function submitSpamQuiz(){
     +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
     +'<div style="margin-top:16px;"><button onclick="resetSpamQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
     +'</div>';
-  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox3-done','1');setCheck('ibx-quiz3-check');updateInboxProgress();}
+  var u=getUser();if(u){localStorage.setItem(u+'-quiz-inbox3-done','1');localStorage.setItem(u+'-quiz-inbox3-answers',JSON.stringify(_spamSA));setCheck('ibx-quiz3-check');updateInboxProgress();}
   recordModuleQuiz('Take the Quiz: Checking Spam',score,total,Math.round(score/total*100));
   var btn=document.getElementById('spam-quiz-submit-area');if(btn)btn.style.display='none';
 }
 function resetSpamQuiz(){
-  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox3-done');}
+  var u=getUser();if(u){localStorage.removeItem(u+'-quiz-inbox3-done');localStorage.removeItem(u+'-quiz-inbox3-answers');}
   clearCheck('ibx-quiz3-check');
   var c=document.getElementById('spam-quiz-questions');if(c)c.innerHTML='';
-  var r=document.getElementById('spam-quiz-result');if(r)r.style.display='none';
-  var s=document.getElementById('spam-quiz-submit-area');if(s)s.style.display='block';
+  var r=document.getElementById('spam-quiz-result');if(r){r.style.display='none';r.innerHTML='';}
+  var s=document.getElementById('spam-quiz-submit-area');if(s)s.style.display='flex';
   renderSpamQuiz();
   if(typeof updateInboxProgress==='function')updateInboxProgress();
+}
+
+function _restoreInboxQuiz(prefix,n,ca,total,pass1,pass2,passMsg,midMsg,failMsg,doneKey,resultId,submitRowId,resetFnName){
+  var u=getUser();if(!u)return;
+  if(!localStorage.getItem(u+'-'+doneKey))return;
+  var savedA=JSON.parse(localStorage.getItem(u+'-quiz-'+n+'-answers')||'{}');
+  var score=0;
+  for(var i=0;i<total;i++){
+    var radios=document.querySelectorAll('input[name="'+prefix+'-q'+i+'"]');
+    for(var k=0;k<radios.length;k++)radios[k].disabled=true;
+    var chosen=savedA[i];
+    var optCount=radios.length;
+    for(var j=0;j<optCount;j++){
+      var lbl=document.getElementById(prefix+'-lbl-'+i+'-'+j);if(!lbl)continue;
+      lbl.style.cursor='not-allowed';
+      if(j===ca[i]){markCorrect(lbl);}
+      else if(chosen!==undefined&&j===chosen&&chosen!==ca[i]){markWrong(lbl);}
+    }
+    if(chosen===ca[i])score++;
+  }
+  var pass=score>=pass1||(pass2&&score>=pass2);
+  var feedback=score>=pass1?passMsg:(pass2&&score>=pass2?midMsg:failMsg);
+  var result=document.getElementById(resultId);
+  if(result){
+    result.style.display='block';
+    result.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;">'
+      +'<div style="font-size:42px;margin-bottom:10px;">'+(pass?'&#x1F389;':'&#x1F4DA;')+'</div>'
+      +'<div style="font-size:24px;font-weight:800;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' / '+total+'</div>'
+      +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/total*100)+'%</div>'
+      +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+feedback+'</span>'
+      +'<div style="margin-top:16px;"><button onclick="'+resetFnName+'()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:7px 18px;font-size:12px;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button></div>'
+      +'</div>';
+  }
+  var row=document.getElementById(submitRowId);if(row)row.style.display='none';
 }
 
 function markInboxSection(id){
