@@ -11177,6 +11177,7 @@ document.addEventListener('DOMContentLoaded', function(){
           try{last=localStorage.getItem("jt-last-"+savedUser)||"home";}catch(e3){}
           show(last);
           updSidebar();
+          checkDqButtonState();
           var adminBtn=document.getElementById("n-admin");
           if(adminBtn)adminBtn.style.display=(savedUser==="Lauren")?"block":"none";
         }catch(e2){}
@@ -11184,7 +11185,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   } catch(e) {}
 
-  checkDqButtonState();
+  // checkDqButtonState() now called inside the sync callback above
   // Re-check at midnight so button resets without needing a page reload
   var now=new Date();
   var msUntilMidnight=(new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
