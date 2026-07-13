@@ -1947,11 +1947,12 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='<span style="font-size:15px;">Open ↗</span>';
   h+='</button>';
   h+='</a>';
+  h+='<div style="margin-bottom:14px;">';
   h+='<button onclick="var b=document.getElementById(\'v1i-sop1-body\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';document.getElementById(\'v1i-sop1-arr\').textContent=isOpen?\'▼\':\'▲\';" style="width:100%;text-align:left;background:linear-gradient(135deg,#2b6cb0,#3a8ac9);color:#fff;border:none;border-radius:14px;padding:20px 24px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(43,108,176,0.35);margin-bottom:0;">';
   h+='<span>📘 SOP 1: Reviewing Previous Airbnb Inquiry Training Conversations</span>';
   h+='<span id="v1i-sop1-arr" style="font-size:16px;">▼</span>';
   h+='</button>';
-  h+='<div id="v1i-sop1-body" style="display:none;background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:24px 28px;margin-bottom:14px;">';
+  h+='<div id="v1i-sop1-body" style="display:none;background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:24px 28px;margin-bottom:0;">';
   h+='<h3 style="margin:0 0 10px;color:#1e3a5c;font-size:15px;font-weight:700;">Purpose</h3>';
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0 0 10px;">Before responding to guest inquiries yourself, it\'s important to become familiar with our communication style, review process, and the way experienced team members provide feedback.</p>';
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0 0 18px;">This SOP will guide you through reviewing previous Airbnb Inquiry Training conversations so you can learn from real examples before handling your own inquiries.</p>';
@@ -1997,11 +1998,13 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0 0 8px;">Whenever you have spare time during training, return to these conversations.</p>';
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0;">Reviewing previous inquiries is one of the quickest ways to improve your guest communication skills and become familiar with company standards.</p>';
   h+='</div>';
+  h+='</div>';
+  h+='<div style="margin-bottom:14px;">';
   h+='<button onclick="var b=document.getElementById(\'v1i-sop2-body\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';document.getElementById(\'v1i-sop2-arr\').textContent=isOpen?\'▼\':\'▲\';" style="width:100%;text-align:left;background:linear-gradient(135deg,#2b6cb0,#3a8ac9);color:#fff;border:none;border-radius:14px;padding:20px 24px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(43,108,176,0.35);margin-bottom:0;">';
   h+='<span>📗 SOP 2: Handling Airbnb Guest Inquiries During Training</span>';
   h+='<span id="v1i-sop2-arr" style="font-size:16px;">▼</span>';
   h+='</button>';
-  h+='<div id="v1i-sop2-body" style="display:none;background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:24px 28px;margin-bottom:14px;">';
+  h+='<div id="v1i-sop2-body" style="display:none;background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:24px 28px;margin-bottom:0;">';
   h+='<h3 style="margin:0 0 10px;color:#1e3a5c;font-size:15px;font-weight:700;">Purpose</h3>';
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0 0 10px;">Once you\'ve reviewed previous Airbnb Inquiry Training conversations, you\'re ready to begin handling real guest inquiries.</p>';
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0 0 18px;">During this stage of training, you\'ll be working on live guest conversations. However, before sending any response to a guest, you\'ll first draft your reply in the Internal Comments for review. This allows you to gain hands-on experience from day one while receiving guidance and feedback from the team to ensure every response is accurate and follows our communication standards.</p>';
@@ -2056,6 +2059,7 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='<li>Continue building your experience while reviewers work through pending drafts.</li>';
   h+='</ul>';
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0;">This allows you to keep learning and making progress throughout your training.</p>';
+  h+='</div>';
   h+='</div>';
   return h;
 }
