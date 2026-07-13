@@ -194,7 +194,7 @@ nav{padding:8px 0}
 </style>
 </head>
 <body>
-<div id="name-overlay" style="display:flex"><div id="name-box"><div class="nbi">✈️</div><h2>Welcome to Jetstream Training!</h2><p>Before we get started, please select your name from the list below.</p><div id="name-select-grid"><button class="name-user-btn" onclick="selectName('Lauren')">Lauren</button><button class="name-user-btn" onclick="selectName('Rebecca')">Rebecca</button><button class="name-user-btn" onclick="selectName('Shey')">Shey</button><button class="name-user-btn" onclick="selectName('Jerome')">Jerome</button><button class="name-user-btn" onclick="selectName('Sarah')">Sarah</button><button class="name-user-btn" onclick="selectName('Gabriella')">Gabriella</button><button class="name-user-btn" onclick="selectName('Abigail')">Abigail</button><button class="name-user-btn" onclick="selectName('Jada')">Jada</button><button class="name-user-btn" onclick="selectName('Paola')">Paola</button><button class="name-user-btn" onclick="selectName('Jannine')">Jannine</button><button class="name-user-btn" onclick="selectName('Byron')">Byron</button><button class="name-user-btn" onclick="selectName('Other')">Other</button></div><input type="hidden" id="name-select" value=""><div id="pw-row" style="display:none;margin-top:16px;"><div style="position:relative;"><input type="password" id="pw-input" autocomplete="new-password" oninput="checkPassword()" onkeydown="if(event.key==='Enter'&&!document.getElementById('name-btn').disabled)startTraining()" placeholder="Enter your password" style="width:100%;padding:12px 44px 12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:inherit;box-sizing:border-box;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e2e8f0'"><button type="button" onclick="var f=document.getElementById('pw-input');f.type=f.type==='password'?'text':'password';this.textContent=f.type==='password'?'👁':'🙈'" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:0;">👁</button></div><div id="pw-error" style="display:none;color:#e53e3e;font-size:12px;font-weight:600;margin-top:6px;">Incorrect password. Please try again.</div></div><button id="name-btn" onclick="startTraining()" disabled="">Start Training 🚀</button></div></div>
+<div id="name-overlay" style="display:flex"><div id="name-box"><div class="nbi">✈️</div><h2>Welcome to Jetstream Training!</h2><p>Before we get started, please select your name from the list below.</p><div id="name-select-grid"><button class="name-user-btn" onclick="selectName('Lauren')">Lauren</button><button class="name-user-btn" onclick="selectName('Rebecca')">Rebecca</button><button class="name-user-btn" onclick="selectName('Shey')">Shey</button><button class="name-user-btn" onclick="selectName('Jerome')">Jerome</button><button class="name-user-btn" onclick="selectName('Sarah')">Sarah</button><button class="name-user-btn" onclick="selectName('Gabriella')">Gabriella</button><button class="name-user-btn" onclick="selectName('Abigail')">Abigail</button><button class="name-user-btn" onclick="selectName('Jada')">Jada</button><button class="name-user-btn" onclick="selectName('Paola')">Paola</button><button class="name-user-btn" onclick="selectName('Jannine')">Jannine</button><button class="name-user-btn" onclick="selectName('Byron')">Byron</button><button class="name-user-btn" onclick="selectName('Thanh')">Thanh</button><button class="name-user-btn" onclick="selectName('Other')">Other</button></div><input type="hidden" id="name-select" value=""><div id="pw-row" style="display:none;margin-top:16px;"><div style="position:relative;"><input type="password" id="pw-input" autocomplete="new-password" oninput="checkPassword()" onkeydown="if(event.key==='Enter'&&!document.getElementById('name-btn').disabled)startTraining()" placeholder="Enter your password" style="width:100%;padding:12px 44px 12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:inherit;box-sizing:border-box;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e2e8f0'"><button type="button" onclick="var f=document.getElementById('pw-input');f.type=f.type==='password'?'text':'password';this.textContent=f.type==='password'?'👁':'🙈'" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:0;">👁</button></div><div id="pw-error" style="display:none;color:#e53e3e;font-size:12px;font-weight:600;margin-top:6px;">Incorrect password. Please try again.</div></div><button id="name-btn" onclick="startTraining()" disabled="">Start Training 🚀</button></div></div>
 <aside id="sidebar">
 <div id="sh"><div class="logo">✈️ Training at Jetstream</div><div class="sub">B2C Guest Services · 2026</div></div>
 <div id="sb-search-wrap" style="padding:10px 12px 8px;border-bottom:1px solid rgba(255,255,255,0.08);">
@@ -915,7 +915,7 @@ function getPagePct(page){
   function _cnt(prefix,ids){var d=0;for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-'+prefix+'-'+ids[i]))d++;}return d;}
   switch(page){
     case 'setup': return getSetupP().pct;
-    case 'security':{var d=_cnt('sec-sec',['sec-why','sec-res']);if(localStorage.getItem(u+'-quiz-security-done'))d++;return Math.round(d/3*100);}
+    case 'security':{var d=_cnt('sec-sec',['sec-why','sec-data','sec-res']);if(localStorage.getItem(u+'-quiz-security-done'))d++;return Math.round(d/4*100);}
     case 'company':{var d=_cnt('who-sec',['who-jvl','who-htc','who-wl']);if(localStorage.getItem(u+'-quiz-company-done'))d++;return d*25;}
     case 'bookings':{var d=_cnt('bk-sec',['bk-role','bk-proc','bk-sync','bk-enter']);if(localStorage.getItem(u+'-quiz-bookings-done'))d++;return d*20;}
     case 'stars':{var d=_cnt('st-sec',['stars-sec1','stars-sec2','stars-sec4','stars-sec5']);if(localStorage.getItem(u+'-quiz-stars-done'))d++;return Math.round(d/5*100);}
@@ -1052,6 +1052,27 @@ function securityPage(){
     h+='<span style="font-size:13px;font-weight:700;color:'+r.color+';">'+r.title+'</span></div>';
     h+='<p style="font-size:12px;color:#4a5568;line-height:1.7;margin-left:30px;">'+r.body+'</p></div>';
   }
+  h+='</div></div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:24px;">';
+  h+='<button class="sec-drop-btn sec-page-btn" onclick="toggleSecBlock(\'sec-data\')">';
+  h+='<span onclick="event.stopPropagation();markSecSection(\'sec-data\')" id="sec-data-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>🔒 Security &amp; Data Protection</span>';
+  h+='<span id="arr-sec-data" style="font-size:16px;">▶</span>';
+  h+='</button>';
+  h+='<div id="sec-data" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px;background:#fff;">';
+  h+='<div style="background:#fffaf0;border-left:4px solid #f6ad55;border-radius:0 10px 10px 0;padding:16px 20px;">';
+  h+='<div style="font-size:13px;font-weight:700;color:#744210;margin-bottom:10px;">Important Notice</div>';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">To protect company and guest data, all employees are required to follow Jetstream\'s security policies and best practices at all times.</p>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a202c;margin-bottom:10px;">Please note:</p>';
+  h+='<ul style="margin:0 0 14px;padding-left:20px;display:flex;flex-direction:column;gap:8px;">';
+  h+='<li style="font-size:13px;color:#4a5568;line-height:1.6;font-style:italic;">&ldquo;Company-issued laptops are provided for work purposes only and must not be used for personal activities.&rdquo;</li>';
+  h+='<li style="font-size:13px;color:#4a5568;line-height:1.6;font-style:italic;">&ldquo;All new employees are required to complete Security Awareness Training as part of their onboarding.&rdquo;</li>';
+  h+='<li style="font-size:13px;color:#4a5568;line-height:1.6;font-style:italic;">&ldquo;Employees must comply with all company security procedures, including those relating to data protection, password security, phishing awareness, device security, and the handling of confidential information.&rdquo;</li>';
+  h+='<li style="font-size:13px;color:#4a5568;line-height:1.6;font-style:italic;">&ldquo;Failure to follow these security requirements may result in disciplinary action and could place company or guest data at risk.&rdquo;</li>';
+  h+='</ul>';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin:0;">Security is everyone\'s responsibility. If you are ever unsure about a security-related issue, contact your manager or the IT team before taking action.</p>';
   h+='</div></div>';
   h+='</div>';
 
@@ -10645,18 +10666,18 @@ function markSecSection(id){
 }
 function updateSecProgress(){
   var u=getUser();if(!u)return;
-  var ids=['sec-why','sec-res'];
+  var ids=['sec-why','sec-data','sec-res'];
   var done=0;
   for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-sec-sec-'+ids[i]))done++;}
   var quizDone=!!(localStorage.getItem(u+'-quiz-security-done'));
   if(quizDone)done++;
-  var pct=Math.round(done/3*100);
+  var pct=Math.round(done/4*100);
   setProgress('sec', pct);
   if(typeof updateAllNavChecks==='function')updateAllNavChecks();
 }
 function restoreSecProgress(){
   var u=getUser();if(!u)return;
-  var ids=['sec-why','sec-res'];
+  var ids=['sec-why','sec-data','sec-res'];
   for(var i=0;i<ids.length;i++){
     if(localStorage.getItem(u+'-sec-sec-'+ids[i])){
       var btn=document.getElementById(ids[i]+'-check');
