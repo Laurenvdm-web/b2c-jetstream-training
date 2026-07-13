@@ -11110,6 +11110,7 @@ var DQ_SCENARIOS=[
 ];
 var _dqAnswers={};
 function openDailyQuiz(){
+  if(getUser()==='Thanh')return;
   DQ_IDX=getDqIdx();
   var body=document.getElementById('dq-modal-body');var title=document.getElementById('dq-modal-title');
   if(!body)return;
@@ -11172,6 +11173,11 @@ function submitDailyQuiz(){
 function checkDqButtonState(){
   var btn=document.getElementById('dq-btn');if(!btn)return;
   var u=getUser();if(!u)return;
+  if(u==='Thanh'){
+    btn.disabled=true;btn.textContent="🎯 Case Challenge (unlocks soon)";
+    btn.style.background='#a0aec0';btn.style.animation='none';btn.style.opacity='0.6';btn.style.cursor='not-allowed';
+    return;
+  }
   var lastDate=null;try{lastDate=localStorage.getItem(u+'-dq-last-completed');}catch(e){}
   var today=new Date().toDateString();
   if(lastDate===today){
