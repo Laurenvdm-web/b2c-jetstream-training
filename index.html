@@ -8390,7 +8390,7 @@ h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e
     {label:"&#x2757; Important - set up in your first days",items:[
       {id:"s1",name:"Gmail",who:"Set up by: Mieke",note:"Mieke will set up an account and send you credentials."},
       {id:"s2",name:"Slack",who:"Set up by: Kirsten",note:"Kirsten will set up an account and send you credentials."},
-      {id:"s3",name:"1Password and Chrome Extension",who:"Set up by: Mieke",note:"Chris will send credentials. Install the 1Password Chrome extension. Once set up, post in the Slack Welcome group so Mieke can grant you access to the Airbnb Host Accounts vault."},
+      {id:"s3",name:"1Password and Chrome Extension",who:"Set up by: Mieke",note:"Chris will send credentials. Install the 1Password Chrome extension. Once set up, post in the Slack Welcome group so Mieke can grant you access to the B2C vault and the Airbnb Host Accounts vault."},
       {id:"s4",name:"Cirrus",who:"Set up by: Chris",note:"Use your Jetstream Gmail credentials to log in."},
       {id:"s5",name:"Google Calendar",who:"Set up by: Mieke",note:"Use the hello@jetstreamtech.io Gmail account."},
       {id:"s6",name:"Hubspot",who:"Set up by: Kirsten",note:"A unique Hubspot link will be sent to you."}
@@ -8463,11 +8463,12 @@ var ss=setupSteps[si];
 var sImg='https://docs.google.com/presentation/d/'+presId2+'/export/jpeg?pageid='+ss.slide;
 h+='<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">';
 h+='<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#f7fafc;border-bottom:1px solid #e2e8f0;">';
-h+='<div style="background:#1a3e6c;color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;">'+(si+1)+'</div>';
-h+='<div style="font-size:15px;font-weight:700;color:#1a1a2e;">'+ss.icon+' '+ss.title+'</div></div>';
+h+='<div style="background:#1a3e6c;color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">'+(si+1)+'</div>';
+h+='<div style="font-size:15px;font-weight:700;color:#1a1a2e;flex:1;">'+ss.icon+' '+ss.title+'</div>';
+if(ss.link){h+='<a href="'+ss.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#1a3e6c;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;">&#x1F517; '+ss.linkLabel+'</a>';}
+h+='</div>';
 h+='<div style="padding:16px;">';
 h+='<p style="font-size:13px;color:#4a5568;line-height:1.75;margin:0 0 14px 0;">'+ss.desc+'</p>';
-if(ss.link){h+='<a href="'+ss.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#1a3e6c;color:#fff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:8px;text-decoration:none;margin-bottom:14px;">&#x1F517; '+ss.linkLabel+'</a>';}
 h+='<div style="border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;background:#f8fafc;">';
 h+='<img src="'+sImg+'" alt="'+ss.title+' setup screenshot" style="width:100%;display:block;" onerror="this.remove()">';
 h+='<p style="font-size:11px;color:#b0bec5;text-align:center;margin:0;padding:6px 0;font-style:italic;">📷 Screenshot loads when signed into Google</p>';
