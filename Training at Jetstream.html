@@ -2125,6 +2125,56 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   }
   h+='</div>';
 
+  // ── Complete Guide to V1 Inquiries Quiz ─────────────────────────────────
+  var cgU=getUser();
+  var cgDone=!!localStorage.getItem(cgU+'-quiz-v1guide-done');
+  var cgScore=cgDone?parseInt(localStorage.getItem(cgU+'-quiz-v1guide-score')||'0'):0;
+  var cgTotal=11;
+  var cgPct=cgDone?Math.round(cgScore/cgTotal*100):0;
+  h+='<div style="margin-top:44px;">';
+  h+='<div style="font-size:20px;font-weight:700;color:#1a202c;margin-bottom:6px;">📚 Complete Guide to V1 Inquiries Quiz</div>';
+  h+='<p style="font-size:13px;color:#718096;line-height:1.6;margin-bottom:16px;">11 questions on the core V1 inquiry response rules. You need 8 out of 11 to pass. Use the Complete Guide button at the top of this page whenever you are unsure.</p>';
+  if(cgDone){
+    var cgPass=cgScore>=8;
+    var cC=cgPass?'#276749':'#c53030';
+    var cBg=cgPass?'#f0fff4':'#fff5f5';
+    var cBd=cgPass?'#68d391':'#fc8181';
+    h+='<div style="background:'+cBg+';border:2px solid '+cBd+';border-radius:12px;padding:24px;text-align:center;">';
+    h+='<div style="font-size:48px;margin-bottom:12px;">'+(cgPass?'🎉':'📚')+'</div>';
+    h+='<div style="font-size:22px;font-weight:700;color:'+cC+';margin-bottom:6px;">'+cgScore+' / '+cgTotal+'</div>';
+    h+='<div style="font-size:16px;color:'+cC+';margin-bottom:10px;">'+cgPct+'%</div>';
+    h+=cgPass?'<span style="background:'+cC+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">PASSED</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">Great work! You know the V1 inquiry rules.</div>':'<span style="background:'+cC+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">NEEDS REVIEW</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">Reread the Complete Guide at the top of this page, then try again.</div>';
+    h+='<div style="margin-top:18px;"><button onclick="resetV1GuideQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:11px;color:#718096;cursor:pointer;">↺ Reset for practice</button></div>';
+    h+='</div>';
+  } else {
+    var cgQ=[
+     {q:"What is the very first thing you check before choosing how to answer any guest message?",opts:["Whether they are polite","Their stay status tag &mdash; Inquiry, Pre-stay, or In-house","Which OTA they booked on","The property name"]},
+     {q:"The golden rule for every guest reply you draft during training is:",opts:["Send it fast so the guest is not kept waiting","Never send it yourself without it being reviewed first","Always offer a small discount to be friendly","Copy the partner on every message"]},
+     {q:"In the response body, dashes and hyphens should be:",opts:["Used freely to separate ideas","Used only in the greeting","Avoided entirely &mdash; use a comma, a period, or two sentences instead","Replaced with semicolons"]},
+     {q:"A guest with a confirmed booking asks for an early check-in. What is the correct handling?",opts:["Guarantee it to secure the booking","Give them the front desk number from Cirrus and direct them to arrange it there, based on availability and never guaranteed","Refuse &mdash; early check-in is never possible","Tell them to email the partner directly"]},
+     {q:"A guest asks &lsquo;What is the WiFi password?&rsquo; at Inquiry stage. What do you do?",opts:["Give it from Cirrus","Tell them they will get the front desk number once the booking is confirmed and can ask directly","Say WiFi is not provided","Give the Central Reservations number"]},
+     {q:"A guest asks whether the apartment is wheelchair accessible (PMR). How do you answer?",opts:["Guess from the listing &mdash; if it is ground floor, say yes","Only rely on an explicit accessibility note in Cirrus; check every unit at the resort. No note anywhere means treat it as not accessible and tell them directly","Tell them to call the front desk","Say all properties are accessible"]},
+     {q:"A guest asks the distance to a nearby attraction and it is not in Cirrus. What is the rule?",opts:["Estimate a number that sounds about right","Check the description and Local Favourites first, then web search; never invent a number &mdash; if unsure, say it is not on file and suggest a maps app","Refuse to answer","Give the exact address so they can measure it"]},
+     {q:"A guest asks if they can pay with holiday vouchers, or contact you on WhatsApp. This is a:",opts:["Definite YES","An &lsquo;ask the partner&rsquo; situation","Definite NO &mdash; front desk is calls only, and platform policy means no sharing direct contact or off-platform methods","Upon-arrival-only answer"]},
+     {q:"A guest reports ants in the kitchen mid-stay (first time reported). What is the correct sequence?",opts:["Apologise and tell them it will be fixed next time","Apologise and acknowledge, ask if they have told the front desk, ask for photos if possible, then say it will be escalated to management","Tell them to call the front desk and close the conversation","Offer a refund immediately"]},
+     {q:"A guest asks for photos of the other bedrooms and the property has multiple units of that type. What do you add?",opts:["Nothing &mdash; just send the photos","That units are individually decorated, photos are representative only, and the exact room cannot be guaranteed","That you will take new photos for them","That they must book to see photos"]},
+     {q:"A guest asks to split payment across two cards. What is the answer?",opts:["Yes, set it up in Cirrus","No &mdash; splitting payment is controlled by the booking platform checkout, not something Leavetown can enable; point them to the platform support","Yes, but only for Airbnb","Ask the partner to arrange it"]}
+    ];
+    h+='<button onclick="startV1GuideQuiz()" style="width:100%;text-align:left;background:linear-gradient(135deg,#2f855a,#38a169);color:#fff;border:none;border-radius:14px;padding:18px 24px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(47,133,90,0.35);margin-bottom:16px;"><span>📚 Start the Complete Guide Quiz</span><span style="font-size:15px;">▼</span></button>';
+    h+='<div id="cg-quiz-wrap" style="display:none;">';
+    for(var cqi=0;cqi<cgQ.length;cqi++){
+      h+='<div class="quiz-q" style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px 20px;margin-bottom:14px;"><div style="font-size:14px;font-weight:600;color:#2d3748;margin-bottom:12px;">'+(cqi+1)+'. '+cgQ[cqi].q+'</div>';
+      for(var coi=0;coi<cgQ[cqi].opts.length;coi++){
+        h+='<label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#f7fafc;cursor:pointer;font-size:13px;color:#1a1a2e;margin-bottom:8px;transition:border-color 0.15s;"><input type="radio" name="v1guide-q'+cqi+'" value="'+coi+'" style="width:18px;height:18px;accent-color:#2f855a;flex-shrink:0;cursor:pointer;"> '+cgQ[cqi].opts[coi]+'</label>';
+      }
+      h+='</div>';
+    }
+    h+='<div style="text-align:center;margin-top:20px;"><button onclick="submitV1GuideQuiz()" style="background:linear-gradient(135deg,#276749,#48bb78);color:#fff;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(72,187,120,0.4);">✅ Submit Answers</button></div>';
+    h+='<div id="cg-score-display" style="display:none;margin-top:20px;text-align:center;"></div>';
+    h+='</div>';
+  }
+  h+='</div>';
+
   return h;
 }
 
@@ -2163,6 +2213,45 @@ function resetGuardrailsQuiz(){
   var u=getUser();
   localStorage.removeItem(u+'-quiz-guardrails-done');
   localStorage.removeItem(u+'-quiz-guardrails-score');
+  updSidebar();
+  show('v1inquiries');
+}
+
+function startV1GuideQuiz(){
+  var wrap=document.getElementById('cg-quiz-wrap');
+  var isOpen=wrap&&wrap.style.display!=='none';
+  if(wrap) wrap.style.display=isOpen?'none':'block';
+}
+
+function submitV1GuideQuiz(){
+  var answers=[1,1,2,1,1,1,1,2,1,1,1];
+  var score=0;
+  var missing=[];
+  for(var i=0;i<11;i++){
+    var sel=document.querySelector('input[name="v1guide-q'+i+'"]:checked');
+    if(!sel){missing.push(i+1);}
+    else if(parseInt(sel.value)===answers[i]){score++;}
+  }
+  if(missing.length>0){
+    var disp=document.getElementById('cg-score-display');
+    if(disp){
+      disp.style.display='block';
+      disp.innerHTML='<div style="background:#fff5f5;border:2px solid #fc8181;border-radius:10px;padding:14px 18px;color:#c53030;font-size:13px;">Please answer all questions before submitting. Missing: Q'+missing.join(', Q')+'</div>';
+    }
+    return;
+  }
+  var u=getUser();
+  recordModuleQuiz('Complete Guide to V1 Inquiries Quiz',score,11,Math.round(score/11*100));
+  localStorage.setItem(u+'-quiz-v1guide-done','1');
+  localStorage.setItem(u+'-quiz-v1guide-score',String(score));
+  updSidebar();
+  show('v1inquiries');
+}
+
+function resetV1GuideQuiz(){
+  var u=getUser();
+  localStorage.removeItem(u+'-quiz-v1guide-done');
+  localStorage.removeItem(u+'-quiz-v1guide-score');
   updSidebar();
   show('v1inquiries');
 }
