@@ -1645,6 +1645,7 @@ function homePage(forcedTab){
 
   var tabs=[['trainingguide','📖 Training Guide'],['overview','Overview'],['progress','Training Progress'],['challenge','Today\'s Challenge'],['mq','Module Quiz Results'],['reflection','Weekly Reflection'],['reminders','Recent Reminders']];
   h+='<div style="display:flex;border-bottom:1px solid #e2e8f0;margin-bottom:16px;background:#fff;flex-wrap:nowrap;overflow-x:auto;">';
+  h+='<a class="home-tab" href="https://jetstream-b2c-schedule.netlify.app/" target="_blank" rel="noopener" style="text-decoration:none;color:#3a8a9e;display:inline-flex;align-items:center;gap:5px;">&#x1F4C5; Schedule <span style="font-size:11px;">&#x2197;</span></a>';
   for(var i=0;i<tabs.length;i++){
     h+='<button class="home-tab'+(activeTab===tabs[i][0]?' active':'')+'" data-tab="'+tabs[i][0]+'" onclick="setHomeTab(\''+tabs[i][0]+'\')">'+tabs[i][1]+'</button>';
   }
