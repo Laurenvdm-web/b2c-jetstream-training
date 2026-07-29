@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Hire Guide — Guest Response Quick Reference</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f6fa; color: #1a1a2e; padding: 20px; }
+
+  .wrap { max-width: 1000px; margin: 0 auto; }
+
+  .page-header { text-align: center; padding: 12px 12px 18px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; }
+  .page-header p { font-size: 13px; color: #666; margin-top: 6px; }
+
+  .callout { border-radius: 10px; padding: 12px 16px; font-size: 12.5px; line-height: 1.6; margin-bottom: 14px; }
+  .callout.welcome { background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3; }
+  .callout.welcome strong { display: block; font-size: 13px; margin-bottom: 4px; }
+  .callout.confirm { background: #fef3c7; border: 1px solid #fde68a; color: #92400e; }
+  .callout.confirm strong { font-weight: 700; }
+
+  .howto { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .howto-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  .howto-steps { display: flex; flex-direction: column; gap: 8px; }
+  .howto-step { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; color: #374151; line-height: 1.5; }
+  .howto-num { width: 20px; height: 20px; border-radius: 50%; background: #6366f1; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  .tags { display: flex; gap: 8px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+  .tag { border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; border: 2px solid; }
+  .tag-inq { background: #ede9fe; border-color: #7c3aed; color: #5b21b6; }
+  .tag-pre { background: #dcfce7; border-color: #16a34a; color: #166534; }
+  .tag-inh { background: #fef9c3; border-color: #ca8a04; color: #854d0e; }
+
+  .format-strip { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .format-box { flex: 1; min-width: 200px; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; line-height: 1.65; border: 1.5px solid; }
+  .fmt-q { background: #f0fdf4; border-color: #16a34a; }
+  .fmt-s { background: #fef9c3; border-color: #ca8a04; }
+  .fmt-t { background: #fdf2f8; border-color: #db2777; }
+  .fmt-label { font-size: 11.5px; font-weight: 700; margin-bottom: 5px; }
+  .fmt-line.body { font-style: italic; color: #6b7280; }
+  .fmt-line.omit { color: #dc2626; text-decoration: line-through; opacity: 0.6; font-size: 10px; }
+
+  .search-wrap { margin-bottom: 18px; }
+  .search-input { width: 100%; padding: 11px 16px; border-radius: 10px; border: 1.5px solid #d1d5db; font-size: 13px; background: #fff; }
+  .search-input:focus { outline: none; border-color: #6366f1; }
+  .search-count { font-size: 11px; color: #9ca3af; margin-top: 6px; text-align: center; }
+
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280; margin: 22px 0 8px; padding-left: 4px; }
+
+  .category { background: #fff; border-radius: 10px; border: 1px solid #e5e7eb; margin-bottom: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .category-header { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; cursor: pointer; user-select: none; }
+  .category-header:hover { background: #fafafa; }
+  .cat-emoji { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .cat-info { flex: 1; min-width: 0; }
+  .cat-title { font-size: 13.5px; font-weight: 700; }
+  .cat-fmt-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
+  .cat-fmt-badge.q { background: #dcfce7; color: #166534; }
+  .cat-fmt-badge.s { background: #fef9c3; color: #854d0e; }
+  .cat-fmt-badge.t { background: #fdf2f8; color: #9d174d; }
+  .chevron { font-size: 11px; color: #9ca3af; margin-left: 8px; transition: transform 0.2s; flex-shrink: 0; margin-top: 3px; }
+  .chevron.open { transform: rotate(180deg); }
+  .category-body { padding: 0 16px 14px 44px; display: none; }
+  .category-body.open { display: block; }
+
+  .examples-line { font-size: 11.5px; color: #6b7280; margin-bottom: 10px; }
+  .examples-line span { display: block; padding: 1px 0 1px 10px; position: relative; }
+  .examples-line span::before { content: "›"; position: absolute; left: 0; color: #9ca3af; }
+
+  .resp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .resp-grid.single { grid-template-columns: 1fr; }
+  .resp-col { border-radius: 7px; padding: 9px 11px; font-size: 11.5px; line-height: 1.55; }
+  .resp-col.inq { background: #f5f3ff; border-left: 3px solid #7c3aed; }
+  .resp-col.pre { background: #f0fdf4; border-left: 3px solid #16a34a; }
+  .resp-col.inh { background: #fefce8; border-left: 3px solid #ca8a04; }
+  .resp-col.na { background: #f9fafb; border-left: 3px solid #d1d5db; color: #9ca3af; font-style: italic; }
+  .resp-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; opacity: 0.75; }
+  .badge { display: inline-block; font-size: 9.5px; font-weight: 700; border-radius: 4px; padding: 1px 6px; margin-bottom: 4px; }
+  .b-cirrus { background: #4F46E5; color: #fff; }
+  .b-no { background: #dc2626; color: #fff; }
+  .b-yes { background: #16a34a; color: #fff; }
+
+  .watch { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 8px 10px; font-size: 11px; color: #9a3412; line-height: 1.55; margin-top: 10px; }
+  .watch strong { font-weight: 700; }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: #9ca3af; margin: 26px 0 8px; line-height: 1.6; }
+  .footer-note a { color: #6366f1; }
+
+  .hidden { display: none !important; }
+
+  .example-block { margin-top: 10px; background: #f8fafc; border: 1px dashed #c7d2fe; border-radius: 8px; padding: 10px 12px; }
+  .example-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #6366f1; margin-bottom: 6px; }
+  .example-q { font-size: 11.5px; color: #1a1a2e; margin-bottom: 6px; line-height: 1.5; }
+  .example-q strong { color: #6366f1; }
+  .example-a { font-size: 11.5px; color: #374151; line-height: 1.65; background: #fff; border-radius: 6px; padding: 9px 11px; border: 1px solid #e5e7eb; }
+  .example-a strong { color: #16a34a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="page-header">
+  <h1>🎓 Guest Response Quick Reference</h1>
+  <p>New hire starter guide · Message arrives → find the category below → apply the response for that stay status</p>
+</div>
+
+<div class="callout welcome">
+  <strong>Welcome! Start here.</strong>
+  This is a simplified version of Lauren's full guest-response logic, built to cover the situations you'll run into most. Every category from the master file is here, just trimmed down to the core rule. Once you're comfortable with this, Lauren also has a fuller reference with response templates, trickier edge cases, and V2-property exceptions — ask her when you're ready for it.
+</div>
+
+<div class="callout confirm">
+  ⚠️ <strong>Golden rule:</strong> Never send a guest reply yourself without it being reviewed first. Always draft the response and have Lauren (or whoever is checking your work) confirm before it goes out. Sign every message "Lauren – Leavetown" unless you're told otherwise.
+</div>
+
+<div class="howto">
+  <div class="howto-title">📋 How to use this page</div>
+  <div class="howto-steps">
+    <div class="howto-step"><span class="howto-num">1</span>Check the guest's stay status tag: <strong>Inquiry</strong> (hasn't booked yet), <strong>Pre-stay</strong> (booked, hasn't arrived), or <strong>In-house</strong> (currently staying).</div>
+    <div class="howto-step"><span class="howto-num">2</span>Read the guest's message and find the closest matching category below — click it to expand.</div>
+    <div class="howto-step"><span class="howto-num">3</span>Use the response for that stay status. If a Cirrus badge appears, look that detail up in Cirrus rather than guessing.</div>
+    <div class="howto-step"><span class="howto-num">4</span>Can't find a match, or something feels off? Don't guess — flag it to Lauren with your best-guess draft attached.</div>
+  </div>
+</div>
+
+<div class="tags">
+  <div class="tag tag-inq">📋 INQUIRY</div>
+  <div class="tag tag-pre">✅ PRE-STAY</div>
+  <div class="tag tag-inh">🏠 IN-HOUSE</div>
+</div>
+
+<div class="format-strip">
+  <div class="format-box fmt-q">
+    <div class="fmt-label">✅ Question format</div>
+    <div class="fmt-line">Hello [Name],</div>
+    <div class="fmt-line" style="height:5px;"></div>
+    <div class="fmt-line">Thank you for your message.</div>
+    <div class="fmt-line body">[answer, one sentence per line, no blank lines]</div>
+    <div class="fmt-line">If you have any further questions I will be happy to assist.</div>
+    <div class="fmt-line">Kind regards,</div>
+    <div class="fmt-line" style="height:5px;"></div>
+    <div class="fmt-line">Lauren – Leavetown</div>
+  </div>
+  <div class="format-box fmt-s">
+    <div class="fmt-label">💬 Statement format</div>
+    <div class="fmt-line">Hello [Name],</div>
+    <div class="fmt-line" style="height:5px;"></div>
+    <div class="fmt-line">Thank you for your message.</div>
+    <div class="fmt-line body">[answer, one sentence per line, no blank lines]</div>
+    <div class="fmt-line omit">If you have any further questions... (omit this line)</div>
+    <div class="fmt-line">Kind regards,</div>
+    <div class="fmt-line" style="height:5px;"></div>
+    <div class="fmt-line">Lauren – Leavetown</div>
+  </div>
+  <div class="format-box fmt-t">
+    <div class="fmt-label">🌸 Thank-you format</div>
+    <div class="fmt-line">Hello [Name],</div>
+    <div class="fmt-line" style="height:5px;"></div>
+    <div class="fmt-line omit">Thank you for your message... (omit)</div>
+    <div class="fmt-line">You are very welcome.</div>
+    <div class="fmt-line">Kind regards,</div>
+    <div class="fmt-line" style="height:5px;"></div>
+    <div class="fmt-line">Lauren – Leavetown</div>
+  </div>
+</div>
+<p style="font-size:11px;color:#9ca3af;text-align:center;margin-bottom:6px;">★ No dashes or hyphens anywhere in the response body — use a comma, a period, or split into two sentences instead.</p>
+
+<div class="search-wrap">
+  <input type="text" class="search-input" id="searchBox" placeholder="🔍 Type a keyword (e.g. 'parking', 'check-in', 'pet') to filter categories..." onkeyup="filterCategories()">
+  <div class="search-count" id="searchCount"></div>
+</div>
+
+<!-- ═══════════ CORE STAY QUESTIONS ═══════════ -->
+<div class="section-title">Core stay questions</div>
+
+<div class="category" data-search="availability early check-in late check-out bed configuration">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🟢</span>
+    <div class="cat-info">
+      <div class="cat-title">1. Availability Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Can we have an early check-in?</span><span>Is a late check-out possible?</span><span>Can we request a specific bed configuration?</span></div>
+    <div class="resp-grid">
+      <div class="resp-col inq"><div class="resp-label">Inquiry</div>Once booking is confirmed, guest gets the front desk number to ask directly. Based on availability, never guaranteed.</div>
+      <div class="resp-col pre"><div class="resp-label">Pre-stay</div><span class="badge b-cirrus">Cirrus</span> Pull front desk #. Direct to front desk. Based on availability.</div>
+      <div class="resp-col inh"><div class="resp-label">In-house</div><span class="badge b-cirrus">Cirrus</span> Pull front desk #. Direct to front desk — treat as priority if urgent.</div>
+    </div>
+    <div class="watch"><strong>Watch for:</strong> if the guest asks us to pass the request to the property ourselves (instead of calling directly), do that — message the partner with the request — but still tell the guest it can't be guaranteed.</div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Is a late check-out possible?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Once your booking is confirmed, you will receive the front desk number and will be able to contact them directly regarding a late check-out. Please note this is based on availability and cannot be guaranteed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Can we have an early check-in?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Sarah,<br>Thank you for your message.<br>Please contact our on-site team at (555) 123-4567 and they will do their best to accommodate an early check-in, based on availability. Please note this cannot be guaranteed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="info question wifi late arrival keys trash how-to">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🟡</span>
+    <div class="cat-info">
+      <div class="cat-title">2. Info Question</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>What's the WiFi password?</span><span>How do I return the keys when I leave early?</span><span>We'll arrive late, around 10pm.</span></div>
+    <div class="resp-grid">
+      <div class="resp-col inq"><div class="resp-label">Inquiry</div>Once booking is confirmed, guest gets the front desk number to ask directly.</div>
+      <div class="resp-col pre"><div class="resp-label">Pre-stay</div><span class="badge b-cirrus">Cirrus</span> Pull front desk #. Direct to front desk for late check-in instructions.</div>
+      <div class="resp-col inh"><div class="resp-label">In-house</div><span class="badge b-cirrus">Cirrus</span> Pull front desk #. Direct to front desk immediately.</div>
+    </div>
+    <div class="watch"><strong>Watch for:</strong> if a guest states an arrival time, check it against Cirrus (check-in time + that day's reception hours) before deciding anything — never judge "early" or "late" just from how the guest phrases it.</div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "What's the WiFi password?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Once your booking is confirmed, you will receive the front desk number and will be able to contact them directly for this information.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "What's the WiFi password?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Marc,<br>Thank you for your message.<br>Please contact our on-site team at (555) 123-4567 and they will be happy to provide you with the WiFi password.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="paid feature towels cleaning parking sauna extra bed fee">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🔵</span>
+    <div class="cat-info">
+      <div class="cat-title">3. Adding a Paid Feature</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Can we add end-of-stay cleaning?</span><span>Can I add paid parking?</span><span>Could you arrange an extra bed?</span></div>
+    <div class="resp-grid">
+      <div class="resp-col inq"><div class="resp-label">Inquiry</div><span class="badge b-cirrus">Cirrus</span> Pull price. Give the price; tell them to contact the front desk once booking is confirmed.</div>
+      <div class="resp-col pre"><div class="resp-label">Pre-stay</div><span class="badge b-cirrus">Cirrus</span> Pull price + front desk #. Give both so they can arrange it.</div>
+      <div class="resp-col inh"><div class="resp-label">In-house</div><span class="badge b-cirrus">Cirrus</span> Same as pre-stay.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Can we add end-of-stay cleaning?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>The cost for end-of-stay cleaning is $75. Once your booking is confirmed, please contact the front desk to add this to your reservation.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Can we add end-of-stay cleaning?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Julie,<br>Thank you for your message.<br>The cost for end-of-stay cleaning is $75. Please contact the front desk on (555) 123-4567 to add this to your booking.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="check-in access keys self check-in door code entry">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🟠</span>
+    <div class="cat-info">
+      <div class="cat-title">4. Check-in / Access</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Is it self check-in?</span><span>Where do we collect the keys?</span><span>Do we access via code or will someone give us keys?</span></div>
+    <div class="resp-grid">
+      <div class="resp-col inq"><div class="resp-label">Inquiry</div>Instructions sent once confirmed. If asked "is it self check-in?" — no, you'll check in at the front desk.</div>
+      <div class="resp-col pre"><div class="resp-label">Pre-stay</div><span class="badge b-cirrus">Cirrus</span> VRBO: give address + check-in time, resend instructions, mention spam folder. Airbnb/Booking.com: give address + time, no spam note.</div>
+      <div class="resp-col inh"><div class="resp-label">In-house</div><span class="badge b-cirrus">Cirrus</span> Pull address + access info. Help with access; escalate if locked out.</div>
+    </div>
+    <div class="watch"><strong>Watch for:</strong> if someone else in the group is checking in on the lead guest's behalf, get that person's full name and ID from the lead guest and pass it to the property yourself — don't just tell them to sort it out with the front desk.</div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Is it self check-in?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>This is not a self check-in, you will be checking in at the front desk. Full check-in instructions will be sent to you once your booking is confirmed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay, Airbnb):</strong> "Is keyless entry available or do I need to pick up keys?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Tom,<br>Thank you for your message.<br>This is not a self check-in, you will be checking in at the front desk located at 123 Ocean Drive. Check-in time is from 3:00 PM.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="front desk number phone reception contact">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🩷</span>
+    <div class="cat-info">
+      <div class="cat-title">5. Front Desk Number</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Do you have the front desk number?</span><span>Can you give me the property contact number?</span></div>
+    <div class="resp-grid">
+      <div class="resp-col inq"><div class="resp-label">Inquiry</div>Number comes in the confirmation email once booking is confirmed.</div>
+      <div class="resp-col pre"><div class="resp-label">Pre-stay</div><span class="badge b-cirrus">Cirrus</span> Pull number, give it directly.</div>
+      <div class="resp-col inh"><div class="resp-label">In-house</div><span class="badge b-cirrus">Cirrus</span> Pull number, give it directly.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Do you have the front desk number?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>The front desk number will be provided in your confirmation email once your booking is confirmed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Would you have a number I can call, since I can't reach them?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Anna,<br>Thank you for your message.<br>You can reach the front desk directly on (555) 123-4567.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="property hotel name request which property did we stay at">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🏨</span>
+    <div class="cat-info">
+      <div class="cat-title">23. Property / Hotel Name Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>What is the name of the property/hotel?</span><span>Which property did we stay at?</span></div>
+    <div class="resp-grid">
+      <div class="resp-col inq"><div class="resp-label">Inquiry</div>Never before booking is confirmed. "We're unable to share the exact property/hotel name before your booking is confirmed."</div>
+      <div class="resp-col pre" style="grid-column: span 2;"><div class="resp-label">Pre-stay / In-house</div><span class="badge b-cirrus">Cirrus</span> Once confirmed, answer directly with the property name on file — this includes past-stay/checkout follow-ups too.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "What's the name of the place we booked?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>We're unable to share the exact property/hotel name before your booking is confirmed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "What is the name of the property/hotel?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>You've booked The Grand Vista Resort.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="front desk unreachable discrepancy no answer wrong number disconnected">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">📞</span>
+    <div class="cat-info">
+      <div class="cat-title">22. Front Desk Unreachable / Discrepancy</div>
+      <span class="cat-fmt-badge q">Question</span> <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>We called reception and haven't heard back.</span><span>The number you gave doesn't work.</span><span>The property told us something different than our booking says.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-cirrus">Cirrus</span> Always check the number in Cirrus first, don't assume the guest dialed wrong or that Cirrus is outdated.<br><br>
+      <strong>Waiting on a callback:</strong> if the number matches Cirrus, tell them to try again, it's correct.<br>
+      <strong>Number seems wrong:</strong> if Cirrus shows a different number, apologize and give the correct one. If it's the same, tell them it's correct and suggest trying again.<br>
+      <strong>Already tried and failed / given a wrong number by someone:</strong> don't send them back to redial. Tell them we'll contact the property ourselves, then actually do it.<br>
+      <strong>Property told them something different than our records:</strong> don't contradict the property. Flag to Lauren before responding.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (Pre-stay):</strong> "We called the reception but haven't heard back."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Yves,<br>Thank you for your message.<br>The number you called, (555) 123-4567, is the correct number for the on-site team. Please try calling them again directly and they will be able to assist you.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ QUICK YES / NO ═══════════ -->
+<div class="section-title">Quick yes / no</div>
+
+<div class="category" data-search="definite no whatsapp contact details vouchers cheques direct booking">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🔴</span>
+    <div class="cat-info">
+      <div class="cat-title">6. Definite NO</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Can I contact you via WhatsApp?</span><span>Can you send me your email/phone number?</span><span>Can we pay with holiday vouchers?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inh"><span class="badge b-no">NO — every stay status</span> WhatsApp: front desk isn't on WhatsApp, calls only. Our contact details: platform policy means we can't share direct contact info, stay on this channel.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (any status):</strong> "Can I contact the property manager via WhatsApp?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Unfortunately the front desk is not available via WhatsApp, their number is for calls only.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="definite yes pillows duvets physical credit card">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🟩</span>
+    <div class="cat-info">
+      <div class="cat-title">7. Definite YES</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Are pillows and duvets provided?</span><span>Do I need my physical credit card at check-in?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-yes">YES — every stay status</span> Confirm directly, no Cirrus needed.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (any status):</strong> "Are pillows and duvets provided with the bedding?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Yes, pillows and duvets are provided, you do not need to bring your own.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="upon arrival unit number floor allocation">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🟣</span>
+    <div class="cat-info">
+      <div class="cat-title">8. Upon Arrival Only</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>What floor is the apartment on?</span><span>Can you tell me our unit number?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre">Unit is only allocated on arrival. Guest can note a preference via the front desk once booking is confirmed, but it's never guaranteed.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "What floor is the apartment on?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Your specific unit will only be allocated upon arrival. Once your booking is confirmed, you will receive the front desk contact number and are welcome to call them to note your preference, however we are unable to guarantee this.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Can you tell me the unit number for our apartment?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Peter,<br>Thank you for your message.<br>Your specific unit will only be allocated upon arrival. You're welcome to contact the front desk directly on (555) 123-4567 to note your preference, however we are unable to guarantee this.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="discount price reduction cheaper rate">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🟥</span>
+    <div class="cat-info">
+      <div class="cat-title">20. Discount / Price Reduction Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Could you lower the price for our stay?</span><span>Any chance of a discount?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inh"><span class="badge b-no">NO — every stay status</span> We don't offer discounted rates, the price shown / at booking is already our best rate.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (any status):</strong> "Could you lower the price for our stay?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>We don't offer discounted rates, the price shown is already our best available rate for this property.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="specific questions security deposit scripted no pets">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🔵</span>
+    <div class="cat-info">
+      <div class="cat-title">9. Specific Questions (scripted)</div>
+      <span class="cat-fmt-badge q">Question</span> <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>How long does the security deposit take to be released?</span><span>No, I won't be bringing pets.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><strong>Deposit timing:</strong> it's a temporary hold, released ~7-10 working days after the stay if there's no damage.<br><strong>Deposit purpose:</strong> temporary hold only, nothing is charged, released after the stay if there's no damage.<br><strong>No pets confirmation:</strong> "Thank you for letting us know, this has been noted." (statement format, no "further questions" line)</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (any status):</strong> "What is the security deposit for / how does it work?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Please note that this is only a temporary hold on your card and no amount will be charged. The hold will be released after your stay, provided there are no damages during your stay.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ LISTING & AMENITIES ═══════════ -->
+<div class="section-title">Listing & amenities</div>
+
+<div class="category" data-search="amenity listing beds appliances parking pool washing machine ac">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🩵</span>
+    <div class="cat-info">
+      <div class="cat-title">10. Amenity / Listing Question</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Is there a washing machine?</span><span>Is the pool shared or private?</span><span>Is street parking available?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-cirrus">Cirrus</span> Answer directly from Cirrus listing data.</div>
+    </div>
+    <div class="watch"><strong>Watch for:</strong> French pool swimwear rule — loose shorts and wetsuits are banned by law at any French property pool even if Cirrus doesn't say so; only a fitted swimsuit is allowed. Burkinis are never allowed at a French pool, no matter how fitted. If an item isn't listed anywhere in Cirrus, answer "no, this isn't provided" directly, don't hedge with "not confirmed."</div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Does the property have a washing machine?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Yes, this property has a washing machine available for guest use.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Is there a washing machine in the unit?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello Claire,<br>Thank you for your message.<br>Yes, this property has a washing machine available for guest use.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="photo request pictures bedroom kitchen">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">📸</span>
+    <div class="cat-info">
+      <div class="cat-title">13. Photo Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Can we see photos of the other bedrooms?</span><span>Do you have more photos of the apartment?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-cirrus">Cirrus</span> Point to the photos already on the listing. If there's more than one unit of this type, mention units are individually decorated, photos are representative only, the exact room can't be guaranteed.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Can we see photos of the other bedrooms?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Please see the photos already included on our listing, which show representative examples of this unit type. As this property has more than one unit of this type, the exact room and view cannot be guaranteed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="distance nearby attraction venue airport downtown how far">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🌐</span>
+    <div class="cat-info">
+      <div class="cat-title">16. Distance to Nearby Venue / Attraction</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>How far are you from the airport?</span><span>What's the distance to downtown?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-cirrus">Cirrus</span> Check the property description and Local Favorites first. If nothing exact, web search the distance. Never invent a number, if you can't find a reliable answer, say it isn't on file and suggest a maps app.</div>
+    </div>
+    <div class="watch"><strong>Watch for:</strong> at Inquiry stage, never name the property, the exact building, or a specific landmark, even if you found it. Keep it generic ("a few minutes' walk"). A named landmark can be reverse-searched to find the exact address before the guest has even booked. Once confirmed, be as specific as Cirrus/search supports.</div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "How far are you from the ski lifts?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>The property is just a short walk from the slopes, no car needed.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown<br><br><em>(Kept generic since this is Inquiry stage &mdash; no property name or exact landmark named.)</em></div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="service animal dog pet fee accessibility">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🐾</span>
+    <div class="cat-info">
+      <div class="cat-title">17. Service Animal Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Do you allow service dogs?</span><span>I have a service animal, am I approved to bring it?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre">Yes, service animals are welcome, no pet fee applies. Once confirmed, contact the front desk directly to let them know.</div>
+    </div>
+    <div class="watch">Emotional support animals (ESAs) are different from task-trained service animals and may not carry the same protections. If a request seems unusual, escalate to Lauren rather than confirming it yourself.</div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "I have a service animal, am I approved to bring it?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Yes, service animals are welcome, no pet fee applies. Once your booking is confirmed, you're welcome to contact the front desk directly to let them know you'll be bringing a service animal.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Do you allow service dogs?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Yes, service animals are welcome, no pet fee applies. Please contact the front desk directly on (555) 123-4567 to let them know you'll be bringing a service animal.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="pmr accessibility wheelchair mobility adapted">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">♿</span>
+    <div class="cat-info">
+      <div class="cat-title">21. PMR / Accessibility Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Is the apartment wheelchair accessible?</span><span>Is there step-free access?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-cirrus">Cirrus</span> Check every unit at the resort, not just the one the guest asked about. Only rely on an explicit accessibility note in Cirrus, never guess from general listing info (like "ground floor").<br><br>If nothing is found anywhere: tell the guest directly the property isn't suitable for reduced mobility, no accessibility note = treated as not accessible. If one unit is confirmed accessible: point them to it.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked examples</div>
+      <div class="example-q"><strong>Guest asks (Inquiry):</strong> "Is there step-free access to the unit?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>After checking, unfortunately this property is not adapted or suitable for a guest with reduced mobility.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown<br><br><em>(This rule applies the same way at every stay status &mdash; checked every unit at the resort in Cirrus, none had an accessibility note on file.)</em></div>
+      <div class="example-q" style="margin-top:10px;"><strong>Guest asks (Pre-stay):</strong> "Is the apartment wheelchair accessible?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>After checking, unfortunately this property is not adapted or suitable for a guest with reduced mobility.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CONVERSATION CLOSERS ═══════════ -->
+<div class="section-title">Conversation closers (no Cirrus needed)</div>
+
+<div class="category" data-search="thank you welcome">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🌸</span>
+    <div class="cat-info">
+      <div class="cat-title">11. Thank You</div>
+      <span class="cat-fmt-badge t">Thank-you</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Thank you so much for your help!</span><span>Perfect, thanks!</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre">"Hello, You are very welcome. Kind regards, Lauren – Leavetown" — same at every stay status.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest says (any status):</strong> "Thank you so much for your help!"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>You are very welcome.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="guest declines to book found another place">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">👋</span>
+    <div class="cat-info">
+      <div class="cat-title">27. Guest Declines to Book</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>We've decided to go with a different property.</span><span>We found another place, but maybe next time!</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inq">Inquiry stage only. Thank them for considering us, acknowledge warmly, invite them for a future trip. No Cirrus, no action, no "further questions" line.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest says (Inquiry):</strong> "We found another place, but maybe next time!"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you so much for letting us know, and thank you for considering us for your trip.<br>We hope to have the opportunity to host you in the future!<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="partner answer guest inquiry non-booked">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🔶</span>
+    <div class="cat-info">
+      <div class="cat-title">12. Partner Answer → Guest Inquiry</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Partner confirms street parking is available for a non-booked guest's question.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inq">Inquiry stage only (non-confirmed booking). Thank the partner for the info, then relay their answer to the guest. No Cirrus, no tags.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Partner confirms (Inquiry):</strong> street parking is available, for a guest who hasn't booked yet.</div>
+      <div class="example-a"><strong>Reply to partner:</strong> Thank you so much for the information, we really appreciate your quick response!<br><br><strong>Reply to guest:</strong> Hello,<br>Thank you for your message.<br>Street parking is available near the property.<br>If you have any further questions I will be happy to assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="cancellation feedback survey why did you cancel">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🔲</span>
+    <div class="cat-info">
+      <div class="cat-title">15. Cancellation Feedback Survey Response</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Guest replies to the automated "why did you cancel" survey with a letter or short reason.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col na">Only applies when the booking status is Cancelled. Thank them warmly for the reason, acknowledge briefly, hope to host them in future. No Cirrus, no action needed, reply in the guest's language. If there's an earlier unanswered question in the thread, flag it to Lauren, it may be moot but check first.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest replies (booking Cancelled):</strong> "My travel plans changed."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you so much for letting us know your reason for cancelling.<br>We hope to have the opportunity to host you in the future!<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CHECK-OUT & ISSUES ═══════════ -->
+<div class="section-title">Check-out day & on-site issues</div>
+
+<div class="category" data-search="check-in follow-up acknowledgment first night everything went well">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">💠</span>
+    <div class="cat-info">
+      <div class="cat-title">14. Check-in Follow-up Acknowledgment</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Everything went well, thank you. I'll reach out if there's a problem.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inh">In-house only — reply to our proactive "how was your first night" message. Simple acknowledgment, no Cirrus needed, no "further questions" line.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest replies (In-house):</strong> "Everything went well, thank you. I will reach out if there's a problem."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for letting us know, we're so glad to hear everything is going well!<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="checkout confirmation all checked out">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🏁</span>
+    <div class="cat-info">
+      <div class="cat-title">18. Check-out Confirmation Acknowledgment</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>We are all checked out here, thanks for having us.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inh">Occurs only after check-out. Thank them, acknowledge any details mentioned, wish them well. No Cirrus needed, no "further questions" line.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest says (In-house, post check-out):</strong> "We are all checked out here, thanks for having us."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you so much for letting us know, and thank you for staying with us!<br>We hope to host you again soon.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="departing property issue leaving trash bins maintenance heads up">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🧰</span>
+    <div class="cat-info">
+      <div class="cat-title">19. Guest-Reported Property Issue (Departing)</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Just a heads up before we leave, the [X] wasn't working during our stay.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inh">Guest is flagging an issue on the way out, not asking us to fix it for them. Thank them, apologize for the inconvenience, confirm it'll be passed to the property team for future guests. No Cirrus, no action needed for this guest, no "further questions" line.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest says (In-house, day of departure):</strong> "Just a heads up before we leave, the AC wasn't working properly during our stay."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you so much for letting us know, and apologies for the inconvenience.<br>We will pass this along to the property team so it can be looked into for future guests.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="on-site issue mid-stay ants leak ac mold first report">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">🐜</span>
+    <div class="cat-info">
+      <div class="cat-title">28. Guest Reports On-Site Issue (Mid-Stay, First Time)</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>We woke up to ants swarming the kitchen counter.</span><span>There's a leak under the bathroom sink.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col inh">In-house, first time this issue is reported (if it's near check-out instead, use Category 19). No Cirrus needed.<br><br>
+      1. Apologize and acknowledge.<br>
+      2. If they haven't said they already told the front desk, ask if they have (skip if they already said yes).<br>
+      3. If it's something photographable, ask for a couple of photos.<br>
+      4. Tell them it'll be escalated to the management team once that info is in.<br><br>No "further questions" line.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest says (In-house, mid-stay):</strong> "We woke up to ants swarming the kitchen counter."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>I'm so sorry to hear this, thank you for letting us know.<br>Have you already reported this to the front desk?<br>If you're able to, could you please send a couple of photos?<br>Once we have that information we will escalate this to our management team.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAYMENT ═══════════ -->
+<div class="section-title">Payment / balance</div>
+
+<div class="category" data-search="outstanding balance payment card expired new card pay">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">💳</span>
+    <div class="cat-info">
+      <div class="cat-title">24. Guest Confirms Outstanding Balance Payment</div>
+      <span class="cat-fmt-badge s">Statement</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>My card expired, I'll use the payment link to settle the balance today.</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre">Occurs after a balance/payment issue has already been flagged. Acknowledge, confirm the link is ready, remind them the payment link is only valid 24 hours from when it was sent. No Cirrus needed, no "further questions" line.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest says (Pre-stay):</strong> "My card expired, I'll use the payment link to settle the balance today."</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for letting us know, the payment link is ready for you to use.<br>Please note it is only valid for 24 hours from when it was sent.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="split payment two cards multiple payment methods">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">💳</span>
+    <div class="cat-info">
+      <div class="cat-title">25. Split / Multiple Payment Methods Request</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Can I split the payment across two cards?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-no">NO — every stay status</span> Splitting payment is controlled by the booking platform (e.g. Airbnb), not something Leavetown can enable. Point them to the platform's own support.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (Pre-stay):</strong> "Can I split the payment across two cards?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>Splitting payment across two cards is controlled by the booking platform's own checkout system, not something we're able to enable. You're welcome to contact their support team to see if they can assist.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="category" data-search="card payment issue airbnb confirmed booking update card">
+  <div class="category-header" onclick="toggle(this)">
+    <span class="cat-emoji">💳</span>
+    <div class="cat-info">
+      <div class="cat-title">26. Card / Payment Issue with Airbnb (Confirmed Booking)</div>
+      <span class="cat-fmt-badge q">Question</span>
+    </div>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="category-body">
+    <div class="examples-line"><span>Airbnb is asking me to update my card, will my booking be cancelled?</span></div>
+    <div class="resp-grid single">
+      <div class="resp-col pre"><span class="badge b-cirrus">Cirrus</span> Check the booking status first. If already Confirmed, reassure them it's fine on our end, nothing needed from us. Ask them to confirm the booking reference and whether Airbnb actually contacted them. Any card/payment problem itself belongs to Airbnb, direct them to Airbnb support for that part.</div>
+    </div>
+    <div class="example-block">
+      <div class="example-label">💬 Worked example</div>
+      <div class="example-q"><strong>Guest asks (Pre-stay):</strong> "Airbnb is asking me to update my card, will my booking be cancelled?"</div>
+      <div class="example-a"><strong>Reply:</strong> Hello,<br>Thank you for your message.<br>I can confirm your booking is already Confirmed on our end, so there's no action needed from us. Any card or payment update itself will need to go through Airbnb directly, as that's managed on their side.<br>Kind regards,<br>Lauren &ndash; Leavetown</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-note">
+  📖 Need something not covered here? Ask Lauren, or check her full reference file <strong>guest-response-logic.html</strong> (response templates, complex cases, and V2-property exceptions).<br>
+  Last built: 2026-07-29 · Simplified from Lauren's master guest-response-logic.html
+</div>
+
+</div>
+
+<script>
+  function toggle(headerEl) {
+    const body = headerEl.parentElement.querySelector('.category-body');
+    const chevron = headerEl.querySelector('.chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+  function filterCategories() {
+    const q = document.getElementById('searchBox').value.trim().toLowerCase();
+    const cats = document.querySelectorAll('.category');
+    const sections = document.querySelectorAll('.section-title');
+    let visibleCount = 0;
+
+    cats.forEach(cat => {
+      const haystack = (cat.dataset.search + ' ' + cat.textContent).toLowerCase();
+      const match = q === '' || haystack.includes(q);
+      cat.classList.toggle('hidden', !match);
+      if (match) visibleCount++;
+      // auto-expand matches when searching, collapse when cleared
+      const body = cat.querySelector('.category-body');
+      const chevron = cat.querySelector('.chevron');
+      if (q !== '' && match) {
+        body.classList.add('open');
+        chevron.classList.add('open');
+      } else if (q === '') {
+        body.classList.remove('open');
+        chevron.classList.remove('open');
+      }
+    });
+
+    // hide section titles with no visible categories under them
+    sections.forEach(sec => {
+      let el = sec.nextElementSibling;
+      let anyVisible = false;
+      while (el && !el.classList.contains('section-title')) {
+        if (el.classList.contains('category') && !el.classList.contains('hidden')) anyVisible = true;
+        el = el.nextElementSibling;
+      }
+      sec.classList.toggle('hidden', !anyVisible);
+    });
+
+    const countEl = document.getElementById('searchCount');
+    countEl.textContent = q === '' ? '' : (visibleCount + ' of ' + cats.length + ' categories match "' + q + '"');
+  }
+</script>
+
+</body>
+</html>
