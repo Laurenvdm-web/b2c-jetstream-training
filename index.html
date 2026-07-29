@@ -2076,7 +2076,95 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='<p style="font-size:13.5px;color:#2d3748;line-height:1.75;margin:0;">This allows you to keep learning and making progress throughout your training.</p>';
   h+='</div>';
   h+='</div>';
+
+  // ── Guardrails Quiz ─────────────────────────────────────────────────────
+  var grdU=getUser();
+  var grdDone=!!localStorage.getItem(grdU+'-quiz-guardrails-done');
+  var grdScore=grdDone?parseInt(localStorage.getItem(grdU+'-quiz-guardrails-score')||'0'):0;
+  var grdTotal=9;
+  var grdPct=grdDone?Math.round(grdScore/grdTotal*100):0;
+  h+='<div style="margin-top:44px;">';
+  h+='<div style="font-size:20px;font-weight:700;color:#1a202c;margin-bottom:6px;">🚧 Guardrails Quiz</div>';
+  h+='<p style="font-size:13px;color:#718096;line-height:1.6;margin-bottom:16px;">9 questions on the hard boundaries from the Guardrails page. You need 7 out of 9 to pass. Reread the Guardrails button at the top of this page any time you are unsure.</p>';
+  if(grdDone){
+    var grdPass=grdScore>=7;
+    var gC=grdPass?'#276749':'#c53030';
+    var gBg=grdPass?'#f0fff4':'#fff5f5';
+    var gBd=grdPass?'#68d391':'#fc8181';
+    h+='<div style="background:'+gBg+';border:2px solid '+gBd+';border-radius:12px;padding:24px;text-align:center;">';
+    h+='<div style="font-size:48px;margin-bottom:12px;">'+(grdPass?'🎉':'📚')+'</div>';
+    h+='<div style="font-size:22px;font-weight:700;color:'+gC+';margin-bottom:6px;">'+grdScore+' / '+grdTotal+'</div>';
+    h+='<div style="font-size:16px;color:'+gC+';margin-bottom:10px;">'+grdPct+'%</div>';
+    h+=grdPass?'<span style="background:'+gC+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">PASSED</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">Great work! You know the guardrails.</div>':'<span style="background:'+gC+';color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;">NEEDS REVIEW</span><div style="font-size:13px;color:#4a5568;margin-top:14px;">Reread the Guardrails page at the top of this page, then try again.</div>';
+    h+='<div style="margin-top:18px;"><button onclick="resetGuardrailsQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:8px;padding:6px 16px;font-size:11px;color:#718096;cursor:pointer;">↺ Reset for practice</button></div>';
+    h+='</div>';
+  } else {
+    var grdQ=[
+     {q:"A guest who has NOT yet booked (Inquiry stage) asks for the front desk phone number. What do you do?",opts:["Give them the number from Cirrus","Tell them they will receive it once the booking is confirmed, then they can contact the front desk directly","Give them the Central Reservations number instead","Ask the partner to call the guest"]},
+     {q:"At Inquiry stage, a guest asks how far the property is from a well-known landmark. What is the right approach?",opts:["Name the exact landmark and give the precise distance","Give the property&rsquo;s full address so they can measure it themselves","Keep it generic (&lsquo;a few minutes&rsquo; walk&rsquo;) &mdash; a named landmark can be reverse-searched to find the exact address","Tell them you cannot answer distance questions at all"]},
+     {q:"Can you share the property/hotel name with a guest before their booking is confirmed?",opts:["Yes, it helps them decide","Only if they ask twice","No &mdash; never before the booking is confirmed","Only for Airbnb bookings"]},
+     {q:"What is the Central Reservations number used for?",opts:["It is the guest-facing number for French resorts","It is for the B2C team&rsquo;s own internal use for urgent issues, never given to guests","It replaces the front desk number after check-in","It is only for partners"]},
+     {q:"A guest with an unconfirmed booking (Inquiry) on an OTA (Airbnb/VRBO/Booking.com) asks you to continue the conversation over email or WhatsApp. What do you do?",opts:["Agree, it is more convenient","Keep all communication on the booking platform &mdash; moving off-platform breaks platform policy and risks account suspension","Give them your personal email","Give them the partner&rsquo;s email instead"]},
+     {q:"A partner has their own direct-booking website. How may you use it?",opts:["Recommend it to guests for cheaper rates","Use it to check availability and confirm to the guest","Internal reference only, to fill gaps in our Cirrus listing &mdash; never send guests there or tell them to book/contact directly","Tell the guest to book there if we are sold out"]},
+     {q:"A guest sends a rude or upset message, or asks about a refund. What is the rule?",opts:["The AI can send a reply automatically since it is just an apology","Decide the refund amount yourself to resolve it quickly","A draft is fine, but it must always get manual human review before sending; refunds, compensation and policy exceptions are not decided in a draft","Ignore it and escalate only if they message again"]},
+     {q:"A guest asks for a discount. Where should the answer come from?",opts:["Whatever sounds reasonable in the moment","The fixed, pre-approved rules and scripted answers &mdash; do not improvise offers, discounts or freeform policy statements","Offer 10% to keep them happy","Ask the partner to decide"]},
+     {q:"You need to contact an IHG (Holiday Inn / Staybridge) property. What should you check first?",opts:["Just email them like any other partner","Partner-specific notes in Cirrus &mdash; e.g. IHG does not answer emails (call the front desk), and Banff wants issues emailed directly, not sent to the front desk","Always call every partner regardless","Contact the guest instead"]}
+    ];
+    h+='<button onclick="startGuardrailsQuiz()" style="width:100%;text-align:left;background:linear-gradient(135deg,#c53030,#e53e3e);color:#fff;border:none;border-radius:14px;padding:18px 24px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(197,48,48,0.35);margin-bottom:16px;"><span>🚧 Start the Guardrails Quiz</span><span style="font-size:15px;">▼</span></button>';
+    h+='<div id="grd-quiz-wrap" style="display:none;">';
+    for(var qi=0;qi<grdQ.length;qi++){
+      h+='<div class="quiz-q" style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px 20px;margin-bottom:14px;"><div style="font-size:14px;font-weight:600;color:#2d3748;margin-bottom:12px;">'+(qi+1)+'. '+grdQ[qi].q+'</div>';
+      for(var oi=0;oi<grdQ[qi].opts.length;oi++){
+        h+='<label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#f7fafc;cursor:pointer;font-size:13px;color:#1a1a2e;margin-bottom:8px;transition:border-color 0.15s;"><input type="radio" name="guardrails-q'+qi+'" value="'+oi+'" style="width:18px;height:18px;accent-color:#c53030;flex-shrink:0;cursor:pointer;"> '+grdQ[qi].opts[oi]+'</label>';
+      }
+      h+='</div>';
+    }
+    h+='<div style="text-align:center;margin-top:20px;"><button onclick="submitGuardrailsQuiz()" style="background:linear-gradient(135deg,#276749,#48bb78);color:#fff;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(72,187,120,0.4);">✅ Submit Answers</button></div>';
+    h+='<div id="grd-score-display" style="display:none;margin-top:20px;text-align:center;"></div>';
+    h+='</div>';
+  }
+  h+='</div>';
+
   return h;
+}
+
+function startGuardrailsQuiz(){
+  var wrap=document.getElementById('grd-quiz-wrap');
+  var isOpen=wrap&&wrap.style.display!=='none';
+  if(wrap) wrap.style.display=isOpen?'none':'block';
+}
+
+function submitGuardrailsQuiz(){
+  var answers=[1,2,2,1,1,2,2,1,1];
+  var score=0;
+  var missing=[];
+  for(var i=0;i<9;i++){
+    var sel=document.querySelector('input[name="guardrails-q'+i+'"]:checked');
+    if(!sel){missing.push(i+1);}
+    else if(parseInt(sel.value)===answers[i]){score++;}
+  }
+  if(missing.length>0){
+    var disp=document.getElementById('grd-score-display');
+    if(disp){
+      disp.style.display='block';
+      disp.innerHTML='<div style="background:#fff5f5;border:2px solid #fc8181;border-radius:10px;padding:14px 18px;color:#c53030;font-size:13px;">Please answer all questions before submitting. Missing: Q'+missing.join(', Q')+'</div>';
+    }
+    return;
+  }
+  var u=getUser();
+  recordModuleQuiz('Guardrails Quiz',score,9,Math.round(score/9*100));
+  localStorage.setItem(u+'-quiz-guardrails-done','1');
+  localStorage.setItem(u+'-quiz-guardrails-score',String(score));
+  updSidebar();
+  show('v1inquiries');
+}
+
+function resetGuardrailsQuiz(){
+  var u=getUser();
+  localStorage.removeItem(u+'-quiz-guardrails-done');
+  localStorage.removeItem(u+'-quiz-guardrails-score');
+  updSidebar();
+  show('v1inquiries');
 }
 
 function bookingsPage(){
