@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Hire Guardrails — What Not To Share / Do</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f6fa; color: #1a1a2e; padding: 20px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+
+  .page-header { text-align: center; padding: 12px 12px 18px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; }
+  .page-header p { font-size: 13px; color: #666; margin-top: 6px; }
+
+  .callout { border-radius: 10px; padding: 12px 16px; font-size: 12.5px; line-height: 1.6; margin-bottom: 16px; }
+  .callout.welcome { background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3; }
+  .callout.welcome strong { display: block; font-size: 13px; margin-bottom: 4px; }
+  .callout.conflict { background: #fef3c7; border: 1px solid #fde68a; color: #92400e; }
+  .callout.conflict strong { display: block; font-size: 13px; margin-bottom: 4px; }
+
+  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1a1a2e; margin: 26px 0 10px; padding: 8px 0 8px 12px; border-left: 4px solid #6366f1; }
+
+  .rule-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .rule-head { display: flex; align-items: flex-start; gap: 10px; }
+  .rule-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .rule-title { font-size: 13.5px; font-weight: 700; }
+  .rule-body { font-size: 12.5px; color: #374151; line-height: 1.6; margin-top: 6px; padding-left: 26px; }
+  .rule-source { font-size: 10.5px; color: #9ca3af; margin-top: 8px; padding-left: 26px; font-style: italic; }
+
+  .badge { display: inline-block; font-size: 9.5px; font-weight: 700; border-radius: 4px; padding: 1px 7px; margin-right: 4px; }
+  .b-never { background: #dc2626; color: #fff; }
+  .b-only { background: #d97706; color: #fff; }
+  .b-ok { background: #16a34a; color: #fff; }
+  .b-check { background: #4F46E5; color: #fff; }
+
+  .gate-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 8px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .gate-table th { padding: 9px 12px; font-size: 11px; font-weight: 700; color: #fff; text-align: left; }
+  .gate-table th.th-item { background: #1a1a2e; width: 40%; }
+  .gate-table th.th-inq { background: #7c3aed; }
+  .gate-table th.th-conf { background: #16a34a; }
+  .gate-table td { padding: 9px 12px; font-size: 12px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  .gate-table tr:last-child td { border-bottom: none; }
+  .gate-table td.item { font-weight: 600; background: #fafafa; }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: #9ca3af; margin: 26px 0 8px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="page-header">
+  <h1>🚧 Guardrails — What Not To Share / Do</h1>
+  <p>Hard boundaries for guest &amp; partner messaging · Read this before drafting any response</p>
+</div>
+
+<div class="callout welcome">
+  <strong>Why this page exists</strong>
+  These are the things that don't just make a response wrong, they can cause real problems (privacy violations, platform suspensions, off-platform bookings, guests showing up somewhere with no reservation). Pulled together from Lauren's Slack threads, the AI project meeting notes, and the B2C training material in Notion — with the source noted under each rule so you know where it came from.
+</div>
+
+<!-- ═══════════ THE BIG ONE: BOOKING STATUS GATE ═══════════ -->
+<div class="section-title">1. The booking-status gate</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🔒</span><div class="rule-title">The single biggest guardrail: what you can share changes the moment a booking is confirmed</div></div>
+  <div class="rule-body">Before a booking is confirmed (Inquiry stage), a guest is a stranger who hasn't paid us anything yet. We do not hand over operational details that only make sense — or that we can stand behind — once there's an actual reservation. Once it's confirmed, most of these open up.</div>
+  <table class="gate-table">
+    <thead>
+      <tr><th class="th-item">Detail</th><th class="th-inq">📋 Inquiry (not booked)</th><th class="th-conf">✅ Confirmed booking</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="item">Front desk phone number</td><td><span class="badge b-never">Never</span> "Once your booking is confirmed, you'll receive the front desk number and can contact them directly."</td><td><span class="badge b-ok">OK</span> Give the number from Cirrus.</td></tr>
+      <tr><td class="item">Physical address</td><td><span class="badge b-never">Never</span> Not given pre-booking.</td><td><span class="badge b-ok">OK</span> Give the address from Cirrus (check-in address, which may differ from the resort's main address).</td></tr>
+      <tr><td class="item">Named landmark near the property (distance questions)</td><td><span class="badge b-never">Never</span> Keep it generic ("a few minutes' walk") — a specific landmark can be reverse-searched to find the exact address.</td><td><span class="badge b-ok">OK</span> Be as specific as Cirrus/search supports.</td></tr>
+      <tr><td class="item">Early check-in / late check-out / bed configuration / crib requests</td><td><span class="badge b-only">Deferred</span> "Once confirmed, contact the front desk — based on availability, not guaranteed."</td><td><span class="badge b-ok">OK</span> Direct to front desk (V1) or coordinate internally (V2).</td></tr>
+      <tr><td class="item">Property / hotel name</td><td><span class="badge b-never">Never</span> "We're unable to share the exact property/hotel name before your booking is confirmed."</td><td><span class="badge b-ok">OK</span> Always fine post-booking, including past-stay/checkout follow-ups.</td></tr>
+    </tbody>
+  </table>
+  <div class="rule-source">Source: Beya Mehaouat ↔ Lauren, Slack DM, 2025-11-10 ("we can't give them the front desk number at that stage"); Lauren's prompt examples, Slack group DM, 2025-12-29; Yurri/Sophie training bot docs (Notion, B2C Guest Services), 2026-01/03.</div>
+</div>
+
+<div class="callout conflict">
+  <strong>✅ Resolved 2026-07-29 — property/resort name before booking</strong>
+  Lauren confirmed: the property/resort name cannot be given before a booking is confirmed, full stop. The master guest-response-logic.html briefly said otherwise (category 23, added 2026-07-21) because that example was actually a post-stay/checkout guest, not a true pre-booking inquiry — the note was written too broadly. Both guest-response-logic.html and the New Hire Guide have been corrected: Inquiry now gets a decline/defer answer, Pre-stay/In-house/past-stay still get the name directly.
+</div>
+
+<!-- ═══════════ CONTACT / DATA PRIVACY ═══════════ -->
+<div class="section-title">2. Contact info &amp; data privacy</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🚫</span><div class="rule-title">Never give a guest the partner's/property's direct contact info for a V2 property</div></div>
+  <div class="rule-body">V2 properties have no front desk to refer guests to. We contact the partner ourselves in specific situations — the guest never gets the partner's number or email directly. All communication goes through Jetstream.</div>
+  <div class="rule-source">Source: Yurri training bot, Notion (B2C Guest Services), 2026-01-12 — "We never give the guest the partners contact information, we need to contact them ourselves."</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">📵</span><div class="rule-title">The Central Reservations number is internal only</div></div>
+  <div class="rule-body">For V1 French resorts, the Central Rez number is for the B2C team's own use for urgent internal issues. It is never given to guests — only the Front Desk number is guest-facing.</div>
+  <div class="rule-source">Source: Yurri training bot, Notion (B2C Guest Services), 2026-01-12.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🔐</span><div class="rule-title">AI drafts must exclude guest contact details</div></div>
+  <div class="rule-body">A guest's own email/phone should not be surfaced or repeated back in an AI-generated draft — this is a privacy and OTA-compliance requirement, not just a nice-to-have.</div>
+  <div class="rule-source">Source: AI Meetings Notes, Notion (Answering guest inquiries), October 2025 guardrail notes.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🇪🇺</span><div class="rule-title">Airbnb data erasure requests must be actioned, not ignored</div></div>
+  <div class="rule-body">If an email arrives from an "@airbnb.com" sender asking us to "process these user erasure requests," it's a real GDPR request, not spam. Find the guest's booking in Cirrus using the confirmation ID in the linked spreadsheet, and delete their phone number (and email, if we have it) from Cirrus.</div>
+  <div class="rule-source">Source: CHAT GPT MODEL - ALL B2C info, Notion (B2C Guest Services).</div>
+</div>
+
+<!-- ═══════════ PLATFORM / LINKS ═══════════ -->
+<div class="section-title">3. Off-platform contact, links &amp; external sites</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🔗</span><div class="rule-title">Don't send guests off-platform links or move communication off the booking platform</div></div>
+  <div class="rule-body">OTA bookings (Airbnb, VRBO, Booking.com) come in as inquiries and platform rules require keeping guest communication on that platform — "off-lining" contact with guests (email, phone, external links) is against platform policy and risks account suspension, which can affect the whole portfolio. Only direct (non-OTA) bookings give us more flexibility to follow up by phone/email.</div>
+  <div class="rule-source">Source: "Long stay bookings," Notion (CHAT GPT MODEL - ALL B2C info); "KR1: Platform Compliance" Q3 project doc, Notion, 2026-07-13 — zero platform suspensions is an active company KPI.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🌐</span><div class="rule-title">Don't refer guests to a partner's external/direct booking website</div></div>
+  <div class="rule-body">Partner direct-booking sites (e.g. a resort's own website) are for internal reference only, to fill gaps if our own Cirrus listing is missing info. Never use one to recommend a booking to a guest, check availability, or tell a guest to contact the partner directly — their calendar isn't synced with ours, so availability shown there may not match what we actually have.</div>
+  <div class="rule-source">Source: Coldwell partner guidelines, Notion (V1 Partners Overview), 2026-06-18. General principle — same logic applies beyond just Coldwell.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">📧</span><div class="rule-title">Don't auto-answer emails or manually send messages that are already automated</div></div>
+  <div class="rule-body">Agents must manually respond to all email messages rather than using blanket auto-responses (Phase 1/2 guardrail). Separately, for VRBO specifically: do not manually send first-night check-in messages or review-request prompts — these already go out automatically, and sending them again duplicates the guest's experience.</div>
+  <div class="rule-source">Source: AI Meetings Notes, Notion, October 27 2025 guardrail notes; "SOP: VRBO Guest Messaging via Jetchat," Notion.</div>
+</div>
+
+<!-- ═══════════ WHAT AI SHOULD NOT ANSWER ═══════════ -->
+<div class="section-title">4. What AI drafts should never attempt alone</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🙅</span><div class="rule-title">Refunds, complaints, and rude/upset guest messages always need a human</div></div>
+  <div class="rule-body">The AI can still generate a draft for a rude or upset guest message, but it must always get manual review before sending — never let it go out untouched. Refund amounts, compensation, and policy exceptions are not something to decide or promise in a draft.</div>
+  <div class="rule-source">Source: AI Meetings Notes, Notion, September 2 2025 and October 15/27 2025 guardrail notes.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">💸</span><div class="rule-title">Don't generate offers, discounts, or freeform policy statements</div></div>
+  <div class="rule-body">Discounts, price reductions, and policy-based answers should come from the fixed rules Lauren has already approved (like the scripted answers in the Response Templates), not from the AI improvising in the moment.</div>
+  <div class="rule-source">Source: AI Meetings Notes, Notion, September 9 &amp; 17 2025 guardrail notes.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🤖</span><div class="rule-title">Keep tone natural, not "ChatGPT-sounding"</div></div>
+  <div class="rule-body">Avoid excessive punctuation and overly formal, robotic phrasing. Responses should read like a helpful person wrote them, not a template. This is also why we track original message → draft → final response, so tone and quality can be reviewed over time.</div>
+  <div class="rule-source">Source: AI Meetings Notes, Notion, October 2025 guardrail notes.</div>
+</div>
+
+<!-- ═══════════ V1 vs V2 ═══════════ -->
+<div class="section-title">5. V1 vs V2 partner rules</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🏢</span><div class="rule-title">V1: partial access, has a front desk to refer to (once confirmed)</div></div>
+  <div class="rule-body">V1 partners give us partial access — we don't control their policies or calendars. We can refer guests to their front desk for early check-in, late check-out, or amenity/preference requests, but only once the booking is confirmed.</div>
+  <div class="rule-source">Source: Yurri/Sophie training bot, Notion, 2026-01/03.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">🏘️</span><div class="rule-title">V2: we manage it, so we're the ones who act — not the guest</div></div>
+  <div class="rule-body">We fully manage V2 properties. There's no front desk to send a guest to — if something needs the partner (a real maintenance issue, a lockout), we contact them ourselves. During training, always check with a team member/team lead before reaching out to a V2 partner directly, since some are sensitive to repeated or unnecessary contact. Other V2-specific rules worth knowing: pets need a confirmed pet fee added to the booking (unless the property isn't pet-friendly at all, in which case just tell the guest no); no parties or large events at any resort; cancellations outside the free-cancellation window need a team lead's sign-off; age-restriction requirements must be met.</div>
+  <div class="rule-source">Source: Yurri/Sophie training bot, Notion, 2026-01/03; "V2 Partners Overview," Notion, 2026-07-28.</div>
+</div>
+
+<div class="rule-card">
+  <div class="rule-head"><span class="rule-icon">📨</span><div class="rule-title">Some partners have their own quirks — check partner notes before assuming the standard rule applies</div></div>
+  <div class="rule-body">Examples on file: IHG (Holiday Inn / Staybridge) doesn't answer emails — call the front desk instead. Banff wants on-site issues emailed to them directly rather than sent to their front desk. Always check the resort's Cirrus booking notes for anything partner-specific before defaulting to the general rule.</div>
+  <div class="rule-source">Source: CHAT GPT MODEL - ALL B2C info, Notion (Property Processes section).</div>
+</div>
+
+<div class="footer-note">
+  📖 Companion to <strong>New-Hire-Guest-Response-Guide.html</strong>. If you hit a situation these guardrails don't clearly cover, don't guess — flag it to Lauren.<br>
+  Compiled 2026-07-29 from Slack (#dailyhandoverb2c, #b2c-informal-jetchat, DMs) and Notion (AI Meetings Notes, B2C Guest Services, V1/V2 Partners Overview).
+</div>
+
+</div>
+</body>
+</html>
