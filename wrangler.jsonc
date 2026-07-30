@@ -1,0 +1,8 @@
+{
+  // Config that tells Cloudflare to serve this repo as a static website.
+  "name": "b2c-jetstream-training",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "."
+  }
+}
