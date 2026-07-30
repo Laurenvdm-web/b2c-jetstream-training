@@ -464,6 +464,7 @@ var USER_PASSWORDS={
   'Paola':'Paola@j',
   'Jannine':'Jannine@j',
   'Byron':'Byron@j',
+  'Thanh':'Jetstream@1',
   'Other':''
 };
 
@@ -709,8 +710,8 @@ function resetCirrusQuiz(){
 }
 
 function submitCirrusQuiz2(){
-  var answers=[1,2,3,3,2,3,2,2,3,2,1]; // correct option indices for each question
-  var nq=11;
+  var answers=[3,3,2,3,2,2,3,2,1]; // correct option indices for each question
+  var nq=9;
   var score=0;var missing=[];var results=[];var savedAnswers={};
   for(var i=0;i<nq;i++){
     var sel=document.querySelector('input[name="sq2-q'+i+'"]:checked');
@@ -740,7 +741,7 @@ function submitCirrusQuiz2(){
   }
   var u=getUser();
   try{
-    recordModuleQuiz('Cirrus Quiz 2',score,11,Math.round(score/11*100));
+    recordModuleQuiz('Cirrus Quiz 2',score,9,Math.round(score/9*100));
   localStorage.setItem(u+'-quiz-cirrus2-done','1');
     localStorage.setItem(u+'-quiz-cirrus2-score',score);
     localStorage.setItem(u+'-quiz-cirrus2-answers',JSON.stringify(savedAnswers));
@@ -748,16 +749,16 @@ function submitCirrusQuiz2(){
   var qc2=document.getElementById('circ-quiz2-check');
   if(qc2){markDone(qc2);}
   updateCirrusProgress();
-  var pass=score>=8;
+  var pass=score>=6;
   var disp=document.getElementById('sq2-score-display');
   if(disp){
     disp.style.display='block';
     disp.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;margin-top:20px;">'
       +'<div style="font-size:42px;margin-bottom:10px;">'+(pass?'🎉':'📚')+'</div>'
-      +'<div style="font-size:22px;font-weight:700;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' out of 11</div>'
-      +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/11*100)+'%</div>'
+      +'<div style="font-size:22px;font-weight:700;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' out of 9</div>'
+      +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/9*100)+'%</div>'
       +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'✅ CIRRUS QUIZ 2 COMPLETED':'NEEDS REVIEW')+'</span>'
-      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! Cirrus Quiz 2 has been marked as completed.':'Review booking 211500 in Cirrus and try again (passing score: 8/11).')+'</div>'
+      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! Cirrus Quiz 2 has been marked as completed.':'Review booking 211500 in Cirrus and try again (passing score: 6/9).')+'</div>'
       +'</div>';
   }
   var btn=document.getElementById('sq2-submit-btn');
@@ -773,8 +774,8 @@ function resetCirrusQuiz2(){
 }
 
 function submitCirrusQuiz3(){
-  var answers=[2,1,3,2,0,2,2,2];
-  var nq=8;
+  var answers=[3,2,0,2,2,2];
+  var nq=6;
   var score=0;var missing=[];var results=[];var savedAnswers={};
   for(var i=0;i<nq;i++){
     var sel=document.querySelector('input[name="sq3-q'+i+'"]:checked');
@@ -803,21 +804,21 @@ function submitCirrusQuiz3(){
     }
   }
   var u=getUser();
-  try{recordModuleQuiz('Cirrus Quiz 3',score,8,Math.round(score/8*100));
+  try{recordModuleQuiz('Cirrus Quiz 3',score,6,Math.round(score/6*100));
   localStorage.setItem(u+'-quiz-cirrus3-done','1');localStorage.setItem(u+'-quiz-cirrus3-score',score);localStorage.setItem(u+'-quiz-cirrus3-answers',JSON.stringify(savedAnswers));}catch(e){}
   var qc3=document.getElementById('circ-quiz3-check');
   if(qc3){markDone(qc3);}
   updateCirrusProgress();
-  var pass=score>=6;
+  var pass=score>=4;
   var disp=document.getElementById('sq3-score-display');
   if(disp){
     disp.style.display='block';
     disp.innerHTML='<div style="background:'+(pass?'#f0fff4':'#fff5f5')+';border:2px solid '+(pass?'#68d391':'#fc8181')+';border-radius:12px;padding:24px;text-align:center;margin-top:20px;">'
       +'<div style="font-size:42px;margin-bottom:10px;">'+(pass?'🎉':'📚')+'</div>'
-      +'<div style="font-size:22px;font-weight:700;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' out of 8</div>'
-      +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/8*100)+'%</div>'
+      +'<div style="font-size:22px;font-weight:700;color:'+(pass?'#276749':'#c53030')+';margin-bottom:6px;">You scored '+score+' out of 6</div>'
+      +'<div style="font-size:14px;color:'+(pass?'#276749':'#c53030')+';margin-bottom:14px;">'+Math.round(score/6*100)+'%</div>'
       +'<span style="background:'+(pass?'#276749':'#c53030')+';color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:1px;">'+(pass?'✅ CIRRUS QUIZ 3 COMPLETED':'NEEDS REVIEW')+'</span>'
-      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! Cirrus Quiz 3 has been marked as completed.':'Review booking 211199 in Cirrus and try again (passing score: 6/8).')+'</div>'
+      +'<div style="font-size:13px;color:#4a5568;margin-top:14px;">'+(pass?'Great work! Cirrus Quiz 3 has been marked as completed.':'Review booking 211199 in Cirrus and try again (passing score: 4/6).')+'</div>'
       +'</div>';
   }
   var btn=document.getElementById('sq3-submit-btn');
@@ -3906,8 +3907,6 @@ function cirrusPage(){
     h+='</div>';
     // Questions
     var _sq2qs=[
-      {q:"What is the guest's name?",opts:["a) George Taylor","b) Gregory Taylor","c) Gary Thompson","d) Graham Turner"],correct:1},
-      {q:"What are the booking dates?",opts:["a) 24 April – 25 April 2026","b) 26 April – 27 April 2026","c) 25 April – 26 April 2026","d) 23 April – 25 April 2026"],correct:2},
       {q:"What is the pre-tax partner cost?",opts:["a) $156.14","b) $129.33","c) $152.15","d) $143.65"],correct:3},
       {q:"What is the total payable partner cost (including tax)?",opts:["a) $182.68","b) $155.87","c) $178.40","d) $168.07 USD"],correct:3},
       {q:"How many adults were booked?",opts:["a) 1","b) 3","c) 2","d) 4"],correct:2},
@@ -3960,14 +3959,12 @@ function cirrusPage(){
     h+='<div style="font-size:13px;color:#553c9a;line-height:1.6;">Please go to the following booking. Search for booking <strong>211199</strong> in Cirrus and use it to answer the questions below.</div></div>';
     h+='</div>';
     var _sq3qs=[
-      {q:"What is the guest\'s name?",opts:["a) Henry Bassett","b) Hannah Beckett","c) Harper Baggett","d) Holly Barrett"],correct:2},
-      {q:"What are the booking dates?",opts:["a) 22 April – 24 April 2026","b) 24 April – 26 April 2026","c) 23 April – 25 April 2026","d) 25 April – 27 April 2026"],correct:1},
       {q:"What is the booking source?",opts:["a) VRBO","b) Holidu","c) Booking.com","d) Airbnb"],correct:3},
       {q:"Does this resort allow pets?",opts:["a) Yes, up to 2 pets","b) Yes, with a fee","c) No — not a pet-friendly property","d) Yes, ADA service animals and pets"],correct:2},
       {q:"Does this resort have a hot tub?",opts:["a) Yes — hot tub is listed as a resort amenity","b) No"],correct:0},
       {q:"What is the margin for this resort?",opts:["a) 20%","b) 18%","c) 16%","d) 12%"],correct:2},
       {q:"What is the supplier reference number?",opts:["a) 31323B0504329","b) 31323B0405239","c) 31323B0405329","d) 31323B0405392"],correct:2},
-      {q:"What is the booking status?",opts:["a) Confirmed","b) Pending","c) Cancelled — cancelled by the guest on 22 April 2026","d) Modified"],correct:2}
+      {q:"What is the booking status?",opts:["a) Confirmed","b) Pending","c) Cancelled — cancelled by the guest","d) Modified"],correct:2}
     ];
     h+='<div id="circ-quiz3-questions">';
     for(var sq3i=0;sq3i<_sq3qs.length;sq3i++){
@@ -10645,9 +10642,9 @@ function restoreCirrusProgress(){
   }
   _applyCircusAnswers(u,'quiz-cirrus-done','quiz-cirrus-answers','quiz-cirrus-score','cirrus-q',10,2,[0,1,0,0,0,0,0,1,0,0],'circ-quiz1-check','cirrus-score-display','cirrus-submit-btn',7,10,9,'&#x2705; CIRRUS PAGE COMPLETED','Review the material above and try again when ready (passing score: 7/10).');
   if(localStorage.getItem(u+'-quiz-cirrus-done')){var _ca1=document.getElementById('cirrus-submit-area');if(_ca1)_ca1.style.display='none';}
-  _applyCircusAnswers(u,'quiz-cirrus2-done','quiz-cirrus2-answers','quiz-cirrus2-score','sq2-q',11,4,[1,2,3,3,2,3,2,2,3,2,1],'circ-quiz2-check','sq2-score-display','sq2-submit-btn',8,11,11,'&#x2705; CIRRUS QUIZ 2 COMPLETED','Review booking 211500 in Cirrus and try again (passing score: 8/11).');
+  _applyCircusAnswers(u,'quiz-cirrus2-done','quiz-cirrus2-answers','quiz-cirrus2-score','sq2-q',9,4,[3,3,2,3,2,2,3,2,1],'circ-quiz2-check','sq2-score-display','sq2-submit-btn',6,9,9,'&#x2705; CIRRUS QUIZ 2 COMPLETED','Review booking 211500 in Cirrus and try again (passing score: 6/9).');
   if(localStorage.getItem(u+'-quiz-cirrus2-done')){var _ca2=document.getElementById('sq2-submit-area');if(_ca2)_ca2.style.display='none';}
-  _applyCircusAnswers(u,'quiz-cirrus3-done','quiz-cirrus3-answers','quiz-cirrus3-score','sq3-q',8,4,[2,1,3,2,0,2,2,2],'circ-quiz3-check','sq3-score-display','sq3-submit-btn',6,8,8,'&#x2705; CIRRUS QUIZ 3 COMPLETED','Review the material above and try again (passing score: 6/8).');
+  _applyCircusAnswers(u,'quiz-cirrus3-done','quiz-cirrus3-answers','quiz-cirrus3-score','sq3-q',6,4,[3,2,0,2,2,2],'circ-quiz3-check','sq3-score-display','sq3-submit-btn',4,6,6,'&#x2705; CIRRUS QUIZ 3 COMPLETED','Review the material above and try again (passing score: 4/6).');
   if(localStorage.getItem(u+'-quiz-cirrus3-done')){var _ca3=document.getElementById('sq3-submit-area');if(_ca3)_ca3.style.display='none';}
   updateCirrusProgress();
 }
