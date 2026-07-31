@@ -920,7 +920,7 @@ function getPagePct(page){
   switch(page){
     case 'setup': return getSetupP().pct;
     case 'security':{var d=_cnt('sec-sec',['sec-why','sec-data','sec-res']);if(localStorage.getItem(u+'-quiz-security-done'))d++;return Math.round(d/4*100);}
-    case 'v1inquiries':{var d=_cnt('v1i-sec',['guard','guide','loom','sop1','sop2']);if(localStorage.getItem(u+'-quiz-guardrails-done'))d++;if(localStorage.getItem(u+'-quiz-v1guide-done'))d++;return Math.round(d/7*100);}
+    case 'v1inquiries':{var d=_cnt('v1i-sec',['guard','guide','notlisting','loom','sop1','sop2']);if(localStorage.getItem(u+'-quiz-guardrails-done'))d++;if(localStorage.getItem(u+'-quiz-v1guide-done'))d++;return Math.round(d/8*100);}
     case 'company':{var d=_cnt('who-sec',['who-jvl','who-htc','who-wl']);if(localStorage.getItem(u+'-quiz-company-done'))d++;return d*25;}
     case 'bookings':{var d=_cnt('bk-sec',['bk-role','bk-proc','bk-sync','bk-enter']);if(localStorage.getItem(u+'-quiz-bookings-done'))d++;return d*20;}
     case 'stars':{var d=_cnt('st-sec',['stars-sec1','stars-sec2','stars-sec4','stars-sec5']);if(localStorage.getItem(u+'-quiz-stars-done'))d++;return Math.round(d/5*100);}
@@ -1969,6 +1969,13 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='</button>';
   h+='</a>';
   h+='<p style="font-size:12px;color:#718096;line-height:1.6;margin:0 0 14px;padding:0 4px;">Your go-to reference for V1 guest inquiries. Refer back to it whenever you are unsure, and go through it as often as possible to become familiar with the categories.</p>';
+  h+='<a href="New-Hire-Not-On-Listing.html" target="_blank" rel="noopener" style="text-decoration:none;display:block;margin-bottom:4px;">';
+  h+='<button style="width:100%;text-align:left;background:linear-gradient(135deg,#2b6cb0,#3a8ac9);color:#fff;border:none;border-radius:14px;padding:20px 24px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(43,108,176,0.35);">';
+  h+='<span style="display:flex;align-items:center;gap:10px;"><span onclick="event.stopPropagation();event.preventDefault();markV1Section(\'notlisting\')" id="v1i-notlisting-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;" title="Mark as complete">&#x25CB;</span><span>❗ Questions & Answers Not Found on the Listing</span></span>';
+  h+='<span style="font-size:15px;">Open ↗</span>';
+  h+='</button>';
+  h+='</a>';
+  h+='<p style="font-size:12px;color:#718096;line-height:1.6;margin:0 0 14px;padding:0 4px;">Fixed company rules and policies that will never be written on the property listing itself &mdash; deposit timing, pool dress code, what can\'t be shared before a booking is confirmed, and more.</p>';
   h+='<a href="https://www.loom.com/share/8ea0076407f549cab38977691c5b8964" target="_blank" style="text-decoration:none;display:block;margin-bottom:14px;">';
   h+='<button style="width:100%;text-align:left;background:linear-gradient(135deg,#2b6cb0,#3a8ac9);color:#fff;border:none;border-radius:14px;padding:20px 24px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(43,108,176,0.35);">';
   h+='<span style="display:flex;align-items:center;gap:10px;"><span onclick="event.stopPropagation();event.preventDefault();markV1Section(\'loom\')" id="v1i-loom-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;" title="Mark as complete">&#x25CB;</span><span>🎬 Loom Video: Getting Started with Airbnb Inquiries</span></span>';
@@ -11295,18 +11302,18 @@ function markV1Section(id){
 }
 function updateV1Progress(){
   var u=getUser();if(!u)return;
-  var ids=['guard','guide','loom','sop1','sop2'];
+  var ids=['guard','guide','notlisting','loom','sop1','sop2'];
   var done=0;
   for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-v1i-sec-'+ids[i]))done++;}
   if(localStorage.getItem(u+'-quiz-guardrails-done'))done++;
   if(localStorage.getItem(u+'-quiz-v1guide-done'))done++;
-  var pct=Math.round(done/7*100);
+  var pct=Math.round(done/8*100);
   setProgress('v1i', pct);
   if(typeof updateAllNavChecks==='function')updateAllNavChecks();
 }
 function restoreV1Progress(){
   var u=getUser();if(!u)return;
-  var ids=['guard','guide','loom','sop1','sop2'];
+  var ids=['guard','guide','notlisting','loom','sop1','sop2'];
   for(var i=0;i<ids.length;i++){
     if(localStorage.getItem(u+'-v1i-sec-'+ids[i])){
       var btn=document.getElementById('v1i-'+ids[i]+'-check');
