@@ -2188,7 +2188,7 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   }
   h+='</div>';
 
-  h+='<style>.v1rob-resp-wrap .resp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;}.v1rob-resp-wrap .resp-grid.single{grid-template-columns:1fr;}.v1rob-resp-wrap .resp-col{border-radius:7px;padding:9px 11px;font-size:11.5px;line-height:1.55;}.v1rob-resp-wrap .resp-col.inq{background:#f5f3ff;border-left:3px solid #7c3aed;}.v1rob-resp-wrap .resp-col.pre{background:#f0fdf4;border-left:3px solid #16a34a;}.v1rob-resp-wrap .resp-col.inh{background:#fefce8;border-left:3px solid #ca8a04;}.v1rob-resp-wrap .resp-col.na{background:#f9fafb;border-left:3px solid #d1d5db;color:#9ca3af;font-style:italic;}.v1rob-resp-wrap .resp-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;opacity:0.75;}.v1rob-resp-wrap .badge{display:inline-block;font-size:9.5px;font-weight:700;border-radius:4px;padding:1px 6px;margin-bottom:4px;}.v1rob-resp-wrap .b-cirrus{background:#4F46E5;color:#fff;}.v1rob-resp-wrap .b-no{background:#dc2626;color:#fff;}.v1rob-resp-wrap .b-yes{background:#16a34a;color:#fff;}.v1rob-resp-wrap .watch{background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:8px 10px;font-size:11px;color:#9a3412;line-height:1.55;margin-bottom:8px;}.v1rob-resp-wrap .watch strong{font-weight:700;}@keyframes v1robPulse{0%,100%{box-shadow:0 6px 20px rgba(79,70,229,0.4);}50%{box-shadow:0 6px 28px rgba(79,70,229,0.7);}}#v1robot-btn{animation:v1robPulse 2.6s ease-in-out infinite;}</style>';
+  h+='<style>.v1rob-resp-wrap .resp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;}.v1rob-resp-wrap .resp-grid.single{grid-template-columns:1fr;}.v1rob-resp-wrap .resp-col{border-radius:7px;padding:9px 11px;font-size:11.5px;line-height:1.55;}.v1rob-resp-wrap .resp-col.inq{background:#f5f3ff;border-left:3px solid #7c3aed;}.v1rob-resp-wrap .resp-col.pre{background:#f0fdf4;border-left:3px solid #16a34a;}.v1rob-resp-wrap .resp-col.inh{background:#fefce8;border-left:3px solid #ca8a04;}.v1rob-resp-wrap .resp-col.na{background:#f9fafb;border-left:3px solid #d1d5db;color:#9ca3af;font-style:italic;}.v1rob-resp-wrap .resp-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;opacity:0.75;}.v1rob-resp-wrap .badge{display:inline-block;font-size:9.5px;font-weight:700;border-radius:4px;padding:1px 6px;margin-bottom:4px;}.v1rob-resp-wrap .b-cirrus{background:#4F46E5;color:#fff;}.v1rob-resp-wrap .b-no{background:#dc2626;color:#fff;}.v1rob-resp-wrap .b-yes{background:#16a34a;color:#fff;}.v1rob-resp-wrap .watch{background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:8px 10px;font-size:11px;color:#9a3412;line-height:1.55;margin-bottom:8px;}.v1rob-resp-wrap .watch strong{font-weight:700;}.v1rob-resp-wrap .rule-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.05);}.v1rob-resp-wrap .rule-head{display:flex;align-items:flex-start;gap:8px;}.v1rob-resp-wrap .rule-icon{font-size:15px;flex-shrink:0;margin-top:1px;}.v1rob-resp-wrap .rule-title{font-size:12.5px;font-weight:700;}.v1rob-resp-wrap .rule-body{font-size:11.5px;color:#374151;line-height:1.55;margin-top:6px;padding-left:0;}.v1rob-resp-wrap .rule-source{font-size:10px;color:#9ca3af;margin-top:8px;font-style:italic;}.v1rob-resp-wrap .b-never{background:#dc2626;color:#fff;}.v1rob-resp-wrap .b-only{background:#d97706;color:#fff;}.v1rob-resp-wrap .b-ok{background:#16a34a;color:#fff;}.v1rob-resp-wrap .b-check{background:#4F46E5;color:#fff;}.v1rob-resp-wrap .gate-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:8px;border-radius:8px;overflow:hidden;font-size:10.5px;}.v1rob-resp-wrap .gate-table th{padding:6px 8px;font-size:9.5px;font-weight:700;color:#fff;text-align:left;}.v1rob-resp-wrap .gate-table th.th-item{background:#1a1a2e;width:35%;}.v1rob-resp-wrap .gate-table th.th-inq{background:#7c3aed;}.v1rob-resp-wrap .gate-table th.th-conf{background:#16a34a;}.v1rob-resp-wrap .gate-table td{padding:6px 8px;font-size:10.5px;border-bottom:1px solid #e5e7eb;vertical-align:top;}.v1rob-resp-wrap .gate-table tr:last-child td{border-bottom:none;}.v1rob-resp-wrap .gate-table td.item{font-weight:600;background:#fafafa;}@keyframes v1robPulse{0%,100%{box-shadow:0 6px 20px rgba(79,70,229,0.4);}50%{box-shadow:0 6px 28px rgba(79,70,229,0.7);}}#v1robot-btn{animation:v1robPulse 2.6s ease-in-out infinite;}</style>';
   h+='<div id="v1robot-btn" style="position:fixed;bottom:28px;right:28px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:26px;cursor:grab;z-index:9999;user-select:none;" title="Drag me, or click to ask a question">🤖</div>';
   h+='<div id="v1robot-panel" style="display:none;position:fixed;bottom:96px;right:28px;width:340px;max-width:90vw;max-height:65vh;background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,0.25);z-index:9999;flex-direction:column;overflow:hidden;">';
   h+='<div style="background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">';
@@ -2198,7 +2198,7 @@ function submitQuiz(qid,correct){var u=getUser();var qs=document.querySelectorAl
   h+='<div style="padding:12px 14px;border-bottom:1px solid #e2e8f0;flex-shrink:0;">';
   h+='<input id="v1robot-input" type="text" placeholder="e.g. is early check-in allowed?" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #d1d5db;font-size:13px;font-family:inherit;box-sizing:border-box;" onkeyup="askV1Robot()">';
   h+='</div>';
-  h+='<div id="v1robot-body" class="v1rob-resp-wrap" style="padding:14px;overflow-y:auto;flex:1;font-size:12.5px;color:#4a5568;line-height:1.6;">Type a question above &mdash; e.g. &ldquo;is early check-in allowed&rdquo;, &ldquo;what is the wifi password&rdquo;, &ldquo;are burkinis allowed&rdquo;.</div>';
+  h+='<div id="v1robot-body" class="v1rob-resp-wrap" style="padding:14px;overflow-y:auto;flex:1;font-size:12.5px;color:#4a5568;line-height:1.6;">Type a question above &mdash; e.g. &ldquo;is early check-in allowed&rdquo;, &ldquo;can I give the front desk number&rdquo;, &ldquo;are burkinis allowed&rdquo;. Searches both the Complete Guide and the Guardrails.</div>';
   h+='</div>';
 
   return h;
@@ -2312,39 +2312,68 @@ function v1robScoreCategory(cat,qTokens){
   });
   return score;
 }
+function v1robParseGuide(html,cats){
+  var doc=new DOMParser().parseFromString(html,'text/html');
+  doc.querySelectorAll('.category').forEach(function(cat){
+    var titleEl=cat.querySelector('.cat-title');
+    var examplesEl=cat.querySelector('.examples-line');
+    var watchEl=cat.querySelector('.watch');
+    var respGridEl=cat.querySelector('.resp-grid');
+    var title=titleEl?titleEl.textContent:'';
+    cats.push({
+      title:title,
+      source:'guide',
+      tokens:{
+        title:v1robTokenize(title),
+        examples:v1robTokenize(examplesEl?examplesEl.textContent:''),
+        dataSearch:v1robTokenize(cat.dataset.search||''),
+        watch:v1robTokenize(watchEl?watchEl.textContent:''),
+        resp:v1robTokenize(respGridEl?respGridEl.textContent:'')
+      },
+      respGridHTML:respGridEl?respGridEl.outerHTML:'',
+      watchHTML:watchEl?watchEl.outerHTML:''
+    });
+  });
+}
+function v1robParseGuardrails(html,cats){
+  var doc=new DOMParser().parseFromString(html,'text/html');
+  doc.querySelectorAll('.rule-card').forEach(function(card){
+    var titleEl=card.querySelector('.rule-title');
+    var title=titleEl?titleEl.textContent:'';
+    cats.push({
+      title:title,
+      source:'guardrails',
+      tokens:{
+        title:v1robTokenize(title),
+        examples:[],
+        dataSearch:[],
+        watch:[],
+        resp:v1robTokenize(card.textContent)
+      },
+      respGridHTML:card.outerHTML,
+      watchHTML:''
+    });
+  });
+}
 function loadV1RobotData(){
   if(V1ROB.loaded||V1ROB.loading)return;
   V1ROB.loading=true;
-  fetch('New-Hire-Guest-Response-Guide.html').then(function(r){return r.text();}).then(function(html){
-    var doc=new DOMParser().parseFromString(html,'text/html');
+  Promise.allSettled([
+    fetch('New-Hire-Guest-Response-Guide.html').then(function(r){return r.text();}),
+    fetch('New-Hire-Guardrails.html').then(function(r){return r.text();})
+  ]).then(function(results){
     var cats=[];
-    doc.querySelectorAll('.category').forEach(function(cat){
-      var titleEl=cat.querySelector('.cat-title');
-      var examplesEl=cat.querySelector('.examples-line');
-      var watchEl=cat.querySelector('.watch');
-      var respGridEl=cat.querySelector('.resp-grid');
-      var title=titleEl?titleEl.textContent:'';
-      cats.push({
-        title:title,
-        tokens:{
-          title:v1robTokenize(title),
-          examples:v1robTokenize(examplesEl?examplesEl.textContent:''),
-          dataSearch:v1robTokenize(cat.dataset.search||''),
-          watch:v1robTokenize(watchEl?watchEl.textContent:''),
-          resp:v1robTokenize(respGridEl?respGridEl.textContent:'')
-        },
-        respGridHTML:respGridEl?respGridEl.outerHTML:'',
-        watchHTML:watchEl?watchEl.outerHTML:''
-      });
-    });
+    if(results[0].status==='fulfilled')v1robParseGuide(results[0].value,cats);
+    if(results[1].status==='fulfilled')v1robParseGuardrails(results[1].value,cats);
+    V1ROB.loading=false;
+    if(cats.length===0){
+      V1ROB.error='Both reference pages failed to load';
+      askV1Robot();
+      return;
+    }
     V1ROB.cats=cats;
     V1ROB.idf=v1robBuildIDF(cats);
     V1ROB.loaded=true;
-    V1ROB.loading=false;
-    askV1Robot();
-  }).catch(function(e){
-    V1ROB.loading=false;
-    V1ROB.error=String(e);
     askV1Robot();
   });
 }
@@ -2363,18 +2392,39 @@ function askV1Robot(){
   var CONFIDENT_MIN=6;
   var confident=top&&top.score>=CONFIDENT_MIN&&(!second||top.score>=second.score*1.25||(top.score-second.score)>=3);
   if(confident){
-    body.innerHTML='<div style="font-weight:700;color:#3730a3;margin-bottom:8px;">Best match: '+top.c.title+'</div>'+(top.c.watchHTML||'')+top.c.respGridHTML+'<div style="margin-top:10px;"><a href="New-Hire-Guest-Response-Guide.html" target="_blank" style="color:#4f46e5;font-size:11.5px;font-weight:600;">Open full guide ↗</a></div>';
+    var topScore=top.score;
+    body.innerHTML=v1robRenderEntry(top.c,true);
+    var otherSource=top.c.source==='guardrails'?'guide':'guardrails';
+    var complement=scored.find(function(s){return s.c.source===otherSource&&s.score>0&&s.score>=topScore*0.4&&s.c.title!==top.c.title;});
+    if(complement){
+      body.innerHTML+='<div style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0;">'
+        +'<div style="font-weight:700;color:#3730a3;margin-bottom:8px;">Also relevant &mdash; '+(complement.c.source==='guardrails'?'Guardrails':'Complete Guide')+'</div>'
+        +v1robRenderEntry(complement.c,false)+'</div>';
+    }
   }else if(qTokens.length>=2){
     var cands=scored.slice(0,3).filter(function(s){return s.score>0;});
     if(cands.length===0){
-      body.innerHTML='<div>Not covered in the guide. Don&rsquo;t guess, flag it to Lauren.</div>';
+      body.innerHTML='<div>Not covered in either reference. Don&rsquo;t guess, flag it to Lauren.</div>';
     }else{
-      var chips=cands.map(function(s){return '<div style="margin-bottom:6px;">&bull; '+s.c.title+'</div>';}).join('');
+      var chips=cands.map(function(s){return '<div style="margin-bottom:6px;">&bull; ['+(s.c.source==='guardrails'?'Guardrails':'Guide')+'] '+s.c.title+'</div>';}).join('');
       body.innerHTML='<div style="font-weight:700;color:#3730a3;margin-bottom:8px;">Not sure &mdash; closest topics:</div>'+chips+'<div style="margin-top:8px;font-size:11px;color:#92400e;">If none of these fit, don&rsquo;t guess, flag it to Lauren.</div>';
     }
   }else{
     body.innerHTML='No confident match yet &mdash; try a fuller question.';
   }
+}
+function v1robRenderEntry(cat,withHeader){
+  var html='';
+  if(withHeader){
+    html+='<div style="font-weight:700;color:#3730a3;margin-bottom:8px;">'+(cat.source==='guardrails'?'From the Guardrails':'Best match: '+cat.title)+'</div>';
+  }
+  html+=(cat.watchHTML||'')+cat.respGridHTML;
+  if(withHeader){
+    var link=cat.source==='guardrails'?'New-Hire-Guardrails.html':'New-Hire-Guest-Response-Guide.html';
+    var label=cat.source==='guardrails'?'Open Guardrails page ↗':'Open full guide ↗';
+    html+='<div style="margin-top:10px;"><a href="'+link+'" target="_blank" style="color:#4f46e5;font-size:11.5px;font-weight:600;">'+label+'</a></div>';
+  }
+  return html;
 }
 function v1robPositionPanel(){
   var panel=document.getElementById('v1robot-panel');
