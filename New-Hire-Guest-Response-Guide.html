@@ -881,14 +881,36 @@
   }
 
   function filterCategories() {
-    const q = document.getElementById('searchBox').value.trim().toLowerCase();
+    const raw = document.getElementById('searchBox').value.trim();
+    const q = raw.toLowerCase();
     const cats = document.querySelectorAll('.category');
     const sections = document.querySelectorAll('.section-title');
     let visibleCount = 0;
 
-    cats.forEach(cat => {
-      const haystack = (cat.dataset.search + ' ' + cat.textContent).toLowerCase();
-      const match = q === '' || haystack.includes(q);
+    // Match on shared meaningful words (same scoring as the robot answer),
+    // not a literal substring — a full question like "are burkinis allowed"
+    // never appears verbatim in the text, so substring matching hid
+    // everything instead of showing the categories that actually cover it.
+    const qTokens = tokenize(raw);
+    let topScore = 0;
+    if (qTokens.length > 0) {
+      CATS.forEach(c => { const s = scoreCategory(c, qTokens); if (s > topScore) topScore = s; });
+    }
+
+    cats.forEach((cat, i) => {
+      let match;
+      if (q === '') {
+        match = true;
+      } else if (qTokens.length > 0 && CATS[i]) {
+        // Only keep categories reasonably close to the best match, not
+        // anything with the slightest overlap — a full question shares
+        // common words (like "check") with several unrelated categories.
+        const s = scoreCategory(CATS[i], qTokens);
+        match = s > 0 && s >= topScore * 0.5;
+      } else {
+        const haystack = (cat.dataset.search + ' ' + cat.textContent).toLowerCase();
+        match = haystack.includes(q);
+      }
       cat.classList.toggle('hidden', !match);
       if (match) visibleCount++;
       // auto-expand matches when searching, collapse when cleared
