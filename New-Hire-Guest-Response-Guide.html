@@ -89,6 +89,20 @@
 
   .hidden { display: none !important; }
 
+  .robot-answer { background: linear-gradient(135deg,#eef2ff,#f5f3ff); border: 1.5px solid #a5b4fc; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+  .robot-head { font-size: 13px; font-weight: 700; color: #3730a3; margin-bottom: 8px; }
+  .robot-sub { font-size: 12px; color: #4c1d95; margin-bottom: 8px; }
+  .robot-resp-wrap { margin-top: 8px; }
+  .robot-resp-wrap .watch { margin-top: 0; margin-bottom: 10px; }
+  .robot-jump { margin-top: 10px; background: #6366f1; color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .robot-jump:hover { background: #4f46e5; }
+  .robot-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .robot-chip { background: #fff; border: 1.5px solid #c7d2fe; color: #4338ca; border-radius: 20px; padding: 5px 14px; font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .robot-chip:hover { background: #eef2ff; }
+  .robot-fallback { font-size: 11.5px; color: #92400e; background: #fef3c7; border-radius: 6px; padding: 6px 10px; margin-top: 4px; }
+  @keyframes flashPulse { 0%,100% { box-shadow: none; } 40% { box-shadow: 0 0 0 4px rgba(99,102,241,0.35); } }
+  .category.flash { animation: flashPulse 1.4s ease; }
+
   .example-block { margin-top: 10px; background: #f8fafc; border: 1px dashed #c7d2fe; border-radius: 8px; padding: 10px 12px; }
   .example-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #6366f1; margin-bottom: 6px; }
   .example-q { font-size: 11.5px; color: #1a1a2e; margin-bottom: 6px; line-height: 1.5; }
@@ -167,8 +181,9 @@
 <p style="font-size:11px;color:#9ca3af;text-align:center;margin-bottom:6px;">★ No dashes or hyphens anywhere in the response body — use a comma, a period, or split into two sentences instead.</p>
 
 <div class="search-wrap">
-  <input type="text" class="search-input" id="searchBox" placeholder="🔍 Type a keyword (e.g. 'parking', 'check-in', 'pet') to filter categories..." onkeyup="filterCategories()">
+  <input type="text" class="search-input" id="searchBox" placeholder="🤖 Ask a question (e.g. 'is early check-in allowed') or type a keyword to filter..." onkeyup="filterCategories()">
   <div class="search-count" id="searchCount"></div>
+  <div id="robotAnswer" class="robot-answer hidden"></div>
 </div>
 
 <!-- ═══════════ CORE STAY QUESTIONS ═══════════ -->
@@ -901,7 +916,149 @@
 
     const countEl = document.getElementById('searchCount');
     countEl.textContent = q === '' ? '' : (visibleCount + ' of ' + cats.length + ' categories match "' + q + '"');
+
+    updateRobotAnswer(q);
   }
+
+  // ── Question-answering robot ────────────────────────────────────────────
+  const STOPWORDS = new Set(['a','an','the','is','are','do','does','did','can','could','will','would','should','i','we','you','your','yours','our','ours','my','mine','to','of','in','on','for','and','or','please','before','about','if','so','it','its','this','that','these','those','be','been','being','was','were','have','has','had','not','no','yes','me','us','they','them','he','she','him','her','with','at','by','from','as','get','got','need','needed','want','wanted','there','here','what','when','where','who','why','how','a.','an.','allow','allowed','allows','allowing','permit','permitted','permits','possible','possibly','available','provide','provided','provides']);
+
+  function stem(w) {
+    if (w.length > 4 && w.endsWith('ies')) return w.slice(0, -3) + 'y';
+    if (w.length > 5 && w.endsWith('ing')) return w.slice(0, -3);
+    if (w.length > 4 && w.endsWith('es')) return w.slice(0, -2);
+    if (w.length > 4 && w.endsWith('ed')) return w.slice(0, -2);
+    if (w.length > 3 && w.endsWith('s') && !w.endsWith('ss')) return w.slice(0, -1);
+    return w;
+  }
+
+  function tokenize(str) {
+    return (str.toLowerCase().match(/[a-z0-9]+/g) || [])
+      .filter(w => !STOPWORDS.has(w))
+      .map(stem);
+  }
+
+  let CATS = [];
+  function buildCatIndex() {
+    document.querySelectorAll('.category').forEach(cat => {
+      const titleEl = cat.querySelector('.cat-title');
+      const examplesEl = cat.querySelector('.examples-line');
+      const watchEl = cat.querySelector('.watch');
+      const respGridEl = cat.querySelector('.resp-grid');
+      const title = titleEl ? titleEl.textContent : '';
+      CATS.push({
+        el: cat,
+        title: title,
+        tokens: {
+          title: tokenize(title),
+          examples: tokenize(examplesEl ? examplesEl.textContent : ''),
+          dataSearch: tokenize(cat.dataset.search || ''),
+          watch: tokenize(watchEl ? watchEl.textContent : ''),
+          resp: tokenize(respGridEl ? respGridEl.textContent : '')
+        },
+        respGridHTML: respGridEl ? respGridEl.outerHTML : '',
+        watchHTML: watchEl ? watchEl.outerHTML : ''
+      });
+    });
+  }
+
+  // IDF weighting: words that show up in almost every category (like "check")
+  // count for less than words that are rare and specific (like "early" or "burkini"),
+  // so a query is matched on what makes it distinctive, not on its most common word.
+  let IDF = new Map();
+  function buildIDF() {
+    const df = new Map();
+    CATS.forEach(cat => {
+      const seen = new Set();
+      Object.values(cat.tokens).forEach(arr => arr.forEach(t => seen.add(t)));
+      seen.forEach(t => df.set(t, (df.get(t) || 0) + 1));
+    });
+    const N = CATS.length;
+    const idf = new Map();
+    df.forEach((count, t) => idf.set(t, Math.log((N + 1) / (count + 1)) + 1));
+    return idf;
+  }
+
+  function scoreCategory(cat, qTokens) {
+    const weights = { title: 3, examples: 3, dataSearch: 2, watch: 2, resp: 1 };
+    let score = 0;
+    qTokens.forEach(qt => {
+      const w = IDF.get(qt) || 1;
+      Object.keys(weights).forEach(key => {
+        if (cat.tokens[key].includes(qt)) score += weights[key] * w;
+      });
+    });
+    return score;
+  }
+
+  function updateRobotAnswer(rawQuery) {
+    const box = document.getElementById('robotAnswer');
+    const qTokens = tokenize(rawQuery);
+
+    if (qTokens.length === 0) {
+      box.classList.add('hidden');
+      box.innerHTML = '';
+      return;
+    }
+
+    const scored = CATS.map(c => ({ c: c, score: scoreCategory(c, qTokens) })).sort((a, b) => b.score - a.score);
+    const top = scored[0];
+    const second = scored[1];
+    const CONFIDENT_MIN = 6;
+    const confident = top && top.score >= CONFIDENT_MIN &&
+      (!second || top.score >= second.score * 1.25 || (top.score - second.score) >= 3);
+
+    if (confident) {
+      renderMatch(top.c, box);
+    } else if (qTokens.length >= 2) {
+      renderNoMatch(scored.slice(0, 3).filter(s => s.score > 0).map(s => s.c), box);
+    } else {
+      box.classList.add('hidden');
+      box.innerHTML = '';
+    }
+  }
+
+  function renderMatch(cat, box) {
+    box.classList.remove('hidden');
+    const idx = CATS.indexOf(cat);
+    box.innerHTML =
+      '<div class="robot-head">🤖 Best match: ' + cat.title + '</div>' +
+      '<div class="robot-resp-wrap">' + (cat.watchHTML || '') + cat.respGridHTML + '</div>' +
+      '<button class="robot-jump" onclick="jumpToCategory(' + idx + ')">Jump to full entry ↓</button>';
+  }
+
+  function renderNoMatch(cands, box) {
+    box.classList.remove('hidden');
+    if (cands.length === 0) {
+      box.innerHTML =
+        '<div class="robot-head">🤖 I couldn\'t find anything in this guide for that.</div>' +
+        '<div class="robot-fallback">Don\'t guess, flag it to Lauren.</div>';
+      return;
+    }
+    const chips = cands.map(c => {
+      const idx = CATS.indexOf(c);
+      return '<button class="robot-chip" onclick="jumpToCategory(' + idx + ')">' + c.title + '</button>';
+    }).join('');
+    box.innerHTML =
+      '<div class="robot-head">🤖 Not sure — closest topics below, click to open one</div>' +
+      '<div class="robot-chips">' + chips + '</div>' +
+      '<div class="robot-fallback">If none of these fit, don\'t guess, flag it to Lauren.</div>';
+  }
+
+  function jumpToCategory(idx) {
+    const cat = CATS[idx];
+    const body = cat.el.querySelector('.category-body');
+    const chevron = cat.el.querySelector('.chevron');
+    cat.el.classList.remove('hidden');
+    body.classList.add('open');
+    chevron.classList.add('open');
+    cat.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    cat.el.classList.add('flash');
+    setTimeout(() => cat.el.classList.remove('flash'), 1400);
+  }
+
+  buildCatIndex();
+  IDF = buildIDF();
 </script>
 
 </body>
