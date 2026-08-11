@@ -11992,7 +11992,7 @@ var DQ_SCENARIOS=[
 ];
 var _dqAnswers={};
 function openDailyQuiz(){
-  if(getUser()==='Thanh-vân')return;
+  if(getUser()==='Thanh-vân'||getUser()==='Martin')return;
   DQ_IDX=getDqIdx();
   var body=document.getElementById('dq-modal-body');var title=document.getElementById('dq-modal-title');
   if(!body)return;
@@ -12057,6 +12057,11 @@ function checkDqButtonState(){
   var u=getUser();if(!u)return;
   if(u==='Thanh-vân'){
     btn.disabled=true;btn.textContent="🎯 Case Challenge (unlocks soon)";
+    btn.style.background='#a0aec0';btn.style.animation='none';btn.style.opacity='0.6';btn.style.cursor='not-allowed';
+    return;
+  }
+  if(u==='Martin'){
+    btn.disabled=true;btn.textContent="🎯 Case Challenge (Coming Soon)";
     btn.style.background='#a0aec0';btn.style.animation='none';btn.style.opacity='0.6';btn.style.cursor='not-allowed';
     return;
   }
