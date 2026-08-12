@@ -933,7 +933,7 @@ function getPagePct(page){
     case 'cirrus':{var d=_cnt('circ-sec',['circ-about','circ-find','circ-workflow','circ-tabs','circ-prop','circ-videos']);if(localStorage.getItem(u+'-quiz-cirrus-done'))d++;if(localStorage.getItem(u+'-quiz-cirrus2-done'))d++;if(localStorage.getItem(u+'-quiz-cirrus3-done'))d++;return Math.round(d/9*100);}case 'guestentry':{var d=0;if(localStorage.getItem(u+'-ge-sec-autohost'))d++;if(localStorage.getItem(u+'-ge-sec-doorcode'))d++;if(localStorage.getItem(u+'-ge-sec-operto'))d++;if(localStorage.getItem(u+'-ge-sec-remotelock'))d++;if(localStorage.getItem(u+'-quiz-ge-ah-done'))d++;if(localStorage.getItem(u+'-quiz-ge-dc-done'))d++;if(localStorage.getItem(u+'-quiz-ge-op-done'))d++;if(localStorage.getItem(u+'-quiz-ge-rl-done'))d++;return Math.round(d/8*100);}
     case 'vrbo':{var d=_cnt('vrbo-sec',['vrbo-about','vrbo-booking','vrbo-resources']);if(localStorage.getItem(u+'-quiz-vrbo-done'))d++;return Math.round(d/4*100);}
     case 'bookingcom':{var d=_cnt('bcom-sec',['bcom-about','bcom-listing','bcom-checkin','bcom-videos']);if(localStorage.getItem(u+'-quiz-bcom-checkin-done'))d++;return Math.round(d/5*100);}
-    case 'processingbookings':{var d=_cnt('pnb-sec',['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags']);if(localStorage.getItem(u+'-quiz-pnb-done'))d++;return Math.round(d/7*100);}
+    case 'processingbookings':{var d=_cnt('pnb-sec',['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags','pnb-guide']);if(localStorage.getItem(u+'-quiz-pnb-done'))d++;return Math.round(d/8*100);}
     case 'managingcases':{var d=0;['mc-guest','mc-partner','mc-tags'].forEach(function(k){if(localStorage.getItem(u+'-mc-sec-'+k))d++;});['mc-quiz','mc2-quiz','mc3-quiz'].forEach(function(k){if(localStorage.getItem(u+'-'+k+'-done'))d++;});return Math.round(d/6*100);}
     case 'cancellations':{var d=0;['cx-regular','cx-failed','cx-main','cx-ota','cx-manual','cx-nopay','cx-penalty','cx-policy'].forEach(function(k){if(localStorage.getItem(u+'-cxl-sec-'+k))d++;});['canq1','canq2','canq3','canq4','canq5'].forEach(function(k){if(localStorage.getItem(u+'-quiz-'+k+'-done'))d++;});return Math.round(d/13*100);}
     case 'modifications':{var d=0;['mod-v1','mod-v2','mod-guests'].forEach(function(k){if(localStorage.getItem(u+'-mod-sec-'+k))d++;});if(localStorage.getItem(u+'-quiz-mod1-done'))d++;if(localStorage.getItem(u+'-quiz-mod2-done'))d++;if(localStorage.getItem(u+'-quiz-mod3-done'))d++;return Math.round(d/6*100);}
@@ -3313,12 +3313,13 @@ function processingNewBookingsPage(){
   h+='</div>';
 
   h+='<div data-tagid="pnb-guide" style="margin-bottom:20px;">';
-  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'pnb-guide-body\');var a=document.getElementById(\'pnb-guide-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<button class="sec-drop-btn pnb-main-drop" onclick="var b=document.getElementById(\'pnb-guide-body\');var a=document.getElementById(\'pnb-guide-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markPnbSection(\'pnb-guide\')" id="pnb-guide-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
   h+='<span>&#x1F4D8; Processing New Bookings — Complete Guide</span>';
   h+='<span id="pnb-guide-arr" style="font-size:16px;">&#9654;</span>';
   h+='</button>';
   h+='<div id="pnb-guide-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
-  h+='<p style="font-size:12.5px;color:#718096;line-height:1.6;margin-bottom:16px;">A full standard-operating-procedure reference for new-hire booking processing — tag meanings, required actions, templates, and decision trees. Reading this section is optional and does not affect your page progress above.</p>';
+  h+='<p style="font-size:12.5px;color:#718096;line-height:1.6;margin-bottom:16px;">A full standard-operating-procedure reference for new-hire booking processing — tag meanings, required actions, templates, and decision trees. Click the circle above once you have read through it to mark this section complete.</p>';
   h+=pnbGuideContent();
   h+='</div>';
   h+='</div>';
@@ -11567,17 +11568,17 @@ function markPnbSection(id){
 }
 function updatePnbProgress(){
   var u=getUser();if(!u)return;
-  var ids=['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags'];
+  var ids=['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags','pnb-guide'];
   var done=0;
   for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-pnb-sec-'+ids[i]))done++;}
   if(localStorage.getItem(u+'-quiz-pnb-done'))done++;
-  var pct=Math.round(done/7*100);
+  var pct=Math.round(done/8*100);
   setProgress('pnb', pct);
   if(typeof updateAllNavChecks==='function')updateAllNavChecks();
 }
 function restorePnbProgress(){
   var u=getUser();if(!u)return;
-  var ids=['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags'];
+  var ids=['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags','pnb-guide'];
   for(var i=0;i<ids.length;i++){
     if(localStorage.getItem(u+'-pnb-sec-'+ids[i])){
       var btn=document.getElementById(ids[i]+'-check');
