@@ -1622,6 +1622,14 @@ function adminToggleChallenge(idx){
   body.style.display=open?'none':'block';
   if(arrow)arrow.textContent=open?'▶':'▼';
 }
+function adminToggleDraft(idx){
+  var body=document.getElementById('admin-dr-body-'+idx);
+  var arrow=document.getElementById('admin-dr-arrow-'+idx);
+  if(!body)return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(arrow)arrow.textContent=open?'▶':'▼';
+}
 function adminPage(){
   var u=getUser();
   if(u!=='Lauren')return '<div style="padding:40px;text-align:center;font-weight:700;">Access denied.</div>';
@@ -1688,6 +1696,53 @@ function adminPage(){
     }
     h+='</div>'; /* end body */
     h+='</div>'; /* end card */
+  }
+  h+='</div>';
+  /* ── Draft quiz library: admin only, not visible to the team ── */
+  h+='<div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid #e2e8f0;">';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">';
+  h+='<div style="font-size:14px;font-weight:800;color:#1a1a2e;text-transform:uppercase;letter-spacing:0.8px;">Draft Quiz Library</div>';
+  h+='<span style="font-size:10.5px;font-weight:700;background:#744210;color:#fff;border-radius:20px;padding:2px 10px;">YOUR EYES ONLY</span>';
+  h+='</div>';
+  h+='<div style="font-size:12px;color:#718096;margin-bottom:14px;line-height:1.6;">Getting Started with Simple V1 Inquiries. These are not live, so nobody on the team can see or open them. Click a quiz to read the questions and answers, or preview it exactly as a trainee would see it. When you want to start rotating them, tell Claude which one to put live.</div>';
+  for(var d=0;d<DQ_DRAFTS.length;d++){
+    var ds=DQ_DRAFTS[d];
+    h+='<div style="border:2px solid #e2e8f0;border-radius:10px;margin-bottom:10px;background:#f7fafc;overflow:hidden;">';
+    h+='<div onclick="adminToggleDraft('+d+')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;gap:10px;">';
+    h+='<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">';
+    h+='<span style="font-size:11px;font-weight:700;background:#744210;color:#fff;border-radius:20px;padding:2px 10px;white-space:nowrap;">Draft #'+(d+1)+' &mdash; NOT LIVE</span>';
+    h+='<span style="font-size:14px;font-weight:700;color:#1a1a2e;">'+ds.title+'</span>';
+    h+='</div>';
+    h+='<span id="admin-dr-arrow-'+d+'" style="font-size:12px;color:#718096;flex-shrink:0;">▶</span>';
+    h+='</div>';
+    h+='<div id="admin-dr-body-'+d+'" style="display:none;border-top:1px solid #e2e8f0;padding:18px 16px;background:#fff;">';
+    h+='<button onclick="openDraftQuiz('+d+')" style="background:linear-gradient(135deg,#2b6cb0,#3a8ac9);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:16px;">👁 Preview as a trainee</button>';
+    h+='<div style="font-size:12px;font-weight:700;color:#2a5a7a;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">Scenario</div>';
+    h+='<div style="font-size:13px;color:#1a1a2e;line-height:1.7;margin-bottom:18px;padding:12px 14px;background:#f7fafc;border-radius:8px;border-left:3px solid #4aacb8;">'+ds.scenario+'</div>';
+    h+='<div style="font-size:12px;font-weight:700;color:#2a5a7a;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Questions &amp; Correct Answers</div>';
+    for(var dq=0;dq<ds.questions.length;dq++){
+      var dqq=ds.questions[dq];
+      h+='<div style="margin-bottom:14px;padding:12px 14px;background:#f7fafc;border-radius:8px;">';
+      h+='<div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">'+dqq.q+'</div>';
+      for(var doi=0;doi<dqq.opts.length;doi++){
+        var dIsCorrect=(doi===dqq.ans);
+        h+='<div style="font-size:12px;padding:6px 10px;border-radius:6px;margin-bottom:4px;'+(dIsCorrect?'background:#f0fff4;border:1.5px solid #68d391;color:#276749;font-weight:700;':'background:#fff;border:1px solid #e2e8f0;color:#4a5568;')+'">';
+        h+=(dIsCorrect?'✅ ':'◦ ')+dqq.opts[doi];
+        h+='</div>';
+      }
+      h+='<div style="font-size:11px;color:#744210;margin-top:8px;padding:6px 10px;background:#fffbeb;border-radius:6px;">'+dqq.explanation+'</div>';
+      h+='</div>';
+    }
+    if(ds.resolution&&ds.resolution.length){
+      h+='<div style="font-size:12px;font-weight:700;color:#2a5a7a;text-transform:uppercase;letter-spacing:0.6px;margin-top:16px;margin-bottom:8px;">'+(ds.resolutionTitle||'Final Resolution Steps')+'</div>';
+      h+='<div style="padding:12px 14px;background:#f0fff4;border-radius:8px;border-left:3px solid #68d391;">';
+      for(var dri=0;dri<ds.resolution.length;dri++){
+        h+='<div style="font-size:12px;color:#276749;padding:3px 0;line-height:1.6;">'+(dri+1)+'. '+ds.resolution[dri]+'</div>';
+      }
+      h+='</div>';
+    }
+    h+='</div>';
+    h+='</div>';
   }
   h+='</div>';
   h+='<div style="background:#fffaf0;border:2px solid #f6e05e;border-radius:14px;padding:18px 20px;">';
@@ -12149,6 +12204,59 @@ var DQ_SCENARIOS=[
     {q:'4. Was this complaint considered valid?',opts:['No','Yes'],ans:1,explanation:'Valid based on the multiple cleanliness concerns and supporting evidence provided.'}
    ],resolution:['Guest reported multiple cleanliness concerns and property condition issues','Support agent requested photos/videos and confirmed front desk contact','Internal notes and blacklist tags added in Cirrus','Guest provided supporting evidence','HubSpot ticket created for partner investigation','Complaint reviewed and considered valid','Partner agreed to cover $200 compensation','Guest refunded and Cirrus records updated','Ticket resolved and closed']}
 ];
+/* ── Draft quizzes: ADMIN ONLY. Not in DQ_SCENARIOS, so the team never sees these.
+   To put one live for the team, move it into DQ_SCENARIOS above. ── */
+var DQ_DRAFTS=[
+  {title:'V1 Guardrails: The Booking-Status Gate',name:'Booking-Status Gate',
+   scenario:'An Airbnb inquiry comes in for a V1 resort. The guest has not booked yet and asks several questions at once about the property.',
+   questions:[
+    {q:'1. The guest asks for the front desk phone number. Can you share it?',opts:['Yes, it is public information','Yes, if they seem serious about booking','No, only once the booking is confirmed','Yes, but only the Central Reservations number'],ans:2,explanation:'Pre-booking the answer is always that once the booking is confirmed, the guest will receive the front desk number and can contact them directly.'},
+    {q:'2. The same guest asks for the property\'s physical address.',opts:['Give the resort\'s main address','Give the check-in address from Cirrus','Give the postcode only','Do not share it before the booking is confirmed'],ans:3,explanation:'The address is never given pre-booking. Once confirmed, give the check-in address from Cirrus, which can differ from the resort\'s main address.'},
+    {q:'3. The guest asks what end-of-stay cleaning would cost.',opts:['Tell them pricing is only available after booking','Give the price from Cirrus and tell them to contact the front desk to add it once the booking is confirmed','Give the price and add it to the booking yourself','Refer them to the front desk without giving a price'],ans:1,explanation:'Paid features are the exception to the pre-booking rule. Pull the price from Cirrus and give it, then defer arranging it to the front desk once the booking is confirmed.'},
+    {q:'4. The guest says they think they stayed here last year and asks you to confirm the hotel name.',opts:['Confirm it, they have stayed before','Confirm it if the dates match a past booking','Do not share the name, the booking in front of you is not confirmed','Ask the partner for permission'],ans:2,explanation:'Confirmed 29 July 2026. The property or hotel name is never given before a booking is confirmed, even when the question sounds like it comes from a past guest.'},
+    {q:'5. The guest asks you to confirm early check-in and a king bed before they book.',opts:['Confirm both if Cirrus lists them','Defer it, once confirmed they contact the front desk, subject to availability and never guaranteed','Email the partner to lock it in','Tell them neither is ever possible'],ans:1,explanation:'Early check-in, late check-out, bed configuration and crib requests are all deferred pre-booking, and never guaranteed even afterwards.'}
+   ],resolutionTitle:'Key takeaways',resolution:['What you can share changes the moment a booking is confirmed','Pre-booking: no front desk number, no address, no property name','Paid feature prices can be shared pre-booking, arranging them is deferred to the front desk','Early check-in, late check-out and bed configuration are always deferred and never guaranteed','If the booking is not confirmed the answer is still no, however the question is phrased']},
+
+  {title:'V1 Guardrails: Contact Details and Platform Compliance',name:'Contact Details and Compliance',
+   scenario:'You are working an Airbnb inquiry for a French V1 resort and the guest is pushing for ways to reach the property directly.',
+   questions:[
+    {q:'1. The guest wants a number they can call tonight. Can you give the Central Reservations number?',opts:['Yes, if the front desk is closed','Yes, for French resorts','No, it is internal to the B2C team and the front desk number is the only guest-facing one','Yes, but ask them not to share it'],ans:2,explanation:'The Central Reservations number for French V1 resorts is for the B2C team\'s own use on urgent internal issues. Only the front desk number is guest-facing.'},
+    {q:'2. The guest asks for the resort\'s own website so they can check availability there directly.',opts:['Send the link, it saves them time','Send it but tell them to book with us','Never, we cannot provide a different booking source through another booking platform. For example we cannot give a Booking.com link inside an Airbnb chat, or the reverse','Send it only if Cirrus is missing the information'],ans:2,explanation:'A booking made on one platform stays on that platform. Pointing a guest to another booking source, including the partner\'s own site, is off-platform activity and puts the account at risk.'},
+    {q:'3. The guest asks to continue the conversation on WhatsApp or personal email.',opts:['Fine once they have booked','Keep it on the booking platform, off-lining risks the whole account being suspended','Fine if they ask first','Fine on Airbnb but not Booking.com'],ans:1,explanation:'Platform rules require guest communication to stay on the booking channel. Zero platform suspensions is an active company KPI. Only direct, non-OTA bookings allow more flexibility.'},
+    {q:'4. An AI draft repeats the guest\'s own phone number back to them. What do you do?',opts:['Leave it, they gave it to us','Leave it, but only on direct bookings','Remove it, guest contact details must be excluded from the draft','Ask the guest if they mind'],ans:2,explanation:'Keeping guest contact details out of drafts is a privacy and platform-compliance requirement, not a preference.'},
+    {q:'5. An email from an @airbnb.com sender asks us to process user erasure requests, with a linked spreadsheet.',opts:['Treat it as phishing and delete it','Forward it to the partner','It is a real GDPR request, find the booking in Cirrus using the confirmation ID and delete the guest\'s phone number and email','Reply asking for proof'],ans:2,explanation:'These are genuine GDPR erasure requests and must be actioned in Cirrus, not ignored.'}
+   ],resolutionTitle:'Key takeaways',resolution:['Only the front desk number is guest-facing, Central Reservations is internal','Never provide a booking source from one platform inside another platform\'s chat','Keep OTA conversations on the OTA, off-lining can suspend the whole account','Guest contact details never appear in a draft','Airbnb erasure requests are real GDPR requests and get actioned in Cirrus']},
+
+  {title:'V1 Guardrails: What Never Goes Out Without Review',name:'Never Without Review',
+   scenario:'An in-house guest sends an angry message demanding a refund. You have an AI draft ready and it sounds reasonable.',
+   questions:[
+    {q:'1. Can you send the draft as it is?',opts:['Yes, if it reads well','Yes, if you soften the tone first','No, rude, upset and refund-related messages always need manual review before sending','Only outside office hours'],ans:2,explanation:'The AI can draft a reply for an upset guest, but it never goes out untouched. Manual review first, every time.'},
+    {q:'2. The guest also asks for a discount on the remaining nights.',opts:['Offer 10 percent to calm things down','No, the price shown is already our best rate, with no exceptions','Offer a voucher instead','Ask the partner what they will fund'],ans:1,explanation:'Discounts are not ours to invent. The rate shown is already the best rate.'},
+    {q:'3. Who decides refund and compensation amounts?',opts:['Whoever picks up the message','The draft, based on how serious the complaint sounds','Not the draft, refunds, compensation and policy exceptions are never decided in a response','The front desk'],ans:2,explanation:'Refund amounts, compensation and policy exceptions are never decided or promised in a draft.'},
+    {q:'4. The draft is very formal, with heavy punctuation and dashes. Why does that matter?',opts:['It is too long','Responses should read like a helpful person wrote them, not a template','The platform blocks punctuation','It does not matter'],ans:1,explanation:'Avoid robotic, ChatGPT-sounding phrasing. We track original message, draft and final response so tone and quality can be reviewed over time.'},
+    {q:'5. During training, what is the correct order for sending a guest reply?',opts:['Send it, then log it for review','Draft it as an internal comment, get it approved, then send it yourself','Ask a colleague to send it for you','Send it if you are confident, review only if unsure'],ans:1,explanation:'Draft first, get it reviewed, apply any feedback, then send it yourself. Sign off as Lauren, Leavetown unless you are told otherwise.'}
+   ],resolutionTitle:'Key takeaways',resolution:['Upset, rude and refund messages always get manual review','No discounts, the rate shown is the best rate','Refunds, compensation and policy exceptions are never decided in a draft','Tone should sound human, not templated','Draft, get approval, then send it yourself']},
+
+  {title:'V1: Front Desk Referrals and Partner Notes',name:'Front Desk and Partner Notes',
+   scenario:'Three confirmed V1 bookings are in your queue this morning, all at different resorts.',
+   questions:[
+    {q:'1. The guest asks about early check-in.',opts:['Email the partner and wait for an answer','Refer them to the front desk, subject to availability and never guaranteed','Confirm it from the Cirrus listing','Tell them it is not possible'],ans:1,explanation:'V1 partners give us partial access. We do not control their policies or calendars, so once a booking is confirmed the front desk handles these requests.'},
+    {q:'2. The guest asks us to pass a bed configuration request to the property rather than calling themselves.',opts:['Refuse, the guest has to call','Message the partner with the request, but still tell the guest it cannot be guaranteed','Message the partner and confirm it to the guest','Ignore it, the front desk handles this on arrival'],ans:1,explanation:'If the guest asks us to pass the request on, do it, but the answer to the guest is still that it cannot be guaranteed.'},
+    {q:'3. The property is an IHG resort, Holiday Inn, and you need to reach them.',opts:['Email them and follow up in two days','Call the front desk, IHG does not answer emails','Email the account manager','Message them through their website'],ans:1,explanation:'IHG properties, Holiday Inn and Staybridge, do not answer emails. Call the front desk instead.'},
+    {q:'4. A Banff resort\'s notes say on-site issues should be emailed to them rather than sent to the front desk. What does that tell you?',opts:['It is a one-off exception you can ignore','Always check the resort\'s Cirrus booking notes for partner-specific instructions before defaulting to the general rule','Banff has no front desk','Email is always better than calling'],ans:1,explanation:'Some partners have their own quirks. The Cirrus booking notes are where those are recorded, so check them before applying the general rule.'},
+    {q:'5. The guest says they will arrive around 10pm. What is your first step?',opts:['Tell them that is a late arrival and refer them to the front desk','Reassure them that 10pm is normal','Check the Cirrus check-in time and that day\'s reception hours before deciding anything','Ask the partner whether someone will be there'],ans:2,explanation:'Never judge early or late from how the guest phrases it. Check the stated time against Cirrus first.'}
+   ],resolutionTitle:'Key takeaways',resolution:['V1 means partial access, the front desk handles requests once a booking is confirmed','Passing a request on is fine, promising an outcome is not','IHG properties need a phone call, not an email','Check the resort\'s Cirrus notes for partner quirks before applying the general rule','Check a stated arrival time against Cirrus rather than judging it from the wording']},
+
+  {title:'V1: Answers You Will Not Find in the Listing',name:'Not on the Listing',
+   scenario:'A guest sends five short questions and none of the answers appear anywhere on the Cirrus listing.',
+   questions:[
+    {q:'1. How long until the security deposit is released?',opts:['Immediately at checkout','It is a charge, not a hold','It is a temporary hold, released roughly 7 to 10 working days after the stay if there is no damage','30 days'],ans:2,explanation:'The deposit is a hold rather than a charge, and it clears roughly 7 to 10 working days after the stay provided there is no damage.'},
+    {q:'2. The guest asks whether they can wear loose swim shorts in the pool at a French property.',opts:['Yes, if the listing does not say otherwise','No, French law requires a fitted swimsuit, and this applies even when Cirrus does not mention it','Only outside peak hours','Refer them to the front desk'],ans:1,explanation:'French law bans loose shorts and wetsuits at any French property pool. Only a fitted swimsuit is allowed, and burkinis are never allowed.'},
+    {q:'3. The guest is travelling with a trained service animal and asks about the pet fee.',opts:['The standard pet fee applies','Allowed, with a reduced fee','Always allowed, with no pet fee, this is universal','It depends on the listing'],ans:2,explanation:'Service animals are always allowed with no pet fee. This is company-wide and does not depend on the individual listing.'},
+    {q:'4. The same guest then says it is actually an emotional support animal.',opts:['Treat it exactly like a service animal','Not the same thing, ESAs may not carry the same protections, so escalate to Lauren rather than confirming it yourself','Refuse immediately','Charge the pet fee and approve it'],ans:1,explanation:'Emotional support animals may not carry the same protections as task-trained service animals. Escalate unusual requests rather than deciding them yourself.'},
+    {q:'5. The unit is on the ground floor. The guest asks whether it is wheelchair accessible, and Cirrus has no accessibility note.',opts:['Confirm it, ground floor means accessible','Say probably, and suggest they check on arrival','No accessibility note anywhere in Cirrus means you treat the property as not accessible','Ask the partner and confirm whatever they say'],ans:2,explanation:'Never guess accessibility from general listing details. No explicit accessibility note in Cirrus means the property is treated as not accessible.'}
+   ],resolutionTitle:'Key takeaways',resolution:['The deposit is a hold, released roughly 7 to 10 working days after the stay','French pool rules apply even when the listing is silent','Service animals are always allowed with no fee','Emotional support animals are not the same, escalate them','No accessibility note means not accessible, never guess']}
+];
 var _dqAnswers={};
 function openDailyQuiz(){
   if(getUser()==='Thanh-vân'||getUser()==='Martin')return;
@@ -12176,6 +12284,57 @@ function openDailyQuiz(){
   document.body.style.overflow='hidden';
 }
 function closeDailyQuiz(){document.getElementById('dq-overlay').classList.remove('open');document.body.style.overflow='';}
+/* ── Admin-only preview of a draft quiz. Nothing is saved and no progress is logged. ── */
+var DQ_DRAFT_IDX=0;
+function openDraftQuiz(idx){
+  if(getUser()!=='Lauren')return;
+  var s=DQ_DRAFTS[idx];if(!s)return;
+  DQ_DRAFT_IDX=idx;
+  var body=document.getElementById('dq-modal-body');var title=document.getElementById('dq-modal-title');
+  if(!body)return;
+  title.textContent='👁 Preview: '+s.title;
+  var html='<div style="background:#fffaf0;border:1.5px solid #f6ad55;border-radius:8px;padding:10px 14px;font-size:12px;color:#744210;line-height:1.6;margin-bottom:14px;font-weight:600;">Admin preview. This quiz is not live, the team cannot see it, and nothing you answer here is saved.</div>';
+  html+='<div class="dq-scenario"><strong>Scenario</strong><br><br>'+s.scenario+'</div>';
+  for(var i=0;i<s.questions.length;i++){var q=s.questions[i];
+    html+='<div class="dq-q" id="dqd-q-'+i+'"><div class="dq-q-text">'+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){html+='<label class="dq-opt"><input type="radio" name="dqd-q'+i+'" value="'+j+'"> '+q.opts[j]+'</label>';}
+    html+='</div>';
+  }
+  html+='<div id="dqd-result" style="display:none;"></div>';
+  html+='<div style="text-align:center;margin-top:20px;padding-bottom:4px;"><button id="dqd-submit-btn" onclick="submitDraftQuiz()">Submit Answers</button><button id="dq-close-btn" onclick="closeDailyQuiz()">Close</button></div>';
+  body.innerHTML=html;
+  document.getElementById('dq-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function submitDraftQuiz(){
+  var s=DQ_DRAFTS[DQ_DRAFT_IDX];if(!s)return;
+  var allAnswered=true;var score=0;
+  for(var i=0;i<s.questions.length;i++){if(!document.querySelector('input[name="dqd-q'+i+'"]:checked')){allAnswered=false;break;}}
+  if(!checkAllAnswered(allAnswered,s.questions.length))return;
+  for(var i=0;i<s.questions.length;i++){
+    var q=s.questions[i];var sel=document.querySelector('input[name="dqd-q'+i+'"]:checked');var chosen=parseInt(sel.value);
+    var opts=document.querySelectorAll('#dqd-q-'+i+' .dq-opt');
+    for(var j=0;j<opts.length;j++){opts[j].style.cursor='not-allowed';opts[j].querySelector('input').disabled=true;}
+    if(chosen===q.ans){opts[chosen].classList.add('dq-correct');score++;}
+    else{opts[chosen].classList.add('dq-wrong');opts[q.ans].classList.add('dq-correct');}
+    var exp=document.createElement('div');
+    exp.style.cssText='display:block;margin-top:8px;padding:8px 12px;background:#fffbeb;border-radius:6px;font-size:12px;color:#744210;line-height:1.6;';
+    exp.innerHTML='<strong>'+(chosen===q.ans?'✅ Correct! ':'❌ Incorrect. ')+'</strong>'+q.explanation;
+    document.getElementById('dqd-q-'+i).appendChild(exp);
+  }
+  var pct=Math.round(score/s.questions.length*100);var pass=pct>=60;
+  var resHtml='<div style="text-align:center;margin-bottom:16px;padding:18px;background:'+(pass?'#f0fff4':'#fff5f5')+';border-radius:10px;border:2px solid '+(pass?'#68d391':'#fc8181')+'">';
+  resHtml+='<div style="font-size:36px;margin-bottom:8px;">'+(pct===100?'🏆':pass?'🎉':'📚')+'</div>';
+  resHtml+='<div style="font-size:22px;font-weight:800;color:'+(pass?'#276749':'#9b2235')+';">'+score+' / '+s.questions.length+'</div>';
+  resHtml+='<div style="font-size:13px;color:#4a5568;margin-top:4px;">'+pct+'% &middot; preview only, not saved</div></div>';
+  if(s.resolution&&s.resolution.length){
+    resHtml+='<div class="dq-resolution"><h3>📋 '+(s.resolutionTitle||'Final Resolution')+'</h3><ul>';
+    for(var k=0;k<s.resolution.length;k++)resHtml+='<li>'+s.resolution[k]+'</li>';
+    resHtml+='</ul></div>';
+  }
+  var rDiv=document.getElementById('dqd-result');if(rDiv){rDiv.innerHTML=resHtml;rDiv.style.display='block';}
+  var sb=document.getElementById('dqd-submit-btn');if(sb)sb.style.display='none';
+}
 function submitDailyQuiz(){
   var s=DQ_SCENARIOS[DQ_IDX];var allAnswered=true;var score=0;
   for(var i=0;i<s.questions.length;i++){if(!document.querySelector('input[name="dq-q'+i+'"]:checked')){allAnswered=false;break;}}
