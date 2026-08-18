@@ -266,7 +266,7 @@ var SB_INDEX=[
   {page:'v1v2',label:'V1 & V2 Partners',icon:'🏨',keys:'v1 v2 partners hotel property type difference'},
   {page:'partners',label:'Contacting Partners',icon:'📧',keys:'contacting partners email snippet template communication'},
   {page:'processingbookings',label:'Processing New Bookings',icon:'📥',keys:'processing new bookings airbnb vrbo booking.com steps new tag'},
-  {page:'processingbookings',tagid:'pnb-guide',label:'Complete Guide (SOP) — Processing New Bookings',icon:'📘',keys:'processing new bookings complete guide sop standard operating procedure tag reference checklist door code operto offline pets email autohost info required decision tree'},
+  {page:'processingbookings',tagid:'pnb-guide',label:'Complete Guide (SOP) — Processing New Bookings',icon:'📘',keys:'processing new bookings complete guide sop standard operating procedure tag reference checklist door code operto offline operto door code sync pets email autohost autohost security deposit info required decision tree tape chart unit allocation new tag queue hourly jetchat otp partner notes practice exercise'},
   {page:'comms',label:'Comm. Platforms',icon:'💬',keys:'communication platforms front slack email jetchat messaging aircall'},
   {page:'airbnb',label:'Airbnb',icon:'🔴',keys:'airbnb inquiry booking new resolution centre host'},
   {page:'cirrus',label:'Cirrus',icon:'☁️',keys:'cirrus booking find search tags notes activity reservation pre-tax pre tax payable partner payment cost'},
@@ -9579,15 +9579,49 @@ function pnbGuideContent(){
   h+='</div>';
 
   h+='<div class="card" style="margin-bottom:20px;">';
+  h+='<h2 style="display:flex;align-items:center;gap:10px;">🔎 Finding the New Bookings Queue</h2>';
+  h+='<p style="font-size:12.5px;color:#718096;margin-bottom:14px;">Where the work comes from and how often it needs clearing:</p>';
+  var pnbgQueue=[
+    ['Where to find them','In Cirrus, click <strong>Bookings</strong> in the left-hand menu. On the right-hand side use the <strong>Tag</strong> filter, select the <strong>new</strong> tag, then press <strong>Search</strong>. That pulls up every booking that has come in and not yet been processed.'],
+    ['How often','The queue is meant to be cleared roughly <strong>every hour</strong>. The team takes turns — whoever has a quiet moment in the inbox picks it up. Don\'t save it for the end of your shift: some tags are time-sensitive, and a long list is much harder to work through.'],
+    ['Open each booking in a new tab','<strong>Right-click</strong> the booking and open it in a new tab. If you left-click, you lose the filtered list and have to rebuild the filter every time. Good habit for Cirrus generally.'],
+    ['Refresh as you go','After finishing a booking, go back to the list tab and press <strong>Search</strong> again. Processed bookings drop off the list, so you can always see what\'s left and never lose track of which ones you\'ve done.'],
+    ['Always save','After removing or changing tags, press <strong>Save</strong> on the tags section. Nothing is applied until you save.'],
+    ['Check the guest\'s language first','Open the <strong>Guest</strong> tab on the booking and check the guest\'s country/language before writing anything. A booking priced in EUR doesn\'t automatically mean a French guest — the guest may be from the UK, Netherlands, etc. Write in their language where you can.']
+  ];
+  h+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">';
+  for(var pqi=0;pqi<pnbgQueue.length;pqi++){
+    h+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:10px 14px;">';
+    h+='<div style="background:#3182ce;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+(pqi+1)+'</div>';
+    h+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+pnbgQueue[pqi][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;line-height:1.6;">'+pnbgQueue[pqi][1]+'</div></div></div>';
+  }
+  h+='</div>';
+  h+='<div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:12px 16px;margin-bottom:12px;">';
+  h+='<p style="font-size:12.5px;font-weight:700;color:#2b6cb0;margin-bottom:6px;">🏷️ Two kinds of tags</p>';
+  h+='<p style="font-size:12.5px;color:#2d3748;line-height:1.7;">Not every tag is a job for you. Some are <strong>reporting / standing tags</strong> — payment types like ConnexPay VCC or Booking.com VCC exist so Accounts Payable knows how the booking is paid. They stay on permanently and you never action them. The rest are <strong>action tags</strong>: something has to happen before the booking is finished. Your job when processing is to work out which is which, action the action tags, and only then remove the New tag.</p>';
+  h+='</div>';
+  h+='<div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:12px 16px;margin-bottom:12px;">';
+  h+='<p style="font-size:12.5px;font-weight:700;color:#2b6cb0;margin-bottom:6px;">⭐ Pink stars vs yellow stars</p>';
+  h+='<p style="font-size:12.5px;color:#2d3748;line-height:1.7;">Pink-star bookings are usually the quickest — often just a payment tag plus New, so you remove New and move on. <strong>Yellow-star (V1 manual) bookings tend to be the trickier ones</strong>: they carry more tags, often door codes, and Info Required is normal on them because the partner still has to confirm the booking on their end. Start on the simpler ones while you\'re learning.</p>';
+  h+='</div>';
+  h+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:8px;padding:12px 16px;">';
+  h+='<p style="font-size:12.5px;font-weight:700;color:#744216;margin-bottom:6px;">💬 Getting into JetChat from a booking</p>';
+  h+='<p style="font-size:12.5px;color:#744216;line-height:1.7;">Clicking the <strong>guest\'s full name</strong> on the booking takes you straight to their JetChat thread. It usually asks you to log in again even if you\'re already logged into JetChat elsewhere, and sends an <strong>OTP to your Gmail</strong> to verify. It also loads slowly. If it errors out or the guest can\'t be found that way, <strong>copy the guest\'s name and search for them directly in JetChat</strong> instead. If they still can\'t be found, leave the tag on, note it, and come back to that booking later — don\'t remove a tag you couldn\'t action.</p>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div class="card" style="margin-bottom:20px;">';
   h+='<h2 style="display:flex;align-items:center;gap:10px;">✅ New Booking Checklist</h2>';
   h+='<p style="font-size:12.5px;color:#718096;margin-bottom:14px;">Use this for every new booking:</p>';
   var pnbgChecklist=[
+    'Right-click the booking from the filtered list and open it in a new tab',
     'Open the booking and list every tag present',
     'Go through each tag one by one and apply its rule (see Tag Reference below)',
     'For any tag requiring guest contact, draft the message in the guest\'s language and have it reviewed before sending — never send guest messages without review',
-    'For any tag requiring a Cirrus update (door code, notes, etc.), make the update directly in Cirrus',
+    'For any tag requiring a Cirrus update (door code, notes, etc.), make the update directly in Cirrus — booking notes go in the regular <strong>Notes</strong> field, never <strong>Partner Notes</strong> (partners can see those)',
     'Double-check property-level exceptions (e.g. Info Required on Casa Monte Victoria / 352 Duff Rd.)',
-    'Once every other tag is resolved or intentionally left in place, remove the New tag last',
+    'Once every other tag is resolved or intentionally left in place, remove the New tag last — then press <strong>Save</strong>',
+    'Go back to the list and press Search again so the processed booking drops off',
     'If anything is unclear or not covered by a documented rule, flag it for Lauren instead of guessing'
   ];
   h+='<div style="display:flex;flex-direction:column;gap:8px;">';
@@ -9615,7 +9649,11 @@ function pnbGuideContent(){
     doorCodeBody+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+doorCodeSteps[dci][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;">'+doorCodeSteps[dci][1]+'</div></div></div>';
   }
   doorCodeBody+='</div>';
-  doorCodeBody+='<p style="font-size:12.5px;color:#718096;line-height:1.6;"><strong>Note:</strong> Always check the booking\'s own Door Code field first — don\'t skip straight to resort notes.</p>';
+  doorCodeBody+='<p style="font-size:12.5px;color:#718096;line-height:1.6;margin-bottom:12px;"><strong>Note:</strong> Always check the booking\'s own Door Code field first — don\'t skip straight to resort notes. In the resort\'s Booking Notes the code lives in the last section, usually called <strong>BACK UP ENTRY</strong>. For a static-code property you are simply copying that code across into the booking\'s Door Code field, then pressing <strong>Save Allocation</strong>.</p>';
+  doorCodeBody+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:8px;padding:12px 16px;">';
+  doorCodeBody+='<p style="font-size:12.5px;font-weight:700;color:#744216;margin-bottom:6px;">⚠️ Don\'t action door codes until you\'ve been trained on them</p>';
+  doorCodeBody+='<p style="font-size:12.5px;color:#744216;line-height:1.7;">Door codes have a lot of moving parts and getting one wrong locks a guest out. While you\'re still learning, read this section and shadow it, but leave the tag on for someone else to action rather than filling in a code you\'re not sure about. Also note: if the property runs on <strong>Operto</strong>, the code is generated per booking and syncs in automatically — see the <strong>Operto door code</strong> tag below, and don\'t type one in manually.</p>';
+  doorCodeBody+='</div>';
 
   var opertoSteps=[
     ['Go to the property\'s resort in Cirrus','Open the resort\'s Booking Notes.'],
@@ -9645,9 +9683,9 @@ function pnbGuideContent(){
   petsBody+='</div>';
 
   var emailBody='<p style="font-size:13px;color:#2d3748;line-height:1.7;margin-bottom:10px;"><strong>Meaning:</strong> We don\'t have a usable email address for the guest yet. A <strong>guest.booking.com</strong> relay address on file is not the same as a real guest email — the relay still works to reach them, but the tag stays until we get their actual address.</p>';
-  emailBody+='<ul class="tip-list" style="margin-bottom:12px;"><li><strong>If a valid (non-relay) email already exists</strong> — either the guest\'s own personal email or a travel agent\'s/agency\'s email both count as valid — remove the tag immediately. No outreach needed.</li></ul>';
+  emailBody+='<ul class="tip-list" style="margin-bottom:12px;"><li><strong>Always check the email field on the booking first.</strong> If a valid (non-relay) email already exists — either the guest\'s own personal email or a travel agent\'s/agency\'s email both count as valid — remove the tag immediately. No outreach needed.</li><li><strong>Which channels usually already have it:</strong> direct bookings and VRBO normally arrive with a real email already filled in. Booking.com and Airbnb normally don\'t. You\'ll get a feel for this quickly, but check every time rather than assuming.</li></ul>';
   emailBody+='<p style="font-size:12.5px;font-weight:700;color:#4a5568;margin-bottom:8px;">If there\'s no valid email (only a relay address, or nothing at all):</p>';
-  var emailSteps=['Message the guest asking for their email address, in their own language.','For Booking.com bookings, send via the guest\'s @guest.booking.com relay address (Booking.com forwards it to the guest).','Have the message reviewed before sending.','After sending, add a Cirrus booking note: "Asked for email."','Leave the tag on — it\'s only removed once the guest actually replies with their real email address.'];
+  var emailSteps=['Open the guest\'s JetChat thread (click their full name on the booking) and check what has already been sent. Some properties send an automatic message asking for the email address; some don\'t.','Message the guest asking for their email address, in their own language. <strong>While you are in training, send this ask even if an automatic message already went out</strong> — guests very often miss the first one.','For Booking.com bookings, send via the guest\'s @guest.booking.com relay address (Booking.com forwards it to the guest).','Have the message reviewed before sending.','After sending, add a Cirrus booking note: "Asked guest for email." Put it in the regular <strong>Notes</strong> field — <strong>not Partner Notes</strong>, because partners can see those.','Leave the tag on — it\'s only removed once the guest actually replies and their real email address is in Cirrus.'];
   emailBody+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
   for(var eci=0;eci<emailSteps.length;eci++){
     emailBody+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:10px 14px;">';
@@ -9657,7 +9695,65 @@ function pnbGuideContent(){
   emailBody+='</div>';
   emailBody+='<p style="font-size:12px;font-weight:700;color:#4a5568;margin-bottom:6px;">Template (EN — translate per guest language):</p>';
   emailBody+='<div style="background:#f0f4f8;border:1px solid #cbd5e0;border-left:4px solid #4a5568;border-radius:8px;padding:14px 16px;margin-bottom:12px;font-size:12.5px;color:#2d3748;line-height:1.8;white-space:pre-line;">Hello [Guest First Name],\n\nCould you kindly provide us with your email address for check-in purposes.\n\nKind regards,\n[Your Name] - Leavetown</div>';
-  emailBody+='<p style="font-size:12.5px;color:#718096;line-height:1.6;"><strong>Note:</strong> Keep it short — greeting, the one ask, sign-off. For Booking.com relay messages, if you don\'t get a reply, it\'s worth checking the booking\'s Messages tab — Booking.com can occasionally block or strip these messages (links, unapproved sender, etc.).</p>';
+  emailBody+='<p style="font-size:12.5px;color:#718096;line-height:1.6;margin-bottom:12px;"><strong>Note:</strong> Keep it short — greeting, the one ask, sign-off. For Booking.com relay messages, if you don\'t get a reply, it\'s worth checking the booking\'s Messages tab — Booking.com can occasionally block or strip these messages (links, unapproved sender, etc.).</p>';
+  emailBody+='<div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:12px 16px;margin-bottom:12px;">';
+  emailBody+='<p style="font-size:12.5px;font-weight:700;color:#2b6cb0;margin-bottom:6px;">🔁 What happens after you\'ve asked</p>';
+  emailBody+='<p style="font-size:12.5px;color:#2d3748;line-height:1.7;">Processing a new booking is mostly about <strong>reaching out</strong>. Taking the answer and putting it into Cirrus happens later, when the guest replies — that\'s when the tag comes off. The Manila team also filters this tag closer to arrival (around two days out) to catch any that were missed, and may call the guest. As a new hire you\'ll be asked to run that filter yourself for practice, even though it isn\'t normally your job — working one tag from start to finish is the fastest way to understand it.</p>';
+  emailBody+='</div>';
+  emailBody+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:8px;padding:12px 16px;">';
+  emailBody+='<p style="font-size:12.5px;font-weight:700;color:#744216;margin-bottom:6px;">🤖 Automation coming</p>';
+  emailBody+='<p style="font-size:12.5px;color:#744216;line-height:1.7;">Asking for the email is being automated as an AI project, so eventually you won\'t need to send this manually. Until that\'s live and confirmed, keep sending the ask yourself.</p>';
+  emailBody+='</div>';
+
+  var opertoSyncSteps=[
+    ['Check the booking\'s Door Code field','If a code has synced through and looks correct, the tag has done its job — remove the Operto door code tag (and the Door Code tag if it\'s also on).'],
+    ['If the field is empty, leave the tag on','Operto syncing is currently slow and unreliable, and often hasn\'t come through by the time you process the booking. That\'s expected.'],
+    ['You can still remove the New tag','Door code tags routinely take longer than the hour you have, so they don\'t block the booking from being marked processed. Remove New, leave the door code tags on.'],
+    ['Someone re-checks later','The Manila team filters these tags later in the day and removes them once the code has actually synced. Leaving the tag on is how they know to look.']
+  ];
+  var opertoSyncBody='<p style="font-size:13px;color:#2d3748;line-height:1.7;margin-bottom:10px;"><strong>Meaning:</strong> The property is connected to <strong>Operto</strong>, which generates a unique access code for each individual booking and pushes it into the booking\'s Door Code field automatically. You never type this code in by hand.</p>';
+  opertoSyncBody+='<p style="font-size:12.5px;font-weight:700;color:#4a5568;margin-bottom:8px;">Action:</p>';
+  opertoSyncBody+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
+  for(var osi=0;osi<opertoSyncSteps.length;osi++){
+    opertoSyncBody+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:10px 14px;">';
+    opertoSyncBody+='<div style="background:#805ad5;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+(osi+1)+'</div>';
+    opertoSyncBody+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+opertoSyncSteps[osi][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;line-height:1.6;">'+opertoSyncSteps[osi][1]+'</div></div></div>';
+  }
+  opertoSyncBody+='</div>';
+  opertoSyncBody+='<p style="font-size:12.5px;color:#718096;line-height:1.6;margin-bottom:12px;"><strong>Note:</strong> On a V2 booking the Operto code <strong>will not sync until a unit has been allocated on the Tape Chart</strong> — the two are linked. If a booking has both a Tape Chart tag and an Operto door code tag, do the Tape Chart allocation first, then give it time to sync.</p>';
+  opertoSyncBody+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:8px;padding:12px 16px;">';
+  opertoSyncBody+='<p style="font-size:12.5px;font-weight:700;color:#744216;margin-bottom:6px;">⚠️ Never remove this on a guess</p>';
+  opertoSyncBody+='<p style="font-size:12.5px;color:#744216;line-height:1.7;">Only remove the tag if you have actually seen a code in the Door Code field and it looks right. If nothing is there, the work isn\'t done — leaving the tag on is correct and is what protects the guest from arriving to no code.</p>';
+  opertoSyncBody+='</div>';
+
+  var tapeChartSteps=[
+    ['Note what was booked','On the booking, check the room type (e.g. Queen Comfort) and the arrival/departure dates.'],
+    ['Open Tape Chart in a new tab','The Tape Chart link sits along the top of the booking, next to Rates and Booking Events. Right-click and open in a new tab. Tape Chart is our internal calendar for V2 partners.'],
+    ['Find a free unit in that room type','Scroll to the correct room type and look across the guest\'s dates. You need a unit that is free for the whole stay — any of the open ones is fine.'],
+    ['Set the Unit Allocation on the booking','Choose that unit in the Unit Allocation field, then press Save Allocation. The booking is now tied to a specific room.'],
+    ['Remove the Tape Chart tag','Once the allocation is saved, that action is done.']
+  ];
+  var tapeChartBody='<p style="font-size:13px;color:#2d3748;line-height:1.7;margin-bottom:10px;"><strong>Meaning:</strong> The booking needs a specific unit allocated to it on the <strong>Tape Chart</strong> — the internal calendar we use for V2 partners. Until that happens the guest is booked into a room type, not an actual room.</p>';
+  tapeChartBody+='<p style="font-size:12.5px;font-weight:700;color:#4a5568;margin-bottom:8px;">Action:</p>';
+  tapeChartBody+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
+  for(var tci=0;tci<tapeChartSteps.length;tci++){
+    tapeChartBody+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:10px 14px;">';
+    tapeChartBody+='<div style="background:#805ad5;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+(tci+1)+'</div>';
+    tapeChartBody+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+tapeChartSteps[tci][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;line-height:1.6;">'+tapeChartSteps[tci][1]+'</div></div></div>';
+  }
+  tapeChartBody+='</div>';
+  tapeChartBody+='<p style="font-size:12.5px;color:#718096;line-height:1.6;margin-bottom:12px;"><strong>Why it matters beyond the calendar:</strong> the Operto door code <strong>can\'t generate until a unit is allocated</strong>. So on a V2 booking with both tags, the Tape Chart allocation is what unblocks the door code.</p>';
+  tapeChartBody+='<div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:12px 16px;">';
+  tapeChartBody+='<p style="font-size:12.5px;font-weight:700;color:#2b6cb0;margin-bottom:6px;">📅 V2 only — later training</p>';
+  tapeChartBody+='<p style="font-size:12.5px;color:#2d3748;line-height:1.7;">Tape Chart only applies to V2 partners, so you won\'t touch this while you\'re working on V1. It\'s documented here so it makes sense when you see the tag, and so you have it ready when V2 training starts.</p>';
+  tapeChartBody+='</div>';
+
+  var autohostDepositBody='<p style="font-size:13px;color:#2d3748;line-height:1.7;margin-bottom:10px;"><strong>Meaning:</strong> Not yet documented. This tag has been seen on real bookings but the rule behind it hasn\'t been confirmed.</p>';
+  autohostDepositBody+='<p style="font-size:13px;color:#2d3748;line-height:1.7;margin-bottom:12px;"><strong>Action:</strong> Ask Lauren. Don\'t remove it and don\'t assume it behaves like Autohost Pending.</p>';
+  autohostDepositBody+='<div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:12px 16px;">';
+  autohostDepositBody+='<p style="font-size:12.5px;font-weight:700;color:#2b6cb0;margin-bottom:6px;">ℹ️ Why Autohost isn\'t covered in depth</p>';
+  autohostDepositBody+='<p style="font-size:12.5px;color:#2d3748;line-height:1.7;">We are moving off Autohost soon, so Autohost tags are deliberately not being trained in detail — learning a process we\'re about to drop isn\'t a good use of your time. If you hit an Autohost tag while processing, flag it rather than working it out yourself.</p>';
+  autohostDepositBody+='</div>';
 
   h+='<div class="card" style="margin-bottom:20px;">';
   h+='<h2 style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">🏷️ Tag Reference</h2>';
@@ -9674,6 +9770,9 @@ function pnbGuideContent(){
   h+=pnbGuideAccordion('🔋','Use Operto offline code','Action required','#805ad5',opertoBody);
   h+=pnbGuideAccordion('🐾','Check for pets','Action required','#805ad5',petsBody);
   h+=pnbGuideAccordion('✉️','Add email when guest confirms','Action required','#805ad5',emailBody);
+  h+=pnbGuideAccordion('🔐','Operto door code','Check &amp; usually leave on','#d69e2e',opertoSyncBody);
+  h+=pnbGuideAccordion('📅','Tape Chart','Action required — V2 only','#805ad5',tapeChartBody);
+  h+=pnbGuideAccordion('🛡️','Autohost Security Deposit','Not yet documented — ask','#e53e3e',autohostDepositBody);
   h+='</div>';
 
   h+='<div class="card" style="margin-bottom:20px;">';
@@ -9682,8 +9781,14 @@ function pnbGuideContent(){
   h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;margin-bottom:16px;">IF tag = Info Required\n  AND property = Casa Monte Victoria OR 352 Duff Rd. (Resort 5342)\n    → REMOVE the tag (known system fault, exception applies)\n  ELSE\n    → LEAVE the tag on (waiting for partner supplier confirmation)</pre>';
   h+='<p style="font-size:12px;font-weight:700;color:#4a5568;margin-bottom:6px;">Door Code Tag</p>';
   h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;margin-bottom:16px;">IF tag = Door Code\n  → Check booking\'s Door Code field\n      IF populated → done, remove tag\n      ELSE → Check booking notes for Operto Code\n          IF found → done (valid on its own)\n          ELSE → Check resort-level Booking Notes for the property\'s access code\n              → Enter code into booking\'s Door Code field → remove tag</pre>';
+  h+='<p style="font-size:12px;font-weight:700;color:#4a5568;margin-bottom:6px;">Add Email When Guest Confirms Tag</p>';
+  h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;margin-bottom:16px;">IF tag = Add email when guest confirms\n  → Check the email field on the booking\n      IF a real (non-relay) email is already there → REMOVE the tag, no outreach\n      ELSE → Open JetChat and check what has already been sent\n          → Message the guest asking for their email (in their language)\n             even if an automatic ask already went out\n          → Add Cirrus note "Asked guest for email" in the NOTES field\n             (never Partner Notes)\n          → LEAVE the tag on until the real email is in Cirrus</pre>';
+  h+='<p style="font-size:12px;font-weight:700;color:#4a5568;margin-bottom:6px;">Operto Door Code Tag</p>';
+  h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;margin-bottom:16px;">IF tag = Operto door code\n  → Check booking\'s Door Code field\n      IF a code has synced through AND looks correct → REMOVE the tag\n      ELSE → LEAVE the tag on (sync is slow; someone re-checks later)\n          → You may still REMOVE the New tag\n  IF the booking is V2 AND also has a Tape Chart tag\n      → Do the Tape Chart allocation FIRST (the code can\'t generate without it)</pre>';
+  h+='<p style="font-size:12px;font-weight:700;color:#4a5568;margin-bottom:6px;">Tape Chart Tag (V2 only)</p>';
+  h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;margin-bottom:16px;">IF tag = Tape Chart\n  → Note the room type booked + the guest\'s dates\n  → Open Tape Chart in a new tab\n      → Find a unit in that room type free for the whole stay\n      → Set Unit Allocation on the booking → Save Allocation\n      → REMOVE the Tape Chart tag\n  → Operto code will now start syncing (may take hours)</pre>';
   h+='<p style="font-size:12px;font-weight:700;color:#4a5568;margin-bottom:6px;">New Tag</p>';
-  h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;">IF all other tags on the booking have been reviewed and actioned\n  → REMOVE the New tag (booking is fully processed)\nELSE\n  → LEAVE New tag on until every other tag is resolved</pre>';
+  h+='<pre style="background:#1a202c;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.7;overflow-x:auto;font-family:Consolas,Monaco,monospace;">IF all other tags on the booking have been reviewed and actioned\n  → REMOVE the New tag (booking is fully processed) → press Save\nELSE IF the only tags left are door code tags waiting to sync\n  → REMOVE the New tag anyway (sync takes longer than the hour;\n     the door code tags stay on for someone to re-check)\nELSE\n  → LEAVE New tag on until every other tag is resolved</pre>';
   h+='</div>';
 
   h+='<div class="card" style="margin-bottom:20px;">';
@@ -9696,10 +9801,31 @@ function pnbGuideContent(){
   h+='<p style="font-size:13px;color:#718096;line-height:1.7;">No partner-specific rules documented yet. No platform-specific rules beyond the tag behaviors above are documented yet for Booking.com. This section will grow as more scenarios are confirmed.</p>';
   h+='</div>';
 
+  h+='<div class="card" style="margin-bottom:20px;border-left:5px solid #38a169;">';
+  h+='<h2 style="display:flex;align-items:center;gap:10px;">🎓 New-Hire Practice Exercise</h2>';
+  h+='<p style="font-size:13px;color:#2d3748;line-height:1.7;margin-bottom:12px;">Tags are learned by handling them, not by reading about them once. While you\'re working the training inbox, do this on every conversation that has a booking behind it — before you draft your answer:</p>';
+  var pnbgPractice=[
+    ['Find the booking','If the conversation relates to an actual booking (not just an inquiry), find it in Cirrus.'],
+    ['Log the booking ID','Copy the booking ID into the booking notes field of your reply so it\'s recorded.'],
+    ['List every tag on the booking','Write out each tag by name. Screenshot it and have ChatGPT type the names out if that\'s faster than retyping them.'],
+    ['Add a one-line meaning for each','Check the Tag Reference above. Give a short line on what the tag means and whether it needs an action.'],
+    ['Write "no explanation yet" for anything missing','If a tag isn\'t in this guide, say so instead of guessing. That\'s the signal for Lauren to document it — and it\'s how this guide keeps growing.'],
+    ['Then answer the guest','Once you\'ve done the tag pass, carry on with the inquiry as normal.']
+  ];
+  h+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
+  for(var ppi=0;ppi<pnbgPractice.length;ppi++){
+    h+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:10px 14px;">';
+    h+='<div style="background:#38a169;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+(ppi+1)+'</div>';
+    h+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+pnbgPractice[ppi][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;line-height:1.6;">'+pnbgPractice[ppi][1]+'</div></div></div>';
+  }
+  h+='</div>';
+  h+='<p style="font-size:12.5px;color:#718096;line-height:1.7;">It\'s extra work up front, and it isn\'t something you\'ll do forever. The point is that by the time you start actioning tags for real, you already recognise them on sight and know which ones matter. Also worth flagging anything that looks wrong to you — sometimes a tag genuinely shouldn\'t be there, and spotting that is part of the skill.</p>';
+  h+='</div>';
+
   h+='<div class="card" style="border-left:5px solid #f6e05e;">';
   h+='<h2 style="display:flex;align-items:center;gap:10px;color:#744216;">⚠️ Open Questions Log</h2>';
   h+='<p style="font-size:12.5px;color:#718096;margin-bottom:12px;">Items flagged during training that are not yet confirmed — check with Lauren before treating these as fixed rules:</p>';
-  h+='<ul class="tip-list"><li><strong>Check for pets</strong> — exact condition for tag removal.</li><li><strong>Combining guest-facing asks</strong> (e.g. pets + email) into a single message when both tags are present — interim approach only, not yet confirmed as standard.</li></ul>';
+  h+='<ul class="tip-list"><li><strong>Check for pets</strong> — exact condition for tag removal.</li><li><strong>Combining guest-facing asks</strong> (e.g. pets + email) into a single message when both tags are present — interim approach only, not yet confirmed as standard.</li><li><strong>Autohost Security Deposit</strong> — meaning and action not documented. Seen on real bookings; ask Lauren rather than assuming it works like Autohost Pending.</li><li><strong>Which properties send the automatic email ask</strong> — some bookings already have an automated "please provide your email address" message in JetChat and some don\'t, and there\'s currently no easy way to tell which while you\'re processing. Interim rule: send the ask anyway.</li><li><strong>How long an Operto code should take to sync</strong> — no confirmed cut-off for when a missing code stops being "still syncing" and becomes a problem to escalate.</li></ul>';
   h+='</div>';
 
   return h;
