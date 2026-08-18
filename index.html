@@ -1622,6 +1622,14 @@ function adminToggleChallenge(idx){
   body.style.display=open?'none':'block';
   if(arrow)arrow.textContent=open?'▶':'▼';
 }
+function toggleDqRes(idx){
+  var body=document.getElementById('dqres-'+idx);
+  var arrow=document.getElementById('dqres-arr-'+idx);
+  if(!body)return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(arrow)arrow.textContent=open?'▶':'▼';
+}
 function adminToggleDraft(idx){
   var body=document.getElementById('admin-dr-body-'+idx);
   var arrow=document.getElementById('admin-dr-arrow-'+idx);
@@ -1650,7 +1658,8 @@ function adminPage(){
   h+='</div>';
 
   h+='<div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid #e2e8f0;">';
-  h+='<div style="font-size:14px;font-weight:800;color:#1a1a2e;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.8px;">Daily Challenges</div>';
+  h+='<div style="font-size:14px;font-weight:800;color:#1a1a2e;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.8px;">Daily Challenges</div>';
+  h+='<div style="font-size:12px;color:#718096;margin-bottom:14px;line-height:1.6;">Live rotation, one quiz per person per day, resetting at midnight. ACTIVE is the one showing for you right now. An unfinished quiz stays up until it is completed, then the next one comes up the following day. After the last one it loops back to the first.</div>';
   for(var i=0;i<DQ_SCENARIOS.length;i++){
     var s=DQ_SCENARIOS[i];
     var isActive=(i===activeDqIdx);
@@ -1701,16 +1710,16 @@ function adminPage(){
   /* ── Draft quiz library: admin only, not visible to the team ── */
   h+='<div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid #e2e8f0;">';
   h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">';
-  h+='<div style="font-size:14px;font-weight:800;color:#1a1a2e;text-transform:uppercase;letter-spacing:0.8px;">Draft Quiz Library</div>';
+  h+='<div style="font-size:14px;font-weight:800;color:#1a1a2e;text-transform:uppercase;letter-spacing:0.8px;">Quiz Library, Not In Rotation</div>';
   h+='<span style="font-size:10.5px;font-weight:700;background:#744210;color:#fff;border-radius:20px;padding:2px 10px;">YOUR EYES ONLY</span>';
   h+='</div>';
-  h+='<div style="font-size:12px;color:#718096;margin-bottom:14px;line-height:1.6;">Getting Started with Simple V1 Inquiries. These are not live, so nobody on the team can see or open them. Click a quiz to read the questions and answers, or preview it exactly as a trainee would see it. When you want to start rotating them, tell Claude which one to put live.</div>';
+  h+='<div style="font-size:12px;color:#718096;margin-bottom:14px;line-height:1.6;">Quizzes held out of the daily rotation. Nobody on the team can see or open these. Click one to read the questions and answers, or preview it exactly as a trainee would see it. To put one back into the rotation, tell Claude which one.</div>';
   for(var d=0;d<DQ_DRAFTS.length;d++){
     var ds=DQ_DRAFTS[d];
     h+='<div style="border:2px solid #e2e8f0;border-radius:10px;margin-bottom:10px;background:#f7fafc;overflow:hidden;">';
     h+='<div onclick="adminToggleDraft('+d+')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;gap:10px;">';
     h+='<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">';
-    h+='<span style="font-size:11px;font-weight:700;background:#744210;color:#fff;border-radius:20px;padding:2px 10px;white-space:nowrap;">Draft #'+(d+1)+' &mdash; NOT LIVE</span>';
+    h+='<span style="font-size:11px;font-weight:700;background:#744210;color:#fff;border-radius:20px;padding:2px 10px;white-space:nowrap;">Quiz #'+(d+1)+' &middot; NOT IN ROTATION</span>';
     h+='<span style="font-size:14px;font-weight:700;color:#1a1a2e;">'+ds.title+'</span>';
     h+='</div>';
     h+='<span id="admin-dr-arrow-'+d+'" style="font-size:12px;color:#718096;flex-shrink:0;">▶</span>';
@@ -1859,7 +1868,35 @@ function homePage(forcedTab){
       h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span style="font-size:18px;">&#x1F3AF;</span><span style="font-size:13px;font-weight:700;color:#fff;">Your Results History</span></div>';
       if(dqAvg!==null){
         h+='<div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.6px;">Avg. score</span><div style="display:flex;align-items:baseline;gap:6px;"><span style="font-size:24px;font-weight:800;color:#4aacb8;">'+dqAvg+'%</span><span style="font-size:11px;color:rgba(255,255,255,0.5);">'+dqLog.length+' attempt'+(dqLog.length!==1?'s':'')+'</span></div></div>';
-        for(var i=0;i<dqLog.length;i++){var r=dqLog[i];h+='<div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:9px 12px;'+(i<dqLog.length-1?'margin-bottom:6px;':'')+'display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:12px;font-weight:600;color:#fff;">'+r.scenarioName+'</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">'+r.date+' &middot; '+r.time+'</div></div><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:'+(r.pass?'rgba(72,187,120,0.2)':'rgba(252,129,129,0.2)')+';color:'+(r.pass?'#9ae6b4':'#fc8181')+';">'+r.score+'/'+r.total+' &middot; '+r.pct+'%</span></div>';}
+        h+='<div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;line-height:1.5;">Click an attempt to see the questions you got wrong, with the correct answer.</div>';
+        for(var i=0;i<dqLog.length;i++){
+          var r=dqLog[i];
+          var wrongs=[];
+          if(r.questions&&r.questions.length){for(var wi=0;wi<r.questions.length;wi++){if(r.questions[wi].chosen!==r.questions[wi].ans)wrongs.push(r.questions[wi]);}}
+          h+='<div style="background:rgba(255,255,255,0.07);border-radius:8px;overflow:hidden;'+(i<dqLog.length-1?'margin-bottom:6px;':'')+'">';
+          h+='<div onclick="toggleDqRes('+i+')" style="padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px;">';
+          h+='<div><div style="font-size:12px;font-weight:600;color:#fff;">'+r.scenarioName+'</div>';
+          h+='<div style="font-size:11px;color:rgba(255,255,255,0.45);">'+r.date+' &middot; '+r.time+(r.questions&&r.questions.length?' &middot; '+(wrongs.length?wrongs.length+' to review':'all correct'):'')+'</div></div>';
+          h+='<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">';
+          h+='<span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:'+(r.pass?'rgba(72,187,120,0.2)':'rgba(252,129,129,0.2)')+';color:'+(r.pass?'#9ae6b4':'#fc8181')+';">'+r.score+'/'+r.total+' &middot; '+r.pct+'%</span>';
+          h+='<span id="dqres-arr-'+i+'" style="font-size:10px;color:rgba(255,255,255,0.5);">▶</span>';
+          h+='</div></div>';
+          h+='<div id="dqres-'+i+'" style="display:none;padding:0 12px 12px;">';
+          if(!r.questions||!r.questions.length){h+='<div style="font-size:11.5px;color:rgba(255,255,255,0.5);line-height:1.6;">No answer detail was saved for this attempt.</div>';}
+          else if(!wrongs.length){h+='<div style="font-size:11.5px;color:#9ae6b4;line-height:1.6;">Every answer correct, nothing to review.</div>';}
+          else{
+            for(var wj=0;wj<wrongs.length;wj++){
+              var wr=wrongs[wj];
+              h+='<div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 12px;margin-top:8px;">';
+              h+='<div style="font-size:11.5px;font-weight:700;color:#fff;line-height:1.55;margin-bottom:6px;">'+wr.q+'</div>';
+              h+='<div style="font-size:11.5px;color:#fc8181;line-height:1.55;">Your answer: '+((wr.opts&&wr.chosen>=0&&wr.opts[wr.chosen])?wr.opts[wr.chosen]:'not answered')+'</div>';
+              h+='<div style="font-size:11.5px;color:#9ae6b4;line-height:1.55;margin-top:3px;">Correct answer: '+((wr.opts&&wr.opts[wr.ans])?wr.opts[wr.ans]:'')+'</div>';
+              if(wr.explanation)h+='<div style="font-size:11px;color:rgba(255,255,255,0.72);line-height:1.6;margin-top:6px;">'+wr.explanation+'</div>';
+              h+='</div>';
+            }
+          }
+          h+='</div></div>';
+        }
       }else{h+='<div style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.4);font-size:12px;">No challenges completed yet — complete your first one above!</div>';}
       h+='</div>';
     }
@@ -12179,9 +12216,15 @@ function updateNavCompletion(navId, isDone){
 
 // ── Daily Case Challenge ─────────────────────────────────────────────────
 var DQ_IDX=0;
-function getDqIdx(){var u=getUser();if(!u)return 0;try{return parseInt(localStorage.getItem(u+'-dq-idx')||'0');}catch(e){return 0;}}
-function setDqIdx(n){var u=getUser();if(!u)return;try{localStorage.setItem(u+'-dq-idx',n);}catch(e){}}
-var DQ_SCENARIOS=[
+/* Rotation: one quiz per day, in order, wrapping back to the first after the last.
+   The counter only moves when a quiz is completed, so an unfinished quiz stays up
+   until it is done. Stored under a new key so the rotation starts everyone at quiz 1. */
+function getDqCount(){var u=getUser();if(!u)return 0;try{return parseInt(localStorage.getItem(u+'-dq2-count')||'0')||0;}catch(e){return 0;}}
+function setDqCount(n){var u=getUser();if(!u)return;try{localStorage.setItem(u+'-dq2-count',n);}catch(e){}}
+function getDqIdx(){var L=DQ_SCENARIOS.length;if(!L)return 0;var n=getDqCount();return ((n%L)+L)%L;}
+/* The three original HubSpot ticket challenges. Kept out of the daily rotation,
+   still previewable by Lauren in the Admin Panel. */
+var DQ_ARCHIVE=[
   {title:'HubSpot Ticket Review Challenge',scenario:'The guest reported that there was no grab-and-go café available on-site despite the listing advertising this amenity. The guest advised that on-site staff confirmed there was no café after directing the guest to the front desk. The listing included photos and wording stating: "Poolside tiki bar and Grab & Go Café offering light meals and beverages." Further review of the listing later confirmed a disclaimer stating amenities are subject to change without notice. The guest did not appear overly upset, and a goodwill voucher was considered.',
    questions:[
     {q:'1. What type of complaint was reported?',opts:['Cleanliness & Pests','Maintenance Failure','Content & Listing Accuracy','Payment Dispute'],ans:2,explanation:'The complaint was "Content & Listing Accuracy" — the advertised café amenity was unavailable.'},
@@ -12204,9 +12247,8 @@ var DQ_SCENARIOS=[
     {q:'4. Was this complaint considered valid?',opts:['No','Yes'],ans:1,explanation:'Valid based on the multiple cleanliness concerns and supporting evidence provided.'}
    ],resolution:['Guest reported multiple cleanliness concerns and property condition issues','Support agent requested photos/videos and confirmed front desk contact','Internal notes and blacklist tags added in Cirrus','Guest provided supporting evidence','HubSpot ticket created for partner investigation','Complaint reviewed and considered valid','Partner agreed to cover $200 compensation','Guest refunded and Cirrus records updated','Ticket resolved and closed']}
 ];
-/* ── Draft quizzes: ADMIN ONLY. Not in DQ_SCENARIOS, so the team never sees these.
-   To put one live for the team, move it into DQ_SCENARIOS above. ── */
-var DQ_DRAFTS=[
+/* ── The live daily rotation. One per day, in this order, then back to the first. ── */
+var DQ_SCENARIOS=[
   {title:'V1 Guardrails: The Booking-Status Gate',name:'Booking-Status Gate',
    scenario:'An Airbnb inquiry comes in for a V1 resort. The guest has not booked yet and asks several questions at once about the property.',
    questions:[
@@ -12257,9 +12299,11 @@ var DQ_DRAFTS=[
     {q:'5. The unit is on the ground floor. The guest asks whether it is wheelchair accessible, and Cirrus has no accessibility note.',opts:['Confirm it, ground floor means accessible','Say probably, and suggest they check on arrival','No accessibility note anywhere in Cirrus means you treat the property as not accessible','Ask the partner and confirm whatever they say'],ans:2,explanation:'Never guess accessibility from general listing details. No explicit accessibility note in Cirrus means the property is treated as not accessible.'}
    ],resolutionTitle:'Key takeaways',resolution:['The deposit is a hold, released roughly 7 to 10 working days after the stay','French pool rules apply even when the listing is silent','Service animals are always allowed with no fee','Emotional support animals are not the same, escalate them','No accessibility note means not accessible, never guess']}
 ];
+/* The Admin Panel library shows whatever is in here: quizzes that are NOT in the
+   daily rotation. Move an entry into DQ_SCENARIOS above to put it live. */
+var DQ_DRAFTS=DQ_ARCHIVE;
 var _dqAnswers={};
 function openDailyQuiz(){
-  if(getUser()==='Thanh-vân'||getUser()==='Martin')return;
   DQ_IDX=getDqIdx();
   var body=document.getElementById('dq-modal-body');var title=document.getElementById('dq-modal-title');
   if(!body)return;
@@ -12355,7 +12399,7 @@ function submitDailyQuiz(){
   resHtml+='<div style="font-size:36px;margin-bottom:8px;">'+(pct===100?'🏆':pass?'🎉':'📚')+'</div>';
   resHtml+='<div style="font-size:22px;font-weight:800;color:'+(pass?'#276749':'#9b2235')+';">'+score+' / '+s.questions.length+'</div>';
   resHtml+='<div style="font-size:13px;color:#4a5568;margin-top:4px;">'+pct+'%</div></div>';
-  resHtml+='<div class="dq-resolution"><h3>📋 Final Resolution</h3><ul>';
+  resHtml+='<div class="dq-resolution"><h3>📋 '+(s.resolutionTitle||'Final Resolution')+'</h3><ul>';
   for(var k=0;k<s.resolution.length;k++)resHtml+='<li>'+s.resolution[k]+'</li>';
   resHtml+='</ul></div>';
   var rDiv=document.getElementById('dq-result');if(rDiv){rDiv.innerHTML=resHtml;rDiv.style.display='block';}
@@ -12364,25 +12408,15 @@ function submitDailyQuiz(){
   if(u){
     var savedQs=[];
     for(var i=0;i<s.questions.length;i++){var sel2=document.querySelector('input[name="dq-q'+i+'"]:checked');savedQs.push({q:s.questions[i].q,opts:s.questions[i].opts,chosen:sel2?parseInt(sel2.value):-1,ans:s.questions[i].ans,explanation:s.questions[i].explanation});}
-    var result={date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),quizIdx:DQ_IDX,title:s.title,scenarioName:['Café Amenity Complaint','Broken Shutters Complaint','Cleanliness Complaint'][DQ_IDX]||('Quiz '+(DQ_IDX+1)),score:score,total:s.questions.length,pct:pct,pass:pass,questions:savedQs,resolution:s.resolution};
+    var result={date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),quizIdx:DQ_IDX,title:s.title,scenarioName:s.name||s.title||('Quiz '+(DQ_IDX+1)),score:score,total:s.questions.length,pct:pct,pass:pass,questions:savedQs,resolution:s.resolution};
     try{var key=u+'-dq-results';var existing=JSON.parse(localStorage.getItem(key)||'[]');existing.unshift(result);if(existing.length>20)existing=existing.slice(0,20);localStorage.setItem(key,JSON.stringify(existing));localStorage.setItem(u+'-dq-last-completed',new Date().toDateString());}catch(e){}
-    setDqIdx(DQ_IDX + 1);
+    setDqCount(getDqCount() + 1);
   }
   checkDqButtonState();
 }
 function checkDqButtonState(){
   var btn=document.getElementById('dq-btn');if(!btn)return;
   var u=getUser();if(!u)return;
-  if(u==='Thanh-vân'){
-    btn.disabled=true;btn.textContent="🎯 Case Challenge (unlocks soon)";
-    btn.style.background='#a0aec0';btn.style.animation='none';btn.style.opacity='0.6';btn.style.cursor='not-allowed';
-    return;
-  }
-  if(u==='Martin'){
-    btn.disabled=true;btn.textContent="🎯 Case Challenge (Coming Soon)";
-    btn.style.background='#a0aec0';btn.style.animation='none';btn.style.opacity='0.6';btn.style.cursor='not-allowed';
-    return;
-  }
   var lastDate=null;try{lastDate=localStorage.getItem(u+'-dq-last-completed');}catch(e){}
   var today=new Date().toDateString();
   if(lastDate===today){
