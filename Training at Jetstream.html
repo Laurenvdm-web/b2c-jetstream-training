@@ -1042,11 +1042,60 @@ function loadTeamProgress(){
         h+='<span style="font-size:11px;color:#718096;width:36px;text-align:right;">'+pct+'%</span>';
         h+='</div>';
       }
+      /* ── daily challenge results, read from the same Firebase node ── */
+      var dqRaw=r.data[r.name+'-dq-results'];
+      var dqList=[];try{dqList=dqRaw?JSON.parse(dqRaw):[];}catch(e){dqList=[];}
+      var dqCount=parseInt(r.data[r.name+'-dq2-count']||'0')||0;
+      var dqLast=r.data[r.name+'-dq-last-completed']||null;
+      var L=DQ_SCENARIOS.length;
+      var upNext=L?(DQ_SCENARIOS[((dqCount%L)+L)%L].name||DQ_SCENARIOS[((dqCount%L)+L)%L].title):'';
+      var doneToday=(dqLast===new Date().toDateString());
+      var dqSum=0;for(var ds=0;ds<dqList.length;ds++)dqSum+=(dqList[ds].pct||0);
+      var dqAvgTeam=dqList.length?Math.round(dqSum/dqList.length):null;
+      h+='<div style="margin-top:14px;padding-top:12px;border-top:1px dashed #cbd5e0;">';
+      h+='<div style="font-size:12px;font-weight:700;color:#2a5a7a;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Daily challenge</div>';
+      h+='<div style="font-size:12px;color:#4a5568;line-height:1.7;margin-bottom:10px;">Completed: <strong>'+dqCount+'</strong>';
+      if(dqAvgTeam!==null)h+=' &middot; Average: <strong>'+dqAvgTeam+'%</strong>';
+      h+=' &middot; Up next: <strong>'+upNext+'</strong> &middot; Today: '+(doneToday?'<span style="color:#276749;font-weight:700;">done</span>':'<span style="color:#9a3412;font-weight:700;">not yet</span>')+'</div>';
+      if(!dqList.length){h+='<div style="font-size:12px;color:#718096;">No attempts logged yet.</div>';}
+      else{
+        for(var dl=0;dl<dqList.length;dl++){
+          var at=dqList[dl];
+          var atWrong=[];
+          if(at.questions&&at.questions.length){for(var aw=0;aw<at.questions.length;aw++){if(at.questions[aw].chosen!==at.questions[aw].ans)atWrong.push(at.questions[aw]);}}
+          h+='<div style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;overflow:hidden;">';
+          h+='<div onclick="toggleTeamDq('+i+','+dl+')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;cursor:pointer;background:#f7fafc;">';
+          h+='<div><div style="font-size:12px;font-weight:600;color:#1a1a2e;">'+(at.scenarioName||at.title||'Quiz')+'</div>';
+          h+='<div style="font-size:11px;color:#718096;">'+(at.date||'')+(at.time?' &middot; '+at.time:'')+(at.questions&&at.questions.length?' &middot; '+(atWrong.length?atWrong.length+' wrong':'all correct'):'')+'</div></div>';
+          h+='<span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:'+(at.pass?'#f0fff4':'#fff5f5')+';color:'+(at.pass?'#276749':'#9b2235')+';border:1px solid '+(at.pass?'#9ae6b4':'#fc8181')+';white-space:nowrap;">'+at.score+'/'+at.total+' &middot; '+at.pct+'%</span>';
+          h+='</div>';
+          h+='<div id="team-dq-'+i+'-'+dl+'" style="display:none;padding:10px;background:#fff;border-top:1px solid #e2e8f0;">';
+          if(!at.questions||!at.questions.length){h+='<div style="font-size:11.5px;color:#718096;">No answer detail was saved for this attempt.</div>';}
+          else if(!atWrong.length){h+='<div style="font-size:11.5px;color:#276749;">Every answer correct.</div>';}
+          else{
+            for(var ax=0;ax<atWrong.length;ax++){
+              var aq=atWrong[ax];
+              h+='<div style="background:#f7fafc;border-radius:6px;padding:8px 10px;margin-bottom:6px;">';
+              h+='<div style="font-size:11.5px;font-weight:700;color:#1a1a2e;line-height:1.5;margin-bottom:4px;">'+aq.q+'</div>';
+              h+='<div style="font-size:11.5px;color:#9b2235;line-height:1.5;">Their answer: '+((aq.opts&&aq.chosen>=0&&aq.opts[aq.chosen])?aq.opts[aq.chosen]:'not answered')+'</div>';
+              h+='<div style="font-size:11.5px;color:#276749;line-height:1.5;">Correct answer: '+((aq.opts&&aq.opts[aq.ans])?aq.opts[aq.ans]:'')+'</div>';
+              h+='</div>';
+            }
+          }
+          h+='</div></div>';
+        }
+      }
+      h+='</div>';
       h+='</div>';
       h+='</div>';
     }
     box.innerHTML=h||'<div style="font-size:13px;color:#718096;">No team data found.</div>';
   });
+}
+function toggleTeamDq(i,j){
+  var b=document.getElementById('team-dq-'+i+'-'+j);
+  if(!b)return;
+  b.style.display=(b.style.display==='block')?'none':'block';
 }
 function toggleTeamRow(i){
   var b=document.getElementById('team-body-'+i);var a=document.getElementById('team-arr-'+i);
