@@ -3715,6 +3715,29 @@ function v2PartnersPage(){
     {type:'guest',speaker:'[Guest]',text:'Yes thank you!'},
     {type:'note',speaker:'Cirrus note added',text:'Guest confirmed Wi-Fi is now working as of [date]. Removing Follow_up_guest tag &#8212; case resolved.',flag:'Step 5 &#8212; once confirmed fixed, close the loop in Cirrus and remove the follow-up tag.'}
   ]);
+
+  h+='<div style="margin-top:10px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-ex2-body\');var a=document.getElementById(\'v2p-ex2-arr\');if(b.style.display===\'none\'){b.style.display=\'block\';a.textContent=\'▼\';}else{b.style.display=\'none\';a.textContent=\'►\';}">';
+  h+='<span>Example 2 &#8212; Lost Property</span>';
+  h+='<span id="v2p-ex2-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-ex2-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:12px;color:#718096;line-height:1.6;margin-bottom:14px;">When a guest leaves something behind, contact the partner to check the unit, then log a follow-up partner tag and Cirrus notes at each stage &#8212; don&#8217;t just wait quietly for an answer.</p>';
+  h+=v2ReviewCard('Guest Left an Item Behind','Airbnb &middot; Basecamp151 (V2, white labelled) &middot; [Guest] name redacted',[
+    {type:'guest',speaker:'[Guest]',text:'Hey! Well apparently I left a pair of white linen pants. Even after checking twice before I left. Were they found?'},
+    {type:'note',speaker:'Internal &#8212; not guest-facing',text:'Reached out to the Basecamp151 property/on-site team directly and asked them to check the unit for the item.',flag:'Step 1 &#8212; for anything left at the unit, the partner is who can physically check it, so contact them first.'},
+    {type:'note',speaker:'Cirrus note added',text:'Guest reported leaving an item behind. Contacted property team to check the unit. Added Follow_up_partner tag to check back once they respond.',flag:'Step 2 &#8212; log the follow-up partner tag and note right away, so the case doesn’t get lost while waiting on the partner.'},
+    {type:'agent',speaker:'[Your Name], Basecamp151',text:'Hi [Guest],\n\nI’m sorry to hear that.\n\nWe’ll check with our on-site team to see if your item was found. We’ll get back to you as soon as we have an update.\n\nKind regards,\n[Your Name], Basecamp151',signoff:true},
+    {type:'agent',speaker:'[Your Name], Basecamp151',text:'Hi [Guest],\n\nGood news! The property has located your item.\n\nTo arrange for it to be returned to you, could you please send us your mailing address and your preferred freight billing information? Once we receive those details, we’ll pass them along to the property so they can ship it as soon as possible.\n\nKind regards,\n[Your Name], Basecamp151'},
+    {type:'guest',speaker:'[Guest]',text:'Thank you. Please do me a favor of deleting the credit card information once the package has shipped.'},
+    {type:'agent',speaker:'[Your Name], Basecamp151',text:'Hi [Guest],\n\nAbsolutely.\n\nWe’ll keep you updated as soon as we have an update from the on-site team.\n\nKind regards,\n[Your Name], Basecamp151',flag:'Step 3 &#8212; always confirm a guest’s data-privacy request directly rather than just proceeding silently.'},
+    {type:'note',speaker:'Cirrus note updated',text:'Property located item; guest supplied mailing address and freight billing details, and asked that payment info be deleted after shipment &#8212; confirmed to guest. Follow_up_partner tag remains until shipment is confirmed.'},
+    {type:'agent',speaker:'[Your Name], Basecamp151',text:'Hello [Guest],\n\nOur team has provided the shipping costs for your item:\n\nShipping: $19.61\nHandling: $5.00\n\nTotal: $24.61\n\nWe’ll be sending a payment request through Airbnb shortly.\n\nKind regards,\n[Your Name], Basecamp151'},
+    {type:'note',speaker:'Final Cirrus note',text:'Item shipped via property team; payment request for $24.61 sent through Airbnb. Removing Follow_up_partner tag &#8212; case resolved.',flag:'Step 4 &#8212; once the item is shipped and paid for, close the loop in Cirrus and remove the follow-up tag.'}
+  ]);
+  h+='</div>';
+  h+='</div>';
+
   h+='</div>';
   h+='</div>';
 
