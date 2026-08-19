@@ -3696,10 +3696,26 @@ function v2PartnersPage(){
   h+='</button>';
   h+='<div id="v2p-review-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
   h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">Practice writing replies to real V2 guest inquiry types, then compare your draft against a corrected version with reviewer comments explaining what changed and why.</p>';
-  h+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:10px;padding:16px 20px;">';
+  h+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:10px;padding:16px 20px;margin-bottom:20px;">';
   h+='<p style="font-size:13px;font-weight:700;color:#744216;margin-bottom:6px;">&#x26A1; PII note</p>';
   h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;">Guest names and door codes in the source examples are always redacted before they reach this module.</p>';
   h+='</div>';
+
+  h+='<p style="font-size:12px;font-weight:700;color:#1a1a2e;text-transform:uppercase;letter-spacing:0.6px;margin:0 0 4px;">Example — Wi-Fi Outage (V2 Escalation)</p>';
+  h+='<p style="font-size:12px;color:#718096;line-height:1.6;margin-bottom:14px;">Every Jetstream reply below signs off as &#8220;[agent], Canadian Rockies Vacation Rentals&#8221; instead of &#8220;Leavetown&#8221; &#8212; CRVR is a white label partner, so the guest never sees Jetstream/Leavetown&#8217;s name.</p>';
+
+  h+=v2ReviewCard('Wi-Fi Not Working &#8212; Guest In-House','Booking.com &middot; CRVR (V2, white labelled) &middot; [Guest] name redacted',[
+    {type:'guest',speaker:'[Guest]',text:'hi [Guest], (insert wifi details) is not working! can u pls assist'},
+    {type:'agent',speaker:'Jada, Canadian Rockies Vacation Rentals',text:'Hello [Guest],\n\nMay we please ensure that you are using (insert wifi details)?\n\nWarm regards,\nJada, Canadian Rockies Vacation Rentals',flag:'Step 1 &#8212; troubleshoot the basics first, before assuming a real fault.',signoff:true},
+    {type:'guest',speaker:'[Guest]',text:'yes we did! pls assist us its just not working'},
+    {type:'agent',speaker:'Jada, Canadian Rockies Vacation Rentals',text:'Hello [Guest],\n\nThank you for confirming.\n\nPlease allow me a chance to reach out to the property team to inquire further.\n\nWarm regards,\nJada, Canadian Rockies Vacation Rentals',flag:'Step 2 &#8212; tell the guest upfront that you’re escalating, don’t leave them waiting with no explanation.'},
+    {type:'note',speaker:'Internal &#8212; not guest-facing',text:'Contacted CRVR on-site maintenance directly and asked them to check the connection. Possible because CRVR is V2 &#8212; Jetstream can go straight to the partner’s own on-site team instead of a central office.',flag:'Step 3 &#8212; contact the partner directly.'},
+    {type:'agent',speaker:'Jannine, Canadian Rockies Vacation Rentals',text:'Hi [Guest],\n\nThank you for your patience. We’ve spoken with our on-site maintenance team, and they’ve confirmed they’ll stop by shortly to check the connection. We’ll follow up as soon as we hear back from them.\n\nKind regards,\nJannine, Canadian Rockies Vacation Rentals',signoff:true},
+    {type:'note',speaker:'Cirrus note added',text:'Guest reported Wi-Fi outage. Contacted CRVR on-site maintenance directly &#8212; confirmed they will visit today to check the connection. Added Follow_up_guest tag to confirm resolution once maintenance has been.',flag:'Step 4 &#8212; log the update in Cirrus right away, so the case isn’t lost if someone else picks it up.'},
+    {type:'agent',speaker:'Jannine, Canadian Rockies Vacation Rentals',text:'Hi [Guest],\n\nJust checking in &#8212; were you able to reconnect to the Wi-Fi after maintenance’s visit?\n\nKind regards,\nJannine, Canadian Rockies Vacation Rentals'},
+    {type:'guest',speaker:'[Guest]',text:'Yes thank you!'},
+    {type:'note',speaker:'Cirrus note added',text:'Guest confirmed Wi-Fi is now working as of [date]. Removing Follow_up_guest tag &#8212; case resolved.',flag:'Step 5 &#8212; once confirmed fixed, close the loop in Cirrus and remove the follow-up tag.'}
+  ]);
   h+='</div>';
   h+='</div>';
 
@@ -3742,6 +3758,35 @@ function v2PartnersPage(){
   h+='</div>';
 
   return h;
+}
+
+
+function v2ReviewCard(title,meta,steps){
+  var c='';
+  c+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+  c+='<div style="font-size:14px;font-weight:700;color:#1e3a5c;margin-bottom:4px;">&#x1F4AC; '+title+'</div>';
+  c+='<div style="font-size:11.5px;color:#718096;font-weight:600;margin-bottom:14px;">'+meta+'</div>';
+  c+='<div style="background:#fff;border-radius:8px;padding:12px 14px;">';
+  for(var i=0;i<steps.length;i++){
+    var s=steps[i];
+    var isGuest=s.type==='guest';
+    var isNote=s.type==='note';
+    var borderColor=isNote?'#f6ad55':(isGuest?'#a0aec0':'#3a8a9e');
+    var labelColor=isNote?'#c05621':(isGuest?'#718096':'#2a5a7a');
+    c+='<div style="border-left:3px '+(isNote?'dashed':'solid')+' '+borderColor+';padding:2px 0 10px 12px;margin-bottom:6px;">';
+    c+='<div style="font-size:11px;font-weight:700;color:'+labelColor+';margin-bottom:2px;">'+(isNote?'&#x1F4DD; ':'')+s.speaker+'</div>';
+    c+='<div style="font-size:12.5px;color:#1a1a2e;line-height:1.6;white-space:pre-line;">'+s.text+'</div>';
+    if(s.signoff){
+      c+='<div style="font-size:11px;color:#b7791f;font-weight:700;margin-top:4px;">&#x2196;&#xFE0F; signed off under the white label partner name, never &#8220;Leavetown&#8221;</div>';
+    }
+    if(s.flag){
+      c+='<div style="font-size:11px;color:#2b6cb0;font-weight:700;margin-top:4px;">&#x2192; '+s.flag+'</div>';
+    }
+    c+='</div>';
+  }
+  c+='</div>';
+  c+='</div>';
+  return c;
 }
 
 
