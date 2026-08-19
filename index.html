@@ -3764,22 +3764,34 @@ function v2ReviewCard(title,meta,steps){
   var c='';
   c+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
   c+='<div style="font-size:14px;font-weight:700;color:#1e3a5c;margin-bottom:4px;">&#x1F4AC; '+title+'</div>';
-  c+='<div style="font-size:11.5px;color:#718096;font-weight:600;margin-bottom:14px;">'+meta+'</div>';
-  c+='<div style="background:#fff;border-radius:8px;padding:12px 14px;">';
+  c+='<div style="font-size:11.5px;color:#718096;font-weight:600;margin-bottom:16px;">'+meta+'</div>';
+  c+='<div style="background:#fff;border-radius:8px;padding:16px;">';
   for(var i=0;i<steps.length;i++){
     var s=steps[i];
     var isGuest=s.type==='guest';
     var isNote=s.type==='note';
-    var borderColor=isNote?'#f6ad55':(isGuest?'#a0aec0':'#3a8a9e');
-    var labelColor=isNote?'#c05621':(isGuest?'#718096':'#2a5a7a');
-    c+='<div style="border-left:3px '+(isNote?'dashed':'solid')+' '+borderColor+';padding:2px 0 10px 12px;margin-bottom:6px;">';
-    c+='<div style="font-size:11px;font-weight:700;color:'+labelColor+';margin-bottom:2px;">'+(isNote?'&#x1F4DD; ':'')+s.speaker+'</div>';
-    c+='<div style="font-size:12.5px;color:#1a1a2e;line-height:1.6;white-space:pre-line;">'+s.text+'</div>';
+    if(isNote){
+      c+='<div style="margin:10px auto 16px;max-width:94%;background:#fffaf0;border:1px dashed #f6ad55;border-radius:10px;padding:10px 14px;text-align:center;">';
+      c+='<div style="font-size:10.5px;font-weight:700;color:#c05621;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">&#x1F4DD; '+s.speaker+'</div>';
+      c+='<div style="font-size:12px;color:#7b341e;line-height:1.6;">'+s.text+'</div>';
+      if(s.flag){
+        c+='<div style="font-size:11px;color:#975a16;font-weight:700;margin-top:6px;">&#x1F4A1; '+s.flag+'</div>';
+      }
+      c+='</div>';
+      continue;
+    }
+    var align=isGuest?'flex-start':'flex-end';
+    var bg=isGuest?'#eef1f5':'#e3f6fa';
+    var bubbleRadius=isGuest?'14px 14px 14px 3px':'14px 14px 3px 14px';
+    var labelColor=isGuest?'#4a5568':'#0f7490';
+    c+='<div style="display:flex;flex-direction:column;align-items:'+align+';margin-bottom:10px;">';
+    c+='<div style="font-size:10.5px;font-weight:700;color:'+labelColor+';margin-bottom:3px;padding:0 4px;">'+(isGuest?'&#x1F464; ':'&#x1F3A7; ')+s.speaker+'</div>';
+    c+='<div style="max-width:80%;background:'+bg+';border-radius:'+bubbleRadius+';padding:10px 14px;font-size:12.5px;color:#1a1a2e;line-height:1.6;white-space:pre-line;">'+s.text+'</div>';
     if(s.signoff){
-      c+='<div style="font-size:11px;color:#b7791f;font-weight:700;margin-top:4px;">&#x2196;&#xFE0F; signed off under the white label partner name, never &#8220;Leavetown&#8221;</div>';
+      c+='<div style="max-width:80%;font-size:10.5px;color:#b7791f;font-weight:700;margin-top:4px;padding:0 4px;text-align:'+(isGuest?'left':'right')+';">&#x26A0;&#xFE0F; signed off under the white label partner name, never &#8220;Leavetown&#8221;</div>';
     }
     if(s.flag){
-      c+='<div style="font-size:11px;color:#2b6cb0;font-weight:700;margin-top:4px;">&#x2192; '+s.flag+'</div>';
+      c+='<div style="max-width:80%;margin-top:5px;background:#eaf3fc;border-left:3px solid #2b6cb0;border-radius:6px;padding:6px 10px;font-size:11px;color:#2b6cb0;font-weight:600;">&#x1F4A1; '+s.flag+'</div>';
     }
     c+='</div>';
   }
