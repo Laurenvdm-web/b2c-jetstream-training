@@ -240,6 +240,7 @@ nav{padding:8px 0}
 <button class="nb" id="n-aircall">📞 Aircall<span class="nb-check" id="nc-aircall" title="Page complete">&#x2713;</span></button>
 <div class="nsl">Operations</div>
 <button class="nb" id="n-processingbookings">📥 Processing New Bookings<span class="nb-check" id="nc-processingbookings" title="Page complete">&#x2713;</span></button>
+<button class="nb" id="n-v2partners">🤝 V2 Partners<span class="nb-check" id="nc-v2partners" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-managingcases">👥 Managing Cases<span class="nb-check" id="nc-managingcases" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-guestentry">🚪 Guest Entry<span class="nb-check" id="nc-guestentry" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-availability">📅 Availability<span class="nb-check" id="nc-availability" title="Page complete">&#x2713;</span></button>
@@ -267,6 +268,7 @@ var SB_INDEX=[
   {page:'partners',label:'Contacting Partners',icon:'📧',keys:'contacting partners email snippet template communication'},
   {page:'processingbookings',label:'Processing New Bookings',icon:'📥',keys:'processing new bookings airbnb vrbo booking.com steps new tag'},
   {page:'processingbookings',tagid:'pnb-guide',label:'Complete Guide (SOP) — Processing New Bookings',icon:'📘',keys:'processing new bookings complete guide sop standard operating procedure tag reference checklist door code operto offline operto door code sync pets email autohost autohost security deposit info required decision tree tape chart unit allocation new tag queue hourly jetchat otp partner notes practice exercise'},
+  {page:'v2partners',label:'V2 Partners',icon:'🤝',keys:'v2 partners white label leavetown golden rules check-in lockout early check-in late check-out cost model calculator pets'},
   {page:'comms',label:'Comm. Platforms',icon:'💬',keys:'communication platforms front slack email jetchat messaging aircall'},
   {page:'airbnb',label:'Airbnb',icon:'🔴',keys:'airbnb inquiry booking new resolution centre host'},
   {page:'cirrus',label:'Cirrus',icon:'☁️',keys:'cirrus booking find search tags notes activity reservation pre-tax pre tax payable partner payment cost'},
@@ -631,6 +633,9 @@ function togglePnbQuiz() { toggleQuiz("pnb"); }
    ════════════════════════════════════════════════════════ */
 function submitPnbQuiz(){var correct={pnbq1:"C",pnbq2:"C",pnbq3:"C",pnbq4:"D"};var score=0;var allAnswered=true;document.querySelectorAll("#pnb-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,4))return;var pct=Math.round(score/4*100);var msg,icon,bg,bord,col;if(score===4){msg="Perfect – you\'re ready ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=3){msg="Almost there – review and retry";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var u=getUser();var savedPnbA={};for(var _paq in correct){var _pas=document.querySelector("input[name="+_paq+"]:checked");if(_pas)savedPnbA[_paq]=_pas.value;}try{localStorage.setItem(u+'-quiz-pnb-done','1');localStorage.setItem(u+'-quiz-pnb-answers',JSON.stringify(savedPnbA));localStorage.setItem(u+'-quiz-pnb-score',String(score));recordModuleQuiz('Processing New Bookings Quiz',score,4,Math.round(score/4*100));}catch(e){}setCheck('pnb-quiz-check');updatePnbProgress();var res=document.getElementById("pnb-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,4,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});}}
 function resetPnbQuiz(){var u=getUser();try{localStorage.removeItem(u+'-quiz-pnb-done');localStorage.removeItem(u+'-quiz-pnb-answers');localStorage.removeItem(u+'-quiz-pnb-score');}catch(e){}clearCheck('pnb-quiz-check');updatePnbProgress();["pnbq1","pnbq2","pnbq3","pnbq4"].forEach(function(n){document.querySelectorAll("input[name="+n+"]").forEach(function(i){i.checked=false;i.disabled=false;var lbl=i.closest("label");if(lbl){resetLabel(lbl);lbl.style.cursor='pointer';}});});var res=document.getElementById("pnb-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('pnb-quiz-submit-row');if(row)row.style.display='flex';}
+function toggleV2pQuiz() { toggleQuiz("v2p"); }
+function submitV2pQuiz(){var correct={v2pq1:"C",v2pq2:"C",v2pq3:"B",v2pq4:"A",v2pq5:"D",v2pq6:"A",v2pq7:"C"};var score=0;var allAnswered=true;document.querySelectorAll("#v2p-quiz-body label").forEach(function(l){resetLabel(l);});for(var q in correct){var sel=document.querySelector("input[name="+q+"]:checked");if(!sel){allAnswered=false;}else{var isCorrect=(sel.value===correct[q]);var lbl=sel.closest("label");if(lbl){lbl.style.background=isCorrect?"#f0fff4":"#fff5f5";lbl.style.borderColor=isCorrect?"#68d391":"#fc8181";}if(isCorrect)score++;}}if(!checkAllAnswered(allAnswered,7))return;var pct=Math.round(score/7*100);var msg,icon,bg,bord,col;if(score>=6){msg="Excellent – you\'re ready for V2 ✅";icon="🎉";bg="#f0fff4";bord="#68d391";col="#276749";}else if(score>=5){msg="Good – minor review recommended";icon="📚";bg="#fffbeb";bord="#f6e05e";col="#744216";}else{msg="Please review the training and try again";icon="📖";bg="#fff5f5";bord="#fc8181";col="#9b2235";}var u=getUser();var savedV2pA={};for(var _vaq in correct){var _vas=document.querySelector("input[name="+_vaq+"]:checked");if(_vas)savedV2pA[_vaq]=_vas.value;}try{localStorage.setItem(u+'-quiz-v2p-done','1');localStorage.setItem(u+'-quiz-v2p-answers',JSON.stringify(savedV2pA));localStorage.setItem(u+'-quiz-v2p-score',String(score));recordModuleQuiz('V2 Partners Quiz',score,7,Math.round(score/7*100));}catch(e){}setCheck('v2p-quiz-check');updateV2pProgress();var res=document.getElementById("v2p-quiz-result");if(res){res.style.display="block";res.innerHTML=buildQuizResult(score,7,icon,msg,bg,bord,col,pct);res.scrollIntoView({behavior:"smooth",block:"nearest"});}}
+function resetV2pQuiz(){var u=getUser();try{localStorage.removeItem(u+'-quiz-v2p-done');localStorage.removeItem(u+'-quiz-v2p-answers');localStorage.removeItem(u+'-quiz-v2p-score');}catch(e){}clearCheck('v2p-quiz-check');updateV2pProgress();["v2pq1","v2pq2","v2pq3","v2pq4","v2pq5","v2pq6","v2pq7"].forEach(function(n){document.querySelectorAll("input[name="+n+"]").forEach(function(i){i.checked=false;i.disabled=false;var lbl=i.closest("label");if(lbl){resetLabel(lbl);lbl.style.cursor='pointer';}});});var res=document.getElementById("v2p-quiz-result");if(res){res.style.display="none";res.innerHTML='';}var row=document.getElementById('v2p-quiz-submit-row');if(row)row.style.display='flex';}
 function toggleAircallQuiz(){var b=document.getElementById("ac-quiz-body");var a=document.getElementById("ac-quiz-arr");var btn=document.getElementById("ac-quiz-btn");if(!b)return;var isOpen=b.style.display!=="none";b.style.display=isOpen?"none":"block";a.textContent=isOpen?"►":"▼";btn.style.boxShadow=isOpen?"":"0 4px 20px rgba(30,58,92,0.45)";}
 
 /* ════════════════════════════════════════════════════════
@@ -934,6 +939,7 @@ function getPagePct(page){
     case 'vrbo':{var d=_cnt('vrbo-sec',['vrbo-about','vrbo-booking','vrbo-resources']);if(localStorage.getItem(u+'-quiz-vrbo-done'))d++;return Math.round(d/4*100);}
     case 'bookingcom':{var d=_cnt('bcom-sec',['bcom-about','bcom-listing','bcom-checkin','bcom-videos']);if(localStorage.getItem(u+'-quiz-bcom-checkin-done'))d++;return Math.round(d/5*100);}
     case 'processingbookings':{var d=_cnt('pnb-sec',['pnb-about','pnb-bnb','pnb-vrbo','pnb-bkcom','pnb-conf','pnb-tags','pnb-guide']);if(localStorage.getItem(u+'-quiz-pnb-done'))d++;return Math.round(d/8*100);}
+    case 'v2partners':{var d=_cnt('v2p-sec',['v2p-about','v2p-partners','v2p-rules','v2p-checkin','v2p-early','v2p-cost','v2p-review']);if(localStorage.getItem(u+'-quiz-v2p-done'))d++;return Math.round(d/8*100);}
     case 'managingcases':{var d=0;['mc-guest','mc-partner','mc-tags'].forEach(function(k){if(localStorage.getItem(u+'-mc-sec-'+k))d++;});['mc-quiz','mc2-quiz','mc3-quiz'].forEach(function(k){if(localStorage.getItem(u+'-'+k+'-done'))d++;});return Math.round(d/6*100);}
     case 'cancellations':{var d=0;['cx-regular','cx-failed','cx-main','cx-ota','cx-manual','cx-nopay','cx-penalty','cx-policy'].forEach(function(k){if(localStorage.getItem(u+'-cxl-sec-'+k))d++;});['canq1','canq2','canq3','canq4','canq5'].forEach(function(k){if(localStorage.getItem(u+'-quiz-'+k+'-done'))d++;});return Math.round(d/13*100);}
     case 'modifications':{var d=0;['mod-v1','mod-v2','mod-guests'].forEach(function(k){if(localStorage.getItem(u+'-mod-sec-'+k))d++;});if(localStorage.getItem(u+'-quiz-mod1-done'))d++;if(localStorage.getItem(u+'-quiz-mod2-done'))d++;if(localStorage.getItem(u+'-quiz-mod3-done'))d++;return Math.round(d/6*100);}
@@ -963,7 +969,7 @@ function refreshOverallBar(){
   if(pbiEl)pbiEl.style.width=op.pct+'%';
 }
 function updateAllNavChecks(){
-  var pages=['security','setup','company','bookings','stars','v1v2','v1inquiries','partners','comms','airbnb','cirrus','vrbo','bookingcom','processingbookings','managingcases','cancellations','modifications','availability','aircall','tags','inbox','guestentry','payments'];
+  var pages=['security','setup','company','bookings','stars','v1v2','v1inquiries','partners','comms','airbnb','cirrus','vrbo','bookingcom','processingbookings','v2partners','managingcases','cancellations','modifications','availability','aircall','tags','inbox','guestentry','payments'];
   for(var i=0;i<pages.length;i++){
     var p=pages[i];
     var el=document.getElementById('nc-'+p);
@@ -973,7 +979,7 @@ function updateAllNavChecks(){
   }
   refreshOverallBar();
 }
-var TRACKED_PAGES=['processingbookings','managingcases','guestentry','availability','cancellations','modifications','inbox','payments','tags','bookings','stars','v1v2','v1inquiries','partners','aircall','comms','airbnb','cirrus','vrbo','bookingcom','security','setup','company'];
+var TRACKED_PAGES=['processingbookings','v2partners','managingcases','guestentry','availability','cancellations','modifications','inbox','payments','tags','bookings','stars','v1v2','v1inquiries','partners','aircall','comms','airbnb','cirrus','vrbo','bookingcom','security','setup','company'];
 function getOverallPct(){
   var sum=0,completed=0;
   for(var i=0;i<TRACKED_PAGES.length;i++){var p=getPagePct(TRACKED_PAGES[i]);sum+=p;if(p===100)completed++;}
@@ -3520,6 +3526,220 @@ function processingNewBookingsPage(){
   h+='<button onclick="submitPnbQuiz()" style="background:linear-gradient(135deg,#1a1a2e,#2d2d4e);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(26,26,46,0.4);">Submit Quiz</button>';
   h+='</div>';
   h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetPnbQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
+  h+='</div>';
+
+  return h;
+}
+
+function v2PartnersPage(){
+  var h='';
+  h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);border-radius:14px;padding:0;margin-bottom:20px;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div><svg style="position:absolute;left:32px;top:50%;transform:translateY(-50%);opacity:0.95;" width="60" height="70" viewBox="10 5 280 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jscol" gradientUnits="userSpaceOnUse" x1="25.4987" y1="166.0104" x2="273.8939" y2="166.0104"><stop offset="0" stop-color="#4473B9"/><stop offset="0.279" stop-color="#666FAA"/><stop offset="0.4733" stop-color="#84699B"/><stop offset="0.6906" stop-color="#A65F86"/><stop offset="0.9241" stop-color="#CD4A6C"/><stop offset="1" stop-color="#D94164"/></linearGradient></defs><path fill="url(#jscol)" d="M198.8,121.7v106.7h0c0,47.9-38.8,86.7-86.7,86.7S25.5,277.9,25.5,230c0-9,7.3-16.3,16.3-16.3c9,0,16.3,7.3,16.3,16.3l0,0c1.1,29.8,25.6,52.8,55.6,52.8c30.3,0,55-24.2,55.7-54.4h0v-65v-41.7c0-8.1,6.6-14.7,14.7-14.7C192.2,107,198.8,113.6,198.8,121.7zM187.2,16.9c-47.9,0-86.7,38.8-86.7,86.7h0v106.7c0,8.1,6.6,14.7,14.7,14.7s14.7-6.6,14.7-14.7v-41.7v-65h0c0.7-30.2,25.3-54.4,55.7-54.4c30.1,0,54.6,23,55.6,52.8l0,0c0,9,7.3,16.3,16.3,16.3c9,0,16.3-7.3,16.3-16.3C273.9,54.1,235.1,16.9,187.2,16.9z"/></svg><div style="position:relative;z-index:1;text-align:center;"><div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 8px rgba(0,0,0,0.25);">Jetstream Training</div></div></div>';h+='<div class="mh"><div class="mh-icon">🤝</div><div><h1>V2 Partners</h1><span class="badge by">Core Training</span></div></div>';
+
+  h+='<div style="margin:0 0 18px;">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">';
+  h+='<span style="font-size:11px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:0.8px;">Page Progress</span>';
+  h+='<span id="v2p-prog-label" style="font-size:12px;font-weight:700;color:#667eea;">'+getPagePct('v2partners')+'%</span>';
+  h+='</div>';
+  h+='<div style="background:#e2e8f0;border-radius:10px;height:8px;overflow:hidden;">';
+  h+='<div id="v2p-prog-bar" style="height:100%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:10px;width:'+getPagePct('v2partners')+'%;transition:width 0.4s;"></div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button onclick="var b=document.getElementById(\'v2p-about-body\');var a=document.getElementById(\'v2p-about-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.style.transform=isOpen?\'rotate(0deg)\':\'rotate(180deg)\'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);color:#fff;font-family:inherit;font-size:14px;font-weight:700;box-sizing:border-box;transition:background 0.2s;" onmouseover="this.style.background=\'linear-gradient(135deg,#2a5a7a 0%,#3a8a9e 40%,#4aacb8 75%,#5ac0cf 100%)\'" onmouseout="this.style.background=\'linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%)\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-about\')" id="v2p-about-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x1F4CC; About V2 Partners</span>';
+  h+='<span id="v2p-about-arr" style="font-size:16px;transition:transform 0.25s;display:inline-block;">&#x2304;</span>';
+  h+='</button>';
+  h+='<div id="v2p-about-body" style="display:none;overflow:hidden;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 10px 10px;background:#fff;">';
+  h+='<div style="background:#e3f2fd;border:1px solid #90caf9;border-radius:0;padding:16px 20px;">';
+  h+='<p style="font-size:13px;font-weight:700;color:#0d47a1;margin-bottom:8px;">📌 The difference is the commercial model</p>';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:10px;">A V1 partner pays us a set 15&ndash;20% commission, and we absorb channel fees and card fees out of that. A V2 partner pays a 9&ndash;12% Jetstream fee, plus the full channel fee, card fees, and an Autohost fee where it applies. Everything else about V2 follows from that.</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  var v2pDiffs=[['No front desk','V1 usually has one on-site we can refer guests to. V2 has none — we source every answer ourselves.'],['Guests talk to us only','Never share a partner\'s contact details with a V2 guest.'],['Tape Chart visibility','V2 bookings are visible and managed via the Tape Chart by both parties.'],['Some are white labelled','Sign off under the white label name instead of Leavetown where it applies.']];
+  for(var vi=0;vi<v2pDiffs.length;vi++){
+    h+='<div style="display:flex;align-items:flex-start;gap:10px;background:#f7fafc;border-radius:8px;padding:10px 14px;">';
+    h+='<span style="width:6px;height:6px;border-radius:50%;background:#0d47a1;flex-shrink:0;margin-top:6px;"></span>';
+    h+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+v2pDiffs[vi][0]+'</div><div style="font-size:12px;color:#718096;margin-top:2px;">'+v2pDiffs[vi][1]+'</div></div></div>';
+  }
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-partners-body\');var a=document.getElementById(\'v2p-partners-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-partners\')" id="v2p-partners-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x1F91D; Know Your Partner</span>';
+  h+='<span id="v2p-partners-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-partners-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">Which name you sign off as depends on the partner. The Notion "V2 Partners Overview" page is the authoritative list — check there or in Cirrus if you\'re unsure.</p>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">White label partners — sign off as the white label name</p>';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">';
+  var v2pWhiteLabel=['arc Vacation Rentals','Basecamp151','Canadian Rockies Vacation Rentals (CRVR)','Country House Escapes','Edelweiss Village','Florence Sayulita','Grey Pine Lodge','Isla Dorada','Hôtel Le Ribéral','Palazzo Sapori','Rock Properties','Staycating Partners','YMCA Trout Lodge','Next Step Property Management','STREAM','Xquisite Rentals','BlueWater Realty Group'];
+  for(var wi=0;wi<v2pWhiteLabel.length;wi++){
+    h+='<span style="font-size:12.5px;color:#1a1a2e;background:#f7fafc;border:1px solid #e2e8f0;border-radius:20px;padding:6px 14px;">'+v2pWhiteLabel[wi]+'</span>';
+  }
+  h+='</div>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Leavetown brand partners — sign off as Leavetown</p>';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:8px;">';
+  var v2pBrandPartners=['Courtney Yezerski & Als','David Tinthoin (Casa Monte Victoria)','Eliot Beaubien','Jessica Larsen','Rachel Sullivan (The Compass Rose)','Tracy Stewart','Felix Rivera','Jeannette Nacke','Hilton','Matt Arisohn','Melanie Griswold','Patricia Mckonly','Crowley Associates Realty V2','Falkor Rentals (in progress)','Key2 Hotels (being offboarded)','The Residences at Orange Lake Resort'];
+  for(var bi=0;bi<v2pBrandPartners.length;bi++){
+    h+='<span style="font-size:12.5px;color:#1a1a2e;background:#f7fafc;border:1px solid #e2e8f0;border-radius:20px;padding:6px 14px;">'+v2pBrandPartners[bi]+'</span>';
+  }
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-rules-body\');var a=document.getElementById(\'v2p-rules-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-rules\')" id="v2p-rules-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x1F6E1;&#xFE0F; The Golden Rules</span>';
+  h+='<span id="v2p-rules-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-rules-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Answering inquiries</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">';
+  var v2pInquiryRules=['Check whether the partner is white labelled before you sign off.','Source of truth order: Cirrus, then Notion. Content is gradually moving into Cirrus.','Never refer a V2 guest to a front desk — there isn\'t one.','Never give a guest partner contact details.','Prioritise V2 inquiries unless there\'s an urgent V1 booking issue.'];
+  for(var ri=0;ri<v2pInquiryRules.length;ri++){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:#f7fafc;border-radius:8px;border:1px solid #e2e8f0;"><span style="width:6px;height:6px;border-radius:50%;background:#4a5568;flex-shrink:0;"></span><span style="font-size:13px;color:#1a1a2e;">'+v2pInquiryRules[ri]+'</span></div>';
+  }
+  h+='</div>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Contacting the partner</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">';
+  var v2pContactRules=['Don\'t ask duplicate questions — V2 partners pay us to take work off their plate. Check Cirrus and Notion first.','Some partners require permission before being contacted — check the Cirrus booking notes.','Partners can have different contacts for different issue types, unlike V1\'s single main email.','Never share booking financials with external contacts copied into a thread.'];
+  for(var ci=0;ci<v2pContactRules.length;ci++){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:#f7fafc;border-radius:8px;border:1px solid #e2e8f0;"><span style="width:6px;height:6px;border-radius:50%;background:#4a5568;flex-shrink:0;"></span><span style="font-size:13px;color:#1a1a2e;">'+v2pContactRules[ci]+'</span></div>';
+  }
+  h+='</div>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Guest complaints</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">';
+  var v2pComplaintRules=['Resolve internally where possible. Escalate to the partner, not the guest to the property.','Apologise, say you\'re escalating to management, then come back to the guest after reaching out to the partner.'];
+  for(var coi=0;coi<v2pComplaintRules.length;coi++){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:#f7fafc;border-radius:8px;border:1px solid #e2e8f0;"><span style="width:6px;height:6px;border-radius:50%;background:#4a5568;flex-shrink:0;"></span><span style="font-size:13px;color:#1a1a2e;">'+v2pComplaintRules[coi]+'</span></div>';
+  }
+  h+='</div>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Pets, cancellations, age, parties</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  var v2pMiscRules=['Confirm the pet fee, and if the guest agrees, add it to the booking.','If a property isn\'t pet friendly, tell the guest no directly — don\'t ask the partner.','Can\'t find the answer in Cirrus or Notion? Ask a team member — don\'t escalate to the partner.','Service animals: escalate to a team lead.','No cancellations outside the free cancellation window without a team lead check.','No parties or large events at any resort.'];
+  for(var mi=0;mi<v2pMiscRules.length;mi++){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:#f7fafc;border-radius:8px;border:1px solid #e2e8f0;"><span style="width:6px;height:6px;border-radius:50%;background:#4a5568;flex-shrink:0;"></span><span style="font-size:13px;color:#1a1a2e;">'+v2pMiscRules[mi]+'</span></div>';
+  }
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-checkin-body\');var a=document.getElementById(\'v2p-checkin-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-checkin\')" id="v2p-checkin-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x1F511; Check-in and Lockouts</span>';
+  h+='<span id="v2p-checkin-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-checkin-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">V2 is self check-in, so a late arrival isn\'t a problem — the guest just uses their code. Welcome emails and Welcome Books go out 48 hours before arrival; if a guest asks earlier, tell them when it\'s coming, and if it\'s inside that window, ask them to check junk or spam.</p>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:10px;">Locked-out troubleshooting checklist</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  var v2pLockoutSteps=[['Check the arrival time','The code won\'t work before the listed check-in time.'],['Verify the code and its source','Confirm where it came from — booking notes, Operto, or RemoteLock.'],['Check Operto for backup codes','A backup code may already exist there.'],['Confirm the code synced in RemoteLock','Also check the guest is entering the code plus the # symbol.'],['Check Cirrus booking notes','Look for extra instructions or codes specific to that unit.'],['Look for an emergency or master code','Sometimes noted separately from the main guest code.'],['Watch for building vs unit code confusion','Two different codes can look similar.']];
+  for(var li=0;li<v2pLockoutSteps.length;li++){
+    h+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:12px 14px;">';
+    h+='<div style="background:#1a1a2e;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+(li+1)+'</div>';
+    h+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+v2pLockoutSteps[li][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;">'+v2pLockoutSteps[li][1]+'</div></div></div>';
+  }
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-early-body\');var a=document.getElementById(\'v2p-early-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-early\')" id="v2p-early-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x23F0; Early Check-in / Late Check-out</span>';
+  h+='<span id="v2p-early-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-early-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">Policies vary by property — some V2 partners allow it, some don\'t. Where it\'s allowed, guests must request it at least 48 hours before arrival; that\'s the current rule.</p>';
+  h+='<p style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:10px;">When a guest asks far in advance</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+  var v2pEarlySteps=[['Check if the property allows early check-in at all','If it doesn\'t, politely decline.'],['Check for a same-day departure','If another guest is checked out the same day as this guest\'s arrival, politely decline.'],['If there\'s no conflict','Ask the guest to reach back out roughly 2–3 days before arrival — that\'s also when we\'d confirm with the partner.']];
+  for(var ei=0;ei<v2pEarlySteps.length;ei++){
+    h+='<div style="display:flex;align-items:flex-start;gap:12px;background:#f7fafc;border-radius:8px;padding:12px 14px;">';
+    h+='<div style="background:#1a1a2e;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+(ei+1)+'</div>';
+    h+='<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">'+v2pEarlySteps[ei][0]+'</div><div style="font-size:12px;color:#718096;margin-top:3px;">'+v2pEarlySteps[ei][1]+'</div></div></div>';
+  }
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-cost-body\');var a=document.getElementById(\'v2p-cost-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-cost\')" id="v2p-cost-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x1F9EE; Cost Model</span>';
+  h+='<span id="v2p-cost-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-cost-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">Worked example, Airbnb booking:</p>';
+  h+='<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px;">';
+  var v2pCostRows=[['Booking total','$1,100 CAD',false],['Tax (10%)','$100',false],['Autohost fee','$10',false],['Jetstream fee (12%)','$120',false],['Channel fee (14% Airbnb)','$140',false],['Credit card fee','$0',false],['Pre-tax cost','$730',true],['Total payable inc. tax','$803 CAD',true]];
+  for(var cri=0;cri<v2pCostRows.length;cri++){
+    var cr=v2pCostRows[cri];
+    h+='<tr style="'+(cr[2]?'border-top:1px solid #e2e8f0;':'')+'"><td style="padding:5px 0;color:'+(cr[2]?'#1a1a2e':'#718096')+';font-weight:'+(cr[2]?'700':'400')+';">'+cr[0]+'</td><td style="padding:5px 0;text-align:right;font-weight:'+(cr[2]?'700':'400')+';color:#1a1a2e;">'+cr[1]+'</td></tr>';
+  }
+  h+='</table>';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;">Most V2 resorts now calculate this automatically in Cirrus. A manual cost calculator still covers the partners whose pre-tax total doesn\'t populate automatically — know the maths so you can spot when a fallback is needed.</p>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-bottom:20px;">';
+  h+='<button class="sec-drop-btn" onclick="var b=document.getElementById(\'v2p-review-body\');var a=document.getElementById(\'v2p-review-arr\');var isOpen=b.style.display!==\'none\';b.style.display=isOpen?\'none\':\'block\';a.textContent=isOpen?\'►\':\'▼\'">';
+  h+='<span onclick="event.stopPropagation();markV2pSection(\'v2p-review\')" id="v2p-review-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Mark as complete">&#x25CB;</span>';
+  h+='<span>&#x1F4AC; Draft and Review</span>';
+  h+='<span id="v2p-review-arr" style="font-size:16px;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="v2p-review-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:20px 22px;background:#fff;">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:14px;">Practice writing replies to real V2 guest inquiry types, then compare your draft against a corrected version with reviewer comments explaining what changed and why.</p>';
+  h+='<div style="background:#fffbeb;border:1px solid #f6e05e;border-radius:10px;padding:16px 20px;">';
+  h+='<p style="font-size:13px;font-weight:700;color:#744216;margin-bottom:6px;">&#x26A1; PII note</p>';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;">Guest names and door codes in the source examples are always redacted before they reach this module.</p>';
+  h+='</div>';
+  h+='</div>';
+  h+='</div>';
+
+  h+='<div style="margin-top:24px;">';
+  h+='<button id="v2p-quiz-btn" onclick="toggleV2pQuiz()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-radius:12px;border:2px solid #1e3a5c;cursor:pointer;background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);color:#fff;font-family:inherit;font-size:15px;font-weight:700;box-sizing:border-box;transition:background 0.2s;" onmouseover="this.style.background=\'linear-gradient(135deg,#2a5a7a 0%,#3a8a9e 40%,#4aacb8 75%,#5ac0cf 100%)\'" onmouseout="this.style.background=\'linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%)\'">';
+  h+='<span onclick="event.stopPropagation();" id="v2p-quiz-check" role="button" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);cursor:default;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;margin-right:6px;" title="Completed automatically when quiz is submitted">&#x25CB;</span>';
+  h+='<span style="font-size:18px;">&#x1F512;</span>';
+  h+='<span style="flex:1;text-align:center;">&#x1F512; V2 Partners Quiz</span>';
+  h+='<span id="v2p-quiz-arr" style="font-size:16px;transition:transform 0.25s;display:inline-block;">&#9654;</span>';
+  h+='</button>';
+  h+='</div>';
+  h+='<div id="v2p-quiz-body" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:24px 22px;background:#fff;">';
+
+  var v2pQuestions=[
+    {n:'v2pq1',q:'Why do V2 properties have no front desk?',opts:[['A','Guests prefer self-service'],['B',"It's cheaper for Jetstream"],['C','It follows from the V2 commercial model'],['D','Front desks are being phased out everywhere']]},
+    {n:'v2pq2',q:'A V2 partner is white labelled. Who do you sign off as?',opts:[['A','Leavetown'],['B','Whichever the guest prefers'],['C','The white label name'],['D',"The property manager's own name"]]},
+    {n:'v2pq3',q:'A guest asks you for the partner’s phone number. What do you do?',opts:[['A','Give it to them'],['B','Never share it — handle it yourself'],['C','Ask a team lead for permission first'],['D','Only share it once the guest is checked in']]},
+    {n:'v2pq4',q:"A guest says they're locked out, but it's before their listed check-in time. What's most likely going on?",opts:[['A',"The code hasn't activated yet"],['B','The lock is broken'],['C','The guest has the wrong property'],['D','The Wi-Fi is down']]},
+    {n:'v2pq5',q:'A guest asks for an early check-in 2 weeks before arrival. What do you do?',opts:[['A','Confirm it right away since they asked early'],['B',"Decline immediately since it's too far out to know"],['C','Tell them to ask the property directly'],['D',"Check if the property allows it and if anyone departs that day; if it's clear, ask the guest to check back 2–3 days before arrival"]]},
+    {n:'v2pq6',q:"A V2 guest asks if they can bring a dog, but the property isn't pet friendly. What do you do?",opts:[['A','Tell the guest no directly'],['B','Ask the partner to make an exception'],['C','Let them bring it and note it in the booking'],['D','Say yes if they pay a fee']]},
+    {n:'v2pq7',q:"You can't find whether a V2 property allows pets in Cirrus or Notion. What do you do?",opts:[['A','Escalate to the partner directly'],['B',"Assume it's not allowed"],['C','Ask a team member for help'],['D','Tell the guest to check with the property']]}
+  ];
+  for(var qi=0;qi<v2pQuestions.length;qi++){
+    var vq=v2pQuestions[qi];
+    h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+    h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">'+(qi+1)+'. '+vq.q+'</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+    for(var oi=0;oi<vq.opts.length;oi++){
+      h+='<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="'+vq.n+'" value="'+vq.opts[oi][0]+'" style="accent-color:#1a1a2e;"> '+vq.opts[oi][0]+'. '+vq.opts[oi][1]+'</label>';
+    }
+    h+='</div>';
+    h+='</div>';
+  }
+
+  h+='<div id="v2p-quiz-result" style="display:none;margin-bottom:16px;"></div>';
+  h+='<div id="v2p-quiz-submit-row" style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
+  h+='<button onclick="submitV2pQuiz()" style="background:linear-gradient(135deg,#1a1a2e,#2d2d4e);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(26,26,46,0.4);">Submit Quiz</button>';
+  h+='</div>';
+  h+='<div style="text-align:center;margin-top:14px;"><button onclick="resetV2pQuiz()" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset &amp; Try Again</button></div>';
   h+='</div>';
 
   return h;
@@ -10241,7 +10461,7 @@ function setCiTab(tab){
 
 
 
-var PAGES={admin:{icon:"adm",title:"Admin Panel",badge:"Admin",bc:"bg",fn:adminPage},home:{icon:"home",title:"Dashboard Home",badge:"Welcome",bc:"bg",fn:homePage},security:{icon:"sec",title:"Security",badge:"Essential",bc:"br",fn:securityPage},setup:{icon:"gear",title:"Getting Started",badge:"Setup",bc:"bg",fn:setupPage},company:{icon:"co",title:"Who Are We?",badge:"Company",bc:"bg",fn:whoArePage},v1inquiries:{icon:"v1i",title:"Getting Started with Simple V1 Inquiries",badge:"Core Training",bc:"by",fn:v1SimpleInquiriesPage},bookings:{icon:"bk",title:"Bookings Overview",badge:"Core Training",bc:"by",fn:bookingsPage},processingbookings:{icon:"pb",title:"Processing New Bookings",badge:"Core Training",bc:"by",fn:processingNewBookingsPage},stars:{icon:"st",title:"Pink and Yellow Stars",badge:"Core Training",bc:"by",fn:starsPage},v1v2:{icon:"v1",title:"V1 and V2 Partners",badge:"Core Training",bc:"by",fn:v1v2Page},v1detail:{icon:"v1",title:"V1 Partners",badge:"Core Training",bc:"by",fn:v1DetailPage},v2detail:{icon:"v2",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2DetailPage},partners:{icon:"pa",title:"Contacting Partners",badge:"Core Training",bc:"by",fn:partnersPage},aircall:{icon:"ac",title:"Aircall",badge:"Core Training",bc:"by",fn:aircallPage},comms:{icon:"cm",title:"Comm. Platforms",badge:"Platforms",bc:"bg",fn:commsPage},airbnb:{icon:"ab",title:"Airbnb",badge:"Platform",bc:"br",fn:airbnbPage},cirrus:{icon:"ci",title:"Cirrus",badge:"Platform",bc:"bg",fn:cirrusPage},vrbo:{icon:"vb",title:"VRBO",badge:"Platform",bc:"bg",fn:vrboPage},bookingcom:{icon:"bc",title:"Booking.com",badge:"Platform",bc:"bg",fn:bookingComPage},tags:{icon:"tg",title:"Tags",badge:"Operations",bc:"by",fn:tagsPage},managingcases:{icon:"mc",title:"Managing Guest and Partner Cases",badge:"Operations",bc:"by",fn:managingCasesPage},guestentry:{icon:"ge",title:"Guest Entry",badge:"Operations",bc:"by",fn:guestEntryPage},availability:{icon:"av",title:"Availability",badge:"Operations",bc:"by",fn:availabilityPage},guestautohost:{icon:"ga",title:"Autohost",badge:"Guest Entry",bc:"by",fn:guestAutohostPage},doorcode:{icon:"dc",title:"Door Code",badge:"Guest Entry",bc:"by",fn:doorCodePage},operto:{icon:"op",title:"Operto",badge:"Guest Entry",bc:"by",fn:opertoPage},remotelock:{icon:"rl",title:"Remote Lock",badge:"Guest Entry",bc:"by",fn:remoteLockPage},cancellations:{icon:"cx",title:"Cancellations",badge:"Operations",bc:"br",fn:cancellationsPage},modifications:{icon:"md",title:"Modifications",badge:"Operations",bc:"by",fn:modificationsPage},inbox:{icon:"ib",title:"Handling the Inbox Like a Pro",badge:"Operations",bc:"by",fn:inboxProPage},v1modifications:{icon:"md",title:"V1 Modifications",badge:"Operations",bc:"by",fn:v1ModificationsPage},v1calculator:{icon:"md",title:"V1 Resort Calculator",badge:"Operations",bc:"by",fn:v1CalculatorPage},v2modifications:{icon:"md",title:"V2 Modifications",badge:"Operations",bc:"by",fn:v2ModificationsPage},failedcancellations:{icon:"cx",title:"Failed Cancellations",badge:"Operations",bc:"br",fn:failedCancellationsPage},regularcancellations:{icon:"cx",title:"Regular Cancellations",badge:"Operations",bc:"br",fn:regularCancellationsPage},rcvideos:{icon:"cx",title:"Cancellation Training Videos",badge:"Operations",bc:"br",fn:rcVideosPage},payments:{icon:"py",title:"Payments",badge:"Operations",bc:"by",fn:paymentsPage},hubspot:{icon:"hs",title:"HubSpot",badge:"Operations",bc:"by",fn:hubSpotPage},regularcomplaints:{icon:"rc",title:"Regular Complaints",badge:"Operations",bc:"by",fn:regularComplaintsPage},contentcomplaints:{icon:"ci",title:"Content Issue Complaints",badge:"Operations",bc:"by",fn:contentComplaintsPage},extras:{icon:"ex",title:"Articles to Read Through",badge:"Reference",bc:"bg",fn:extrasPage},slackchannels:{icon:"sc",title:"Slack Channels",badge:"Reference",bc:"bg",fn:slackChannelsPage},trainingguide:{icon:"tg",title:"Training Guide",badge:"Reference",bc:"bg",fn:trainingGuidePage}};function show(id){var btns=document.querySelectorAll(".nb");for(var i=0;i<btns.length;i++)btns[i].classList.remove("active");var btn=document.getElementById("n-"+id);if(btn)btn.classList.add("active");var pg=PAGES[id];if(!pg)return;document.getElementById("main").innerHTML=pg.fn();if(id==="extras")restoreExtras();if(id==="managingcases")restoreMcProgress();if(id==="company")restoreWhoProgress();if(id==="bookings")restoreBkProgress();if(id==="stars")restoreStarsProgress();if(id==="security")restoreSecProgress();if(id==="v1inquiries"){restoreV1Progress();initV1RobotWidget();}if(id==="v1v2")restoreV1V2Progress();if(id==="partners")restoreCpProgress();if(id==="comms")restoreCommProgress();if(id==="airbnb")restoreAbProgress();if(id==="cirrus")restoreCirrusProgress();if(id==="vrbo")restoreVrboProgress();if(id==="bookingcom")restoreBcomProgress();if(id==="processingbookings")restorePnbProgress();if(id==="cancellations")restoreCxlProgress();if(id==="modifications")restoreModProgress();if(id==="availability")restoreAvailProgress();if(id==="inbox")restoreInboxProgress();if(id==="tags")restoreTagsProgress();if(id==="aircall")restoreAircallProgress();if(id==="guestentry")restoreGEProgress();if(id==="payments")restorePayProgress();if(id==="admin")loadTeamProgress();var u=getUser();try{localStorage.setItem("jt-last-"+u,id);}catch(e){}}var su=localStorage.getItem("jt-user");if(su){var sel=document.getElementById("name-select");if(sel){sel.value=su;document.getElementById("name-btn").disabled=false;}}
+var PAGES={admin:{icon:"adm",title:"Admin Panel",badge:"Admin",bc:"bg",fn:adminPage},home:{icon:"home",title:"Dashboard Home",badge:"Welcome",bc:"bg",fn:homePage},security:{icon:"sec",title:"Security",badge:"Essential",bc:"br",fn:securityPage},setup:{icon:"gear",title:"Getting Started",badge:"Setup",bc:"bg",fn:setupPage},company:{icon:"co",title:"Who Are We?",badge:"Company",bc:"bg",fn:whoArePage},v1inquiries:{icon:"v1i",title:"Getting Started with Simple V1 Inquiries",badge:"Core Training",bc:"by",fn:v1SimpleInquiriesPage},bookings:{icon:"bk",title:"Bookings Overview",badge:"Core Training",bc:"by",fn:bookingsPage},processingbookings:{icon:"pb",title:"Processing New Bookings",badge:"Core Training",bc:"by",fn:processingNewBookingsPage},v2partners:{icon:"v2p",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2PartnersPage},stars:{icon:"st",title:"Pink and Yellow Stars",badge:"Core Training",bc:"by",fn:starsPage},v1v2:{icon:"v1",title:"V1 and V2 Partners",badge:"Core Training",bc:"by",fn:v1v2Page},v1detail:{icon:"v1",title:"V1 Partners",badge:"Core Training",bc:"by",fn:v1DetailPage},v2detail:{icon:"v2",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2DetailPage},partners:{icon:"pa",title:"Contacting Partners",badge:"Core Training",bc:"by",fn:partnersPage},aircall:{icon:"ac",title:"Aircall",badge:"Core Training",bc:"by",fn:aircallPage},comms:{icon:"cm",title:"Comm. Platforms",badge:"Platforms",bc:"bg",fn:commsPage},airbnb:{icon:"ab",title:"Airbnb",badge:"Platform",bc:"br",fn:airbnbPage},cirrus:{icon:"ci",title:"Cirrus",badge:"Platform",bc:"bg",fn:cirrusPage},vrbo:{icon:"vb",title:"VRBO",badge:"Platform",bc:"bg",fn:vrboPage},bookingcom:{icon:"bc",title:"Booking.com",badge:"Platform",bc:"bg",fn:bookingComPage},tags:{icon:"tg",title:"Tags",badge:"Operations",bc:"by",fn:tagsPage},managingcases:{icon:"mc",title:"Managing Guest and Partner Cases",badge:"Operations",bc:"by",fn:managingCasesPage},guestentry:{icon:"ge",title:"Guest Entry",badge:"Operations",bc:"by",fn:guestEntryPage},availability:{icon:"av",title:"Availability",badge:"Operations",bc:"by",fn:availabilityPage},guestautohost:{icon:"ga",title:"Autohost",badge:"Guest Entry",bc:"by",fn:guestAutohostPage},doorcode:{icon:"dc",title:"Door Code",badge:"Guest Entry",bc:"by",fn:doorCodePage},operto:{icon:"op",title:"Operto",badge:"Guest Entry",bc:"by",fn:opertoPage},remotelock:{icon:"rl",title:"Remote Lock",badge:"Guest Entry",bc:"by",fn:remoteLockPage},cancellations:{icon:"cx",title:"Cancellations",badge:"Operations",bc:"br",fn:cancellationsPage},modifications:{icon:"md",title:"Modifications",badge:"Operations",bc:"by",fn:modificationsPage},inbox:{icon:"ib",title:"Handling the Inbox Like a Pro",badge:"Operations",bc:"by",fn:inboxProPage},v1modifications:{icon:"md",title:"V1 Modifications",badge:"Operations",bc:"by",fn:v1ModificationsPage},v1calculator:{icon:"md",title:"V1 Resort Calculator",badge:"Operations",bc:"by",fn:v1CalculatorPage},v2modifications:{icon:"md",title:"V2 Modifications",badge:"Operations",bc:"by",fn:v2ModificationsPage},failedcancellations:{icon:"cx",title:"Failed Cancellations",badge:"Operations",bc:"br",fn:failedCancellationsPage},regularcancellations:{icon:"cx",title:"Regular Cancellations",badge:"Operations",bc:"br",fn:regularCancellationsPage},rcvideos:{icon:"cx",title:"Cancellation Training Videos",badge:"Operations",bc:"br",fn:rcVideosPage},payments:{icon:"py",title:"Payments",badge:"Operations",bc:"by",fn:paymentsPage},hubspot:{icon:"hs",title:"HubSpot",badge:"Operations",bc:"by",fn:hubSpotPage},regularcomplaints:{icon:"rc",title:"Regular Complaints",badge:"Operations",bc:"by",fn:regularComplaintsPage},contentcomplaints:{icon:"ci",title:"Content Issue Complaints",badge:"Operations",bc:"by",fn:contentComplaintsPage},extras:{icon:"ex",title:"Articles to Read Through",badge:"Reference",bc:"bg",fn:extrasPage},slackchannels:{icon:"sc",title:"Slack Channels",badge:"Reference",bc:"bg",fn:slackChannelsPage},trainingguide:{icon:"tg",title:"Training Guide",badge:"Reference",bc:"bg",fn:trainingGuidePage}};function show(id){var btns=document.querySelectorAll(".nb");for(var i=0;i<btns.length;i++)btns[i].classList.remove("active");var btn=document.getElementById("n-"+id);if(btn)btn.classList.add("active");var pg=PAGES[id];if(!pg)return;document.getElementById("main").innerHTML=pg.fn();if(id==="extras")restoreExtras();if(id==="managingcases")restoreMcProgress();if(id==="company")restoreWhoProgress();if(id==="bookings")restoreBkProgress();if(id==="stars")restoreStarsProgress();if(id==="security")restoreSecProgress();if(id==="v1inquiries"){restoreV1Progress();initV1RobotWidget();}if(id==="v1v2")restoreV1V2Progress();if(id==="partners")restoreCpProgress();if(id==="comms")restoreCommProgress();if(id==="airbnb")restoreAbProgress();if(id==="cirrus")restoreCirrusProgress();if(id==="vrbo")restoreVrboProgress();if(id==="bookingcom")restoreBcomProgress();if(id==="processingbookings")restorePnbProgress();if(id==="v2partners")restoreV2pProgress();if(id==="cancellations")restoreCxlProgress();if(id==="modifications")restoreModProgress();if(id==="availability")restoreAvailProgress();if(id==="inbox")restoreInboxProgress();if(id==="tags")restoreTagsProgress();if(id==="aircall")restoreAircallProgress();if(id==="guestentry")restoreGEProgress();if(id==="payments")restorePayProgress();if(id==="admin")loadTeamProgress();var u=getUser();try{localStorage.setItem("jt-last-"+u,id);}catch(e){}}var su=localStorage.getItem("jt-user");if(su){var sel=document.getElementById("name-select");if(sel){sel.value=su;document.getElementById("name-btn").disabled=false;}}
 
 function renderModQ1(){
   var qs=[
@@ -11874,6 +12094,54 @@ function restorePnbProgress(){
     if(_pnbRow)_pnbRow.style.display='none';
   }
   updatePnbProgress();
+}
+function markV2pSection(id){
+  var u=getUser();if(!u)return;
+  var key=u+'-v2p-sec-'+id;
+  var isDone=!!localStorage.getItem(key);
+  var btn=document.getElementById(id+'-check');
+  if(isDone){
+    localStorage.removeItem(key);
+    if(btn){markUndone(btn);}
+  }else{
+    localStorage.setItem(key,'1');
+    if(btn){markDone(btn);}
+  }
+  updateV2pProgress();
+}
+function updateV2pProgress(){
+  var u=getUser();if(!u)return;
+  var ids=['v2p-about','v2p-partners','v2p-rules','v2p-checkin','v2p-early','v2p-cost','v2p-review'];
+  var done=0;
+  for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-v2p-sec-'+ids[i]))done++;}
+  if(localStorage.getItem(u+'-quiz-v2p-done'))done++;
+  var pct=Math.round(done/8*100);
+  setProgress('v2p', pct);
+  if(typeof updateAllNavChecks==='function')updateAllNavChecks();
+}
+function restoreV2pProgress(){
+  var u=getUser();if(!u)return;
+  var ids=['v2p-about','v2p-partners','v2p-rules','v2p-checkin','v2p-early','v2p-cost','v2p-review'];
+  for(var i=0;i<ids.length;i++){
+    if(localStorage.getItem(u+'-v2p-sec-'+ids[i])){
+      var btn=document.getElementById(ids[i]+'-check');
+      if(btn){markDone(btn);}
+    }
+  }
+  if(localStorage.getItem(u+'-quiz-v2p-done')){
+    var qc=document.getElementById('v2p-quiz-check');
+    if(qc){markDone(qc);}
+    var _v2pCorrect={v2pq1:"C",v2pq2:"C",v2pq3:"B",v2pq4:"A",v2pq5:"D",v2pq6:"A",v2pq7:"C"};
+    var _v2pSaved=JSON.parse(localStorage.getItem(u+'-quiz-v2p-answers')||'{}');
+    for(var _vrq in _v2pCorrect){document.querySelectorAll("input[name="+_vrq+"]").forEach(function(i){i.disabled=true;var l=i.closest("label");if(l)l.style.cursor='not-allowed';});}
+    for(var _vrq2 in _v2pSaved){var _vrSel=document.querySelector("input[name="+_vrq2+"][value="+_v2pSaved[_vrq2]+"]");if(_vrSel){_vrSel.checked=true;var _vrl=_vrSel.closest("label");if(_vrl){var _vric=_v2pSaved[_vrq2]===_v2pCorrect[_vrq2];_vrl.style.background=_vric?"#f0fff4":"#fff5f5";_vrl.style.borderColor=_vric?"#68d391":"#fc8181";}}if(_v2pSaved[_vrq2]!==_v2pCorrect[_vrq2]){var _vrCorr=document.querySelector("input[name="+_vrq2+"][value="+_v2pCorrect[_vrq2]+"]");if(_vrCorr){var _vrcl=_vrCorr.closest("label");if(_vrcl){_vrcl.style.background="#f0fff4";_vrcl.style.borderColor="#68d391";}}}}
+    for(var _vca in _v2pCorrect){var _vcaInp=document.querySelector("input[name="+_vca+"][value="+_v2pCorrect[_vca]+"]");if(_vcaInp){_vcaInp.checked=true;var _vcaLbl=_vcaInp.closest("label");if(_vcaLbl){_vcaLbl.style.background="#f0fff4";_vcaLbl.style.borderColor="#68d391";}}}
+    var _v2pRes=document.getElementById('v2p-quiz-result');
+    if(_v2pRes&&!_v2pRes.innerHTML.trim()){var _v2pScore=parseInt(localStorage.getItem(u+'-quiz-v2p-score')||'7',10);var _v2pPct=Math.round(_v2pScore/7*100);var _v2pMsg,_v2pIcon,_v2pBg,_v2pBord,_v2pCol;if(_v2pScore>=6){_v2pMsg="Excellent – you're ready for V2 ✅";_v2pIcon="🎉";_v2pBg="#f0fff4";_v2pBord="#68d391";_v2pCol="#276749";}else if(_v2pScore>=5){_v2pMsg="Good – minor review recommended";_v2pIcon="📚";_v2pBg="#fffbeb";_v2pBord="#f6e05e";_v2pCol="#744216";}else{_v2pMsg="Please review the training and try again";_v2pIcon="📖";_v2pBg="#fff5f5";_v2pBord="#fc8181";_v2pCol="#9b2235";}_v2pRes.style.display='block';_v2pRes.innerHTML=buildQuizResult(_v2pScore,7,_v2pIcon,_v2pMsg,_v2pBg,_v2pBord,_v2pCol,_v2pPct);}
+    var _v2pRow=document.getElementById('v2p-quiz-submit-row');
+    if(_v2pRow)_v2pRow.style.display='none';
+  }
+  updateV2pProgress();
 }
 function markStarsSection(id){
   var u=getUser();if(!u)return;
