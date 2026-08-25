@@ -3854,6 +3854,243 @@ function acCallCard(title,subject,situation,actions,exchange){
   c+='</div>';
   return c;
 }
+
+/* ════════════════════════════════════════════════════════
+   FOLLOW-UP TAG — practice case bank card + data
+   ════════════════════════════════════════════════════════ */
+function fuCard(icon,title,meta,situation,timeline,verdict,reason){
+  var c='';
+  c+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+  c+='<div style="font-size:14px;font-weight:700;color:#1e3a5c;margin-bottom:4px;">'+icon+' '+title+'</div>';
+  c+='<div style="font-size:11.5px;color:#718096;font-weight:600;margin-bottom:14px;">'+meta+'</div>';
+  c+='<div style="font-size:11.5px;color:#2a5a7a;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Situation</div>';
+  c+='<div style="font-size:13px;color:#1a1a2e;line-height:1.65;margin-bottom:12px;">'+situation+'</div>';
+  c+='<div style="font-size:11.5px;color:#2a5a7a;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Timeline</div>';
+  c+='<ul style="margin:0 0 14px 18px;padding:0;">';
+  for(var i=0;i<timeline.length;i++){c+='<li style="font-size:12.5px;color:#4a5568;line-height:1.7;">'+timeline[i]+'</li>';}
+  c+='</ul>';
+  var yes=(verdict.indexOf('Yes')===0);
+  var vColor=yes?'#c53030':'#2f855a';
+  var vBg=yes?'#fff5f5':'#f0fff4';
+  var vBorder=yes?'#feb2b2':'#9ae6b4';
+  c+='<div style="background:'+vBg+';border:1.5px solid '+vBorder+';border-radius:10px;padding:14px 16px;">';
+  c+='<div style="font-size:12.5px;font-weight:800;color:'+vColor+';text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">Follow up needed? '+(yes?'&#x2705; ':'&#x2B55; ')+verdict+'</div>';
+  c+='<div style="font-size:13px;color:#1a1a2e;line-height:1.65;"><strong>Why:</strong> '+reason+'</div>';
+  c+='</div>';
+  c+='</div>';
+  return c;
+}
+
+function gcCaseBank(){
+  var cases=[
+    {icon:'🧾',title:'Invoice Reissued in a Relative\'s Name',meta:'Direct booking &middot; stay ended several months ago',
+     situation:'A guest asked, long after her stay, for her payment invoice to be reissued in a relative\'s name so it could be used for a reimbursement claim elsewhere.',
+     timeline:['Guest\'s request received.','A few hours later &mdash; agent replied, agreed to the change, and asked for one more detail (the relative\'s age).'],
+     verdict:'No',reason:'The request was actioned within hours of being received. A same-day action resets the clock &mdash; it does not matter that the original request was old, because it has already been responded to.'},
+    {icon:'💳',title:'Card Declined at Booking, Plus a Possible Duplicate',meta:'OTA booking &middot; check-in in a few weeks',
+     situation:'A booking came in overnight but card verification failed, so nothing was collected. The guest also appears to have a second, possibly duplicate booking.',
+     timeline:['Booking created overnight; card verification failed; automatic payment request email sent.','Next morning &mdash; agent logged the cancellation terms and asked the guest to confirm whether both bookings were intentional.'],
+     verdict:'No',reason:'Both open questions were put to the guest a few hours ago &mdash; nothing to chase yet. But write down the date it stops being true: if the deposit deadline arrives with no payment, that becomes a same-day follow-up by direct email, not just waiting on the automated payment link.'},
+    {icon:'🐾',title:'Pet Question Never Actually Asked',meta:'Direct booking &middot; check-in tomorrow',
+     situation:'A pet-friendly property charges a per-pet fee, and the booking was flagged to check whether a pet was coming. Two automated emails went out &mdash; a booking confirmation and a door-code email &mdash; and neither one ever asked the question.',
+     timeline:['Booking confirmed; automated confirmation sent.','Next day &mdash; automated door-code/Wi-Fi email sent. Still no message asking about pets, and the guest has not raised it herself.'],
+     verdict:'Yes',reason:'Check-in is tomorrow and the actual question has never been put to the guest &mdash; this is not a case that has gone quiet, it is one that was never actioned. Zero follow-ups logged means nobody has asked yet, not that everything is fine.'},
+    {icon:'🐕',title:'Pet Fee Unpaid, Guest Arrives Tonight',meta:'OTA booking &middot; self-check-in &middot; check-in today',
+     situation:'The guest confirmed she is bringing a pet and a payment link for the fee was sent, but nothing has been collected and the property has no record an animal is coming.',
+     timeline:['Agent asked for an email address and whether pets were coming.','A couple of days later &mdash; guest confirmed a pet; a payment link was sent.'],
+     verdict:'Yes',reason:'The link only went out yesterday, which would normally buy another day &mdash; but not here. She arrives tonight through a self-check-in code, so there is no front desk to settle it at once she is inside. Chase her through every channel available today, and tell the property a pet is coming so they have a fallback.'},
+    {icon:'⏰',title:'"I\'ll Let You Know in the Morning"',meta:'OTA booking &middot; check-in in 4 days',
+     situation:'Pets were not added to the booking, but the guest mentioned she would likely be bringing one. There is a per-pet fee, and nothing has been collected yet.',
+     timeline:['Day 1, early morning &mdash; agent asks for an email address and whether she will have pets.','Day 1, same morning &mdash; guest replies: "Yes I will let you know in the morning! Thank you."','Today, reviewing the case &mdash; no further word from her. The morning she referred to has already passed.'],
+     verdict:'Yes',reason:'Only a day has passed, which would normally mean give it more time. But she set her own deadline &mdash; "in the morning" &mdash; and that has now passed with no update. A guest\'s own promise works exactly like an internal reminder note: before the moment she named, there is nothing to chase; once it passes with no word, it is time to follow up, no matter how little time has technically gone by.'},
+    {icon:'💰',title:'Payment Link Sent, Arrival Next Month',meta:'OTA booking &middot; check-in over a month away',
+     situation:'A payment request went out and nothing has been collected yet. The deposit was nominally due the day the link was sent; the balance is not due for another two weeks, and free cancellation runs even further out.',
+     timeline:['Payment request sent.','Same day &mdash; cancellation terms logged on the case.'],
+     verdict:'No',reason:'Two days since the link went out, arrival over a month away, and free cancellation still runs for weeks &mdash; a fair window for someone to action a payment link. Write down the balance due date though: one nudge a week before it, and the case must not reach that date unpaid.'},
+    {icon:'↩️',title:'Guest Answered Our Question, We Said Nothing Back',meta:'OTA message centre &middot; check-in about a week away',
+     situation:'The guest confirmed a query we had raised, and in passing mentioned she would be bringing a dog &mdash; a fact that matters, since the reservation still shows zero pets against a per-pet fee.',
+     timeline:['Agent asked her to confirm a detail about the booking.','Next day &mdash; guest replied confirming it, and disclosed the pet. Nothing sent back since.'],
+     verdict:'Yes',reason:'She replied over 24 hours ago and heard nothing back. "Waiting for guest" ends the moment the guest replies &mdash; an answered message that sits unactioned is a follow-up owed, not a case still in progress. Her reply also contained a new fact (the pet) that needs its own action.'},
+    {icon:'🍳',title:'Kitchen Odour, In-House, Told to Call If It Returns',meta:'OTA booking &middot; in-house stay',
+     situation:'At check-in the guest reported an unpleasant kitchen odour. Cleaners were sent and the smell was treated; the guest was told to call if it came back.',
+     timeline:['Complaint logged; guest asked to check for anything that might explain it.','Same afternoon &mdash; access resolved, clean completed, odour treated; guest asked to confirm it was sorted.','A few days later &mdash; agent checked in again to confirm resolution.'],
+     verdict:'No',reason:'The one open loop &mdash; confirming the fix worked &mdash; was just actioned this morning. He was also told explicitly to call if the smell returned, and has not. Silence after being informed, with a route back to us, reads as resolved; another check-in would be nagging, not diligence.'},
+    {icon:'🎫',title:'Post-Stay Kiosk Question, Deferral Honoured',meta:'Direct booking &middot; stay recently ended',
+     situation:'During the stay the guest could not buy anything at an on-site kiosk that needed an account login. The agreed workaround was that she would tell us what she bought so we could charge her card &mdash; since the stay ended, we have been trying to confirm whether she bought anything at all.',
+     timeline:['Agent asked her to confirm whether she had purchased anything.','A couple of days later &mdash; note logged: check back again in a couple of days.','On schedule &mdash; agent followed up again.'],
+     verdict:'No',reason:'The deferral set a couple of days ago came due right on schedule, and today\'s follow-up landed on time. Worth flagging: this is the second unanswered ask on a low-stakes question. If there is no reply after one more attempt, the sensible call is to treat silence as no purchases, charge nothing, and close it &mdash; not send a third message.'},
+    {icon:'🧳',title:'Lost Item, Several Follow-Ups, No Reply',meta:'OTA booking &middot; stay recently ended &middot; no email on file',
+     situation:'The guest left an item behind; the property found it, but the instructions passed on asked her to research prepaid shipping and post a return label herself &mdash; despite her already saying she would cover the cost.',
+     timeline:['Guest reports the item; partner contacted and confirms it was found.','Guest told what she needs to do to get it shipped.','Over the following week &mdash; agent followed up multiple times with no reply.'],
+     verdict:'No',reason:'A follow-up did go out this morning, so the status itself is simple. The real issue is the pattern &mdash; several unanswered attempts is over-chasing, and the task handed to her (source shipping, print a label) is heavier than it needs to be. The fix is to arrange the shipping ourselves and simply charge her, not to keep repeating the same ask.'},
+    {icon:'📵',title:'Three Unanswered Messages, One Channel',meta:'OTA booking &middot; check-in over a month away',
+     situation:'Two questions are open with the guest &mdash; a pet query and whether a second, possibly duplicate booking is intentional. All three attempts to reach her have gone through the same messaging channel with no reply, despite a direct email and phone number being on file.',
+     timeline:['First message sent, asking about pets and the duplicate.','Next day &mdash; second attempt, same channel.','Today &mdash; third attempt, same channel.'],
+     verdict:'No',reason:'The third attempt went out hours ago and arrival is over a month off, so nothing to chase this exact moment. The real lesson is what happens next: three unanswered messages in the same channel means a fourth will not work either. Switch to the direct email or phone number already on file.'},
+    {icon:'🚪',title:'Repair Completed, Notes Look Alarming',meta:'OTA booking &middot; in-house stay',
+     situation:'The guest reported a loose door handle. The partner sent a video of the completed repair &mdash; but reading the internal case notes alone, there is no record the guest was ever told it was done.',
+     timeline:['Guest reports the handle; partner notified.','Guest confirms and grants access.','Partner sends a video of the completed repair. Nothing logged in the case notes since.'],
+     verdict:'No',reason:'Checking the actual guest conversation thread (not just the internal notes) shows the guest was messaged directly: repair is done, are you all set? Internal notes reliably capture partner-facing actions but unreliably capture guest-facing ones &mdash; treat "no note of a message" as inconclusive, never as proof nothing was sent. Always open the real thread before deciding someone was not told.'},
+    {icon:'📦',title:'Lost Bag, Tracking Number',meta:'OTA booking &middot; stay ended',
+     situation:'A guest left a bag behind containing a wallet. It was shipped back to him, and the partner passed along a tracking number &mdash; but the case notes do not show that number ever being forwarded to the guest.',
+     timeline:['Guest provides a mailing address; on-site team notified to ship.','A couple of days later &mdash; partner confirms it is going out and provides a tracking number.'],
+     verdict:'No',reason:'Same trap as the case above &mdash; the actual guest thread shows the tracking number was sent directly to him. Nothing outstanding. Worth reading the rest of that thread too: it surfaced a separate small issue that was never confirmed closed &mdash; not a reason to reach out proactively, but worth noting in case it resurfaces.'},
+    {icon:'❓',title:'A Direct Question, Buried',meta:'OTA booking &middot; listing accuracy dispute',
+     situation:'A guest disputing the accuracy of a listing, and requesting a refund for unused nights, asked a simple practical question &mdash; how to send us photo evidence. The next reply she got was boilerplate "we are looking into it" wording that did not answer it.',
+     timeline:['Several messages exchanged about the dispute itself.','Guest asks how to send her photos.','Next reply &mdash; standard acknowledgement sent; her question still unanswered.'],
+     verdict:'Yes',reason:'Something recent was sent, so on elapsed time alone this looks handled &mdash; it is not. A recent message does not discharge the obligation if it did not answer what was actually asked. She has already threatened to escalate twice; a non-answer will read as being managed rather than helped. Note also: an accuracy dispute plus an explicit refund request is a financial claim, so it needs a ticket, not just a case note.'},
+    {icon:'🏚️',title:'Forced Relocation, Guest Has Not Answered',meta:'OTA booking &middot; non-refundable rate &middot; check-in under 2 weeks away',
+     situation:'A technical issue at the property means the guest cannot stay in the unit she booked. She was offered a same-price upgrade to an alternative unit and has not responded.',
+     timeline:['Partner offers a relocation; terms confirmed with them first.','Same day &mdash; guest informed of the offer.','A couple of days later &mdash; agent followed up.'],
+     verdict:'No',reason:'A follow-up went out yesterday and there is still time before arrival, so nothing to chase this exact moment. But hold the exception at the same time: she genuinely cannot stay in the unit she booked, so her silence does not resolve anything &mdash; someone still has to decide. If there is no reply within about a week of the original offer, escalate to phone or direct email rather than sending a third passive message.'},
+    {icon:'💧',title:'Water Damage, Relocate or Cancel, High Value',meta:'OTA booking &middot; firm cancellation policy &middot; check-in about 3 weeks away',
+     situation:'An unexpected issue has damaged the flooring at the property. The guest was offered an alternative property, with a fallback of a full refund and free cancellation if the alternative does not work. No response yet.',
+     timeline:['Guest advised of the issue; alternative and fallback cancellation offered.','Today &mdash; agent followed up.'],
+     verdict:'No',reason:'Followed up this morning, two days since the offer, three weeks to arrival &mdash; nothing urgent this second. Same exception as the relocation case above: he has to make a real decision, so no answer in another two or three days should trigger a phone call, not another message. Worth checking before leaving it alone: whether a cancellation request already active on the booking might fire automatically before he has actually chosen &mdash; that would make the decision for him.'},
+    {icon:'🔁',title:'Same Incident, a Second Booking',meta:'OTA booking &middot; check-in about 4 weeks away',
+     situation:'Effectively the same water-damage incident as the case above, at the same property, offered to a different guest within minutes of the first notice.',
+     timeline:['Guest advised of the issue; alternative and fallback cancellation offered.','Today &mdash; agent followed up.'],
+     verdict:'No',reason:'Same reasoning and same escalation trigger as the case above &mdash; but the real lesson is the overlap. When two cases share a property, a cause, and a near-identical timestamp, they are not two separate follow-ups drifting apart, they are one incident. Track it as a single checklist (notified &#8594; decision &#8594; relocation or cancellation &#8594; dates blocked), and ask the question the tag workflow will not ask for you: are there other bookings at this property in the same window that nobody has told at all?'},
+    {icon:'🚽',title:'Toilet Still Broken, Guest Leaves Today',meta:'OTA booking &middot; checkout today',
+     situation:'A guest reported a clogged toilet that a plunger did not fix. He was told the plumbing would be dealt with tomorrow &mdash; after he has already checked out, for the next guest\'s benefit.',
+     timeline:['Guest reports the issue; advised on a temporary workaround.','Partner contacted for maintenance help.','This morning &mdash; guest reports it is still not working; told the repair happens after checkout.'],
+     verdict:'Yes',reason:'This looks similar to a resolved-by-silence case, but it is not &mdash; the problem was never actually fixed for him, and the last thing he heard was that the fix benefits whoever comes next, not him. He checks out today, so today is the deadline for an acknowledgement and a real decision on whether a goodwill gesture is warranted. Do not wait for him to raise it; most guests will not, they will just leave a low rating.'},
+    {icon:'📞',title:'Small Payment Outstanding, Arrival Tomorrow',meta:'OTA booking &middot; check-in tomorrow',
+     situation:'A small price difference from a date change was raised as a payment request days ago and is still unpaid. Written follow-ups went unanswered for days; only a phone call finally got a response &mdash; and revealed his actual intended dates were different again.',
+     timeline:['Date change requested and price difference raised.','Several days &mdash; multiple written follow-ups, no response.','A phone call finally connects; guest clarifies his real dates.','Today &mdash; corrected dates confirmed; guest asked to complete the payment today.'],
+     verdict:'Yes',reason:'A written ask did go out today, which would normally settle it for the day &mdash; it does not here. We already know from this guest\'s own history that written messages do not reach him and a phone call does. Sending another message through a channel you have evidence will not work is not a real follow-up; use the channel you know works.'}
+  ];
+  var h='';
+  h+='<div style="margin-bottom:4px;">';
+  h+='<button onclick="var b=document.getElementById(\'gc-bank-body\');var a=document.getElementById(\'gc-bank-arr\');var open=b.style.display!==\'none\';b.style.display=open?\'none\':\'block\';a.style.transform=open?\'rotate(0deg)\':\'rotate(90deg)\';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,#1e3a5c,#2a5a7a,#3a8a9e);color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;text-align:left;box-shadow:0 4px 12px rgba(30,58,92,0.3);transition:opacity 0.15s;" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">';
+  h+='<span>&#x1F5C2;&#xFE0F; Practice Case Bank (19 cases)</span>';
+  h+='<span id="gc-bank-arr" style="font-size:18px;transition:transform 0.2s;display:inline-block;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="gc-bank-body" style="display:none;border:1px solid #bee3f8;border-top:none;border-radius:0 0 12px 12px;padding:20px 20px 16px;background:#f7fbff;">';
+  h+='<p style="font-size:13px;color:#718096;line-height:1.7;margin-bottom:16px;">Every case below is drawn from real cases the team has handled, with names and identifying details removed. Read the situation and timeline, form your own call before you scroll to the reveal, then compare your reasoning &mdash; not just your answer.</p>';
+  for(var i=0;i<cases.length;i++){
+    var cs=cases[i];
+    h+=fuCard(cs.icon,cs.title,cs.meta,cs.situation,cs.timeline,cs.verdict,cs.reason);
+  }
+  h+='</div></div>';
+  return h;
+}
+
+function pcCaseBank(){
+  var cases=[
+    {icon:'🚩',title:'Safety-Flagged Group Booking, Guidance Pending',meta:'OTA booking &middot; group trip &middot; check-in approaching',
+     situation:'An OTA flagged the booking as a possible unauthorized event; the guest confirmed it is a legitimate group trip. The partner was asked whether to proceed or cancel, and separately the guest was asked to complete a pre-arrival step.',
+     timeline:['Partner asked for guidance on whether to proceed or cancel.','Guest separately asked to complete check-in, suggesting arrival is close.'],
+     verdict:'Yes &mdash; Urgent',reason:'An unresolved proceed-or-cancel decision on a safety-flagged booking, combined with arrival closing in, cannot wait out the standard response window. Escalate to the partner now rather than waiting.'},
+    {icon:'🏠',title:'No Availability, Alternatives Already Offered',meta:'OTA booking &middot; relocation offer',
+     situation:'The original unit had no availability. The partner was asked to check an alternate unit and came back with two options, which were passed to the guest.',
+     timeline:['Partner asked to check alternates.','Partner offers two alternative units.','Guest offered the alternatives; no response yet. Internal note: check back in a few days.'],
+     verdict:'No',reason:'The open item now sits with the guest, not the partner &mdash; the partner already provided a solution. No partner follow-up needed; check back on the guest\'s decision per the internal note.'},
+    {icon:'🔑',title:'Name Change, Then a Same-Unit Request',meta:'Multi-stay guest &middot; in-house, one day to checkout',
+     situation:'An earlier name-transfer issue was already resolved by the partner. A new request followed: the guest wants the same unit for their next stay to avoid moving between reservations, and local staff were asked to confirm it can be accommodated.',
+     timeline:['Local team contacted about the same-unit request.','Response still pending. Guest is in-house with one day left before checkout.'],
+     verdict:'Yes &mdash; Urgent',reason:'Even though the request only went out today, the guest\'s own stay timeline creates a hard deadline &mdash; they need an answer before they check out. Elapsed time since the message is not the deciding factor here; the guest\'s clock is.'},
+    {icon:'🔍',title:'Reservation Not Found at Check-In',meta:'In-house &middot; reception unable to locate booking',
+     situation:'The guest reported that reception could not find their reservation. The partner was contacted urgently with the supplier reference to help resolve it on the spot.',
+     timeline:['Partner contacted, asked to verify and assist urgently.','About 45 minutes later &mdash; a follow-up call went to voicemail; a follow-up email was also sent.'],
+     verdict:'Yes &mdash; Urgent',reason:'This looks like a guest currently stuck at the property with an unresponsive partner after two rapid contact attempts. If there is still no response within another short window, escalate further &mdash; a secondary contact or a supervisor &mdash; and proactively update the guest so they are not left waiting in silence.'},
+    {icon:'💵',title:'Rate Reduction Request, Extenuating Circumstances',meta:'Extended stay &middot; pricing/goodwill request',
+     situation:'A guest extended their stay due to a local emergency situation. A rate was agreed with the partner for the extra night, but the guest pushed back citing a lower rate quoted originally and asked for reconsideration.',
+     timeline:['Rate-reduction request sent to the partner through a workaround channel (usual inbox down).'],
+     verdict:'No &mdash; Wait',reason:'Only about half a day has passed since the request went out, and this is a goodwill/pricing ask rather than an urgent operational issue. Hold off following up until roughly two days have passed, and try an alternate contact method if the usual inbox is still down.'},
+    {icon:'🎒',title:'Lost Backpack With Medical Items',meta:'Stay ended &middot; lost &amp; found',
+     situation:'A guest checked out and left behind a bag containing a laptop, tablet, and medical documents. The partner was asked to check whether it had been found.',
+     timeline:['Partner contacted to check for the item; no response yet.'],
+     verdict:'No &mdash; Wait',reason:'The request only went out today, so it is too early to chase again, and there is no in-house or checkout deadline driving urgency since the guest has already left. That said, medical documents and electronics mean the guest is likely anxious &mdash; a faster-than-usual check-in is worth doing if the partner stays silent, and a quick status update to the guest in the meantime avoids leaving them wondering.'},
+    {icon:'💳',title:'Deposit Not Released',meta:'Post-stay &middot; financial',
+     situation:'A guest\'s deposit had not been released back to them. The partner was asked about it and replied that they were forwarding it internally for a direct response.',
+     timeline:['Partner contacted about the unreleased deposit.','Partner replies: forwarding to the property, who will respond directly. Internal note: check back in a couple of days.'],
+     verdict:'No &mdash; Wait',reason:'The partner already escalated internally and committed to a direct response, and only a day has passed. Check back in around two days if there is still nothing from the property.'},
+    {icon:'🛏️',title:'Accommodation Did Not Match Listing, Refund Exception in Motion',meta:'In-house &middot; existing support ticket already open',
+     situation:'A guest complained the apartment did not match its listing description and was missing some items. This is tracked in an existing ticket, but the guest is still in-house and the booking channel has separately gotten involved and is moving toward a refund.',
+     timeline:['Partner confirms they cannot relocate the guest; compensation/refund raised with them.','Ongoing &mdash; repeated gentle pushes with the partner for a decision.'],
+     verdict:'Yes &mdash; Urgent, keep the tag on',reason:'Normally an existing ticket makes this tag redundant &mdash; but this is an exception. The guest is still living the issue in real time, and third-party involvement moving toward a refund means it needs active tracking that a ticket alone will not move fast enough to catch. Keep the tag active and update the ticket owner as the refund develops so both stay in sync.'},
+    {icon:'🌳',title:'Ground-Floor Unit, View Complaint',meta:'Relocation request',
+     situation:'A guest was unhappy with a ground-floor unit facing a parking area and asked to move to a similar-view unit on a different floor. An earlier partner reply on this had actually arrived but was accidentally filed away and missed.',
+     timeline:['Message sent asking about an alternative unit.','(Partner had replied &mdash; missed internally.)','Today &mdash; a fresh, more specific request sent, re-asking for the relocation.'],
+     verdict:'No &mdash; Wait',reason:'The fresh request only went out today, so it is too early to expect a reply. Worth double-checking filters and archives for any other partner messages that might have been missed the same way, and confirming the guest\'s checkout date to gauge how much urgency there really is.'},
+    {icon:'❄️',title:'AC Issue, Interim Fix in Place',meta:'In-house &middot; maintenance',
+     situation:'A guest\'s air conditioning was not fixed by initial troubleshooting. The partner visited in person, provided a temporary unit, and flagged that a technician might be needed the next day.',
+     timeline:['Partner visits, brings a temporary AC unit, flags a possible technician visit.'],
+     verdict:'No &mdash; not today',reason:'The partner is actively managing this and the next step is already defined and dated. Following up today adds nothing &mdash; the right move is to check in the next day specifically to confirm the technician visited and the issue is fully resolved.'},
+    {icon:'🕐',title:'Check-In Time Discrepancy, Arriving Today',meta:'OTA booking &middot; check-in today',
+     situation:'A guest was told a different check-in time by the property than our own system shows. The partner was asked to confirm which was correct and has not replied in about two days &mdash; and today is arrival day.',
+     timeline:['Partner asked to confirm the correct check-in time.','Two days later, still no reply &mdash; chased again internally.'],
+     verdict:'Yes &mdash; Urgent',reason:'Elapsed time is not the driver here &mdash; the guest arrives today, so the answer has to land before they do. A one-hour gap in the wrong direction means a guest standing at a locked door. Call the partner rather than waiting on email, and in parallel tell the guest to plan for the later time to be safe. This is logistics, not a complaint, so no ticket is needed.'},
+    {icon:'🚨',title:'Alarm Sounding Overnight, Guest In-House',meta:'In-house &middot; safety',
+     situation:'An alarm sounded for over a minute in the middle of the night with no smoke or obvious cause, waking the household. The guest is worried about a fault with the alarm or an appliance and still has more nights on property.',
+     timeline:['Partner contacted to investigate; no reply yet within the hour.'],
+     verdict:'Yes &mdash; Urgent',reason:'This is a life-safety device firing with no identified cause, and the guest is sleeping there again tonight. The usual give-it-24-hours rule does not apply to smoke or CO type equipment &mdash; it needs a same-day physical check before the guest sleeps there again. Call if there is no reply within a couple of hours, and open a ticket given the stated concern about their rating and possible compensation.'},
+    {icon:'💊',title:'Medication Left Behind',meta:'Stay ended &middot; lost &amp; found, turnover already happened',
+     situation:'A guest reported leaving medication in the unit after checkout. Housekeeping had already turned the unit over for the next stay by the time the partner was asked to check.',
+     timeline:['Partner asked to have housekeeping check urgently and advise on collection.'],
+     verdict:'Yes &mdash; Urgent',reason:'Under-24-hours would normally mean wait, but the item is medication and the turnover window has already passed &mdash; unclaimed items get discarded or lost quickly after a clean. Every day of delay lowers the chance of recovery, and there is a genuine health need. Call rather than email, and pre-agree shipping so it can go out the moment it is found. This is logistics-only, no ticket needed.'},
+    {icon:'🕓',title:'Late Checkout Request, Checking Out Today',meta:'Checkout today &middot; multiple small issues already resolved',
+     situation:'Several minor issues during the stay were already resolved. The one open item is a request for a short late checkout, sent to the partner this morning.',
+     timeline:['Late checkout requested with the partner.'],
+     verdict:'Yes &mdash; Urgent (late checkout only)',reason:'A late-checkout answer is worthless after the checkout hour &mdash; this is a same-day hard deadline, so the standard wait period does not apply. Call for a yes or no immediately; if unreachable, tell the guest standard checkout applies. Everything else on this booking is already resolved, so the tag can close once checkout has passed.'},
+    {icon:'🧾',title:'In-House Tax Question Plus Ongoing Issue',meta:'Long in-house stay &middot; under 24 hours since last contact',
+     situation:'A guest asked for clarification on local taxes charged on arrival versus platform taxes, which was answered. A separate reported issue at the property is still under follow-up with the partner.',
+     timeline:['Tax question clarified for the guest.','Partner followed up on the separate issue less than 24 hours ago.'],
+     verdict:'No &mdash; Wait until tomorrow',reason:'Under 24 hours old and several days still to checkout means this does not hit the usual urgency threshold yet &mdash; but the guest is in-house with something unresolved, so it cannot be left for several days either. If there is no partner reply by tomorrow, escalate to a call. Worth asking the guest directly what is still outstanding on the ground, and opening a ticket if compensation comes up.'},
+    {icon:'🐝',title:'Long Stay, Maintenance Items Logged',meta:'Long in-house stay &middot; partner has responded',
+     situation:'A guest reported several minor maintenance issues, including a wasp nest near the unit. The partner replied within a day confirming a maintenance request was submitted.',
+     timeline:['Guest reports several issues.','Partner replies: maintenance request submitted.'],
+     verdict:'No &mdash; contact the guest instead',reason:'The partner responded within a day and the ball is technically on their side, so chasing them again today adds nothing. But request submitted is not fixed &mdash; with many nights still to run and a safety-adjacent item (the wasp nest) in the mix, the guest should be asked to confirm it is actually been dealt with, not assumed. Chase the partner again only if nothing has happened by a few days out.'},
+    {icon:'💰',title:'Security Deposit Not Released Post-Checkout',meta:'Stay ended &middot; financial',
+     situation:'A guest reported that the expected deposit-release window had passed without the deposit landing. The partner was chased once, then chased again.',
+     timeline:['Guest flags the missed release window; partner chased.','A couple of days later &mdash; chased again.'],
+     verdict:'No &mdash; wait roughly 48 hours',reason:'A follow-up already went out today, so chasing again immediately adds nothing. There is no stay-timeline urgency since the guest has departed, but this is the guest\'s own money being held past a promised window, which is its own kind of clock. If it is still unconfirmed after the wait period, escalate higher and switch to a call; if it drags on with the guest out of pocket, open a ticket.'},
+    {icon:'⚠️',title:'Fee Wrongly Charged, Partner Accepted Fault',meta:'Short stay &middot; billing error, partner-acknowledged',
+     situation:'A guest was charged a fee that should have been included in the rate. The partner responded within a day, confirmed the error, and said they would initiate a refund.',
+     timeline:['Partner contacted about the incorrect charge.','Next day &mdash; partner confirms fault and starts a refund; guest told we will update them once it completes.'],
+     verdict:'No &mdash; monitor',reason:'The partner responded quickly, admitted the error, and owns the next step &mdash; there is nothing to chase today. Keep the tag on as a reminder and check back around a week out to confirm the refund actually landed; if it has not, chase the partner and open a ticket at that point, since it would then be a partner-fault billing error with the guest\'s money still outstanding.'},
+    {icon:'⭐',title:'Post-Stay Complaints, Escalated to a Manager',meta:'Short, low-value stay &middot; post-stay, cosmetic complaints',
+     situation:'A guest raised several mostly cosmetic complaints after a one-night stay &mdash; nothing that affected the stay operationally, so no ticket or compensation was expected going in. The partner has now escalated it internally and given a specific commitment to respond.',
+     timeline:['Complaints logged; assessed as cosmetic, no ticket needed yet.','Chased on three separate days.','Today &mdash; partner replies: passed to their manager, expect a reply tomorrow.'],
+     verdict:'No &mdash; Wait',reason:'The partner just gave a dated commitment, so chasing again tomorrow morning would be a fourth follow-up in under a week on a low-value, already-departed, non-compensable case. Nothing operational is at stake and no one is waiting in-house. Check back on the date the manager committed to; if it slips, escalate to the account level rather than repeating the same chase.'},
+    {icon:'🔄',title:'Cancellation Refund Tied to a Resale',meta:'Cancelled ahead of arrival &middot; conditional refund',
+     situation:'A guest cancelled ahead of arrival; the standard policy pays out a partial refund, but the partner offered a full refund if the dates resell. Two of three affected nights have since resold &mdash; the third is still open, and the payout depends entirely on whether it sells before the original arrival date.',
+     timeline:['Guest cancels; partner asked to consider a full-refund exception.','Partner\'s position: full refund only if all the dates resell, otherwise partial.','Several days of calendar checks &mdash; two of three nights resell; the last one does not, right up to a few days before the original arrival date.'],
+     verdict:'No &mdash; wait on the calendar, but send one clarifying message',reason:'There is nothing new to ask the partner &mdash; they gave a clear conditional answer and the real trigger is a calendar event, not a partner decision. But their original condition did not cover a partial resale, which is now the likely outcome &mdash; worth clarifying a pro-rata arrangement now so the refund can be processed immediately once the outcome is known, instead of opening a fresh negotiation after the fact. No ticket needed; this is a refund calculation, not a complaint.'},
+    {icon:'🔐',title:'All Door Codes Failing, Checkout Day',meta:'Checkout today &middot; access failure',
+     situation:'A guest\'s entry code and backup code both failed overnight. The partner said the locks were fine and batteries had been replaced, and planned to test again at checkout &mdash; but the master code has since failed too.',
+     timeline:['Code and backup code both fail; partner says locks are fine, batteries replaced.','Later that night &mdash; master code confirmed not working either.'],
+     verdict:'Yes &mdash; Urgent',reason:'This is an active access failure with the guest still on property on their checkout day, and every code path has now failed &mdash; the partner\'s own "locks are fine" diagnosis is directly contradicted by three failures. Call now and get someone physically to the door, not another code to try. Open a ticket: a full access failure during a stay is a compensation-exposure case with an unexplained root cause.'},
+    {icon:'📶',title:'Wi-Fi Never Fixed, Goodwill Pending',meta:'Stay ended &middot; technical issue closed as unresolvable',
+     situation:'A guest\'s Wi-Fi password stopped working during the stay and multiple troubleshooting attempts (including an on-site visit) could not fix it. The partner was asked to consider a small goodwill gesture, and has not replied after several written chases.',
+     timeline:['Issue reported; on-site troubleshooting attempted, does not resolve it.','Guest confirms it is still down; partner confirms no further troubleshooting is possible.','Goodwill amount suggested to the partner, framed as their discretion.','Over the following days &mdash; chased multiple times by email, no reply.'],
+     verdict:'Yes &mdash; but change the method',reason:'Several written chases over multiple days have produced nothing &mdash; another email will not move it, and the guest is owed an outcome on a fault we have already acknowledged. Call for a yes or no instead of emailing again, and open a ticket: this is a guest complaint with pending compensation, which is exactly what tickets are for. Once it is ticketed, the ticket can carry it and the tag can come off.'},
+    {icon:'📡',title:'Wi-Fi Partially Working, Separate Fan Issue Resolved',meta:'In-house &middot; partner actively engaged, third party involved',
+     situation:'A guest reported Wi-Fi trouble and a fan they could not switch off. The fan issue is now resolved; the Wi-Fi is partially working (one device connects, one does not), and the partner is escalating with a specialist provider.',
+     timeline:['Both issues reported; fan investigated, Wi-Fi fault confirmed and a specialist booked.','A couple of days later &mdash; Wi-Fi partially restored; partner escalating the remainder.','Today &mdash; fan confirmed resolved; partner already followed up once today.'],
+     verdict:'No &mdash; not today',reason:'The partner is actively working it, a specialist route is already open, and we have already heard from them today &mdash; chasing again the same day adds nothing. Ask for a status in another day or two. One thing to check: if checkout is only a day or so away, escalate to a call today instead of waiting, and a goodwill gesture is worth considering since the Wi-Fi has been degraded for the whole stay.'},
+    {icon:'🧹',title:'Cleanliness Complaint, Partial Refund Request, Guest In-House',meta:'In-house &middot; high-value booking &middot; money decision pending',
+     situation:'On arrival a guest reported dirty bedding, damaged replacement sheets, and general cleanliness problems. A goodwill gesture (a future-stay discount) was offered, but the guest then asked for a partial refund instead, and the partner has not responded.',
+     timeline:['Guest reports issues on arrival; photos shared with the property.','Same day &mdash; guest requests a partial refund instead of the goodwill offer; partner emailed.','Two days later &mdash; followed up again, still no partner response.'],
+     verdict:'Yes',reason:'A money decision is sitting with the partner while the guest is still on property &mdash; the easiest and most important time to settle it, and the hardest to justify ignoring. Two days of silence on a refund request is past passive waiting. If there is no reply by end of day, call with a specific number rather than an open-ended ask, and open a ticket &mdash; a complaint plus compensation is squarely what tickets are for. Keep the guest updated today so she is not left chasing us.'}
+  ];
+  var h='';
+  h+='<div style="margin-bottom:4px;">';
+  h+='<button onclick="var b=document.getElementById(\'pc-bank-body\');var a=document.getElementById(\'pc-bank-arr\');var open=b.style.display!==\'none\';b.style.display=open?\'none\':\'block\';a.style.transform=open?\'rotate(0deg)\':\'rotate(90deg)\';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#2a5a7a;color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;text-align:left;box-shadow:0 4px 14px rgba(30,58,92,0.35);transition:background 0.15s;" onmouseover="this.style.background=\'#1e3a5c\'" onmouseout="this.style.background=\'#2a5a7a\'">';
+  h+='<span>&#x1F5C2;&#xFE0F; Practice Case Bank (24 cases)</span>';
+  h+='<span id="pc-bank-arr" style="font-size:18px;transition:transform 0.2s;display:inline-block;">&#9654;</span>';
+  h+='</button>';
+  h+='<div id="pc-bank-body" style="display:none;border:1px solid #a0c4d8;border-top:none;border-radius:0 0 12px 12px;padding:20px 20px 16px;background:#eef5f9;">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:16px;">Every case below is drawn from real cases the team has handled, with names and identifying details removed. Read the situation and timeline, form your own call before you scroll to the reveal, then compare your reasoning &mdash; not just your answer.</p>';
+  for(var j=0;j<cases.length;j++){
+    var pcs=cases[j];
+    h+=fuCard(pcs.icon,pcs.title,pcs.meta,pcs.situation,pcs.timeline,pcs.verdict,pcs.reason);
+  }
+  h+='</div></div>';
+  return h;
+}
+
 function aircallPage(){
   var h='';
   h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);border-radius:14px;padding:0;margin-bottom:20px;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div><svg style="position:absolute;left:32px;top:50%;transform:translateY(-50%);opacity:0.95;" width="60" height="70" viewBox="10 5 280 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jscol" gradientUnits="userSpaceOnUse" x1="25.4987" y1="166.0104" x2="273.8939" y2="166.0104"><stop offset="0" stop-color="#4473B9"/><stop offset="0.279" stop-color="#666FAA"/><stop offset="0.4733" stop-color="#84699B"/><stop offset="0.6906" stop-color="#A65F86"/><stop offset="0.9241" stop-color="#CD4A6C"/><stop offset="1" stop-color="#D94164"/></linearGradient></defs><path fill="url(#jscol)" d="M198.8,121.7v106.7h0c0,47.9-38.8,86.7-86.7,86.7S25.5,277.9,25.5,230c0-9,7.3-16.3,16.3-16.3c9,0,16.3,7.3,16.3,16.3l0,0c1.1,29.8,25.6,52.8,55.6,52.8c30.3,0,55-24.2,55.7-54.4h0v-65v-41.7c0-8.1,6.6-14.7,14.7-14.7C192.2,107,198.8,113.6,198.8,121.7zM187.2,16.9c-47.9,0-86.7,38.8-86.7,86.7h0v106.7c0,8.1,6.6,14.7,14.7,14.7s14.7-6.6,14.7-14.7v-41.7v-65h0c0.7-30.2,25.3-54.4,55.7-54.4c30.1,0,54.6,23,55.6,52.8l0,0c0,9,7.3,16.3,16.3,16.3c9,0,16.3-7.3,16.3-16.3C273.9,54.1,235.1,16.9,187.2,16.9z"/></svg><div style="position:relative;z-index:1;text-align:center;"><div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 8px rgba(0,0,0,0.25);">Jetstream Training</div></div></div>';h+='<div class="mh"><div class="mh-icon">📞</div><div><h1>Aircall</h1><span class="badge bg">Core Training</span></div></div>';
@@ -6390,6 +6627,8 @@ function managingCasesPage(){
   h+='</div>';
   h+='</div></div>';
 
+  h+=gcCaseBank();
+
   h+='<div style="margin-top:24px;">';
   h+='<button onclick="hideMCSection()" style="display:inline-flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);letter-spacing:0.2px;" onmouseover="this.style.background=\'#2d2d4e\'" onmouseout="this.style.background=\'#1a1a2e\'">&#8592; Back</button>';
   h+='</div>';
@@ -6437,6 +6676,8 @@ function managingCasesPage(){
   h+='<span style="font-size:16px;">&#9654;</span>';
   h+='</a>';
   h+='</div>';
+
+  h+=pcCaseBank();
 
   h+='<button onclick="hideMCSection()" style="display:inline-flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);letter-spacing:0.2px;" onmouseover="this.style.background=\'#2d2d4e\'" onmouseout="this.style.background=\'#1a1a2e\'">&#8592; Back</button>';
 
