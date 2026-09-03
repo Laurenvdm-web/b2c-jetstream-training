@@ -956,7 +956,7 @@ function getPagePct(page){
       if(trainDone)d++;
       return Math.round(d/3*100);
     }
-    case 'inbox':{var d=0;['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa'].forEach(function(k){if(localStorage.getItem(u+'-ibx-sec-'+k))d++;});if(localStorage.getItem(u+'-quiz-inbox1-done'))d++;if(localStorage.getItem(u+'-quiz-inbox2-done'))d++;if(localStorage.getItem(u+'-quiz-inbox3-done'))d++;return Math.round(d/8*100);}
+    case 'inbox':{var d=0;['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa','ibx-pag'].forEach(function(k){if(localStorage.getItem(u+'-ibx-sec-'+k))d++;});if(localStorage.getItem(u+'-quiz-inbox1-done'))d++;if(localStorage.getItem(u+'-quiz-inbox2-done'))d++;if(localStorage.getItem(u+'-quiz-inbox3-done'))d++;return Math.round(d/9*100);}
     case 'payments':{var d=0;['py-sched','py-how','py-dec'].forEach(function(k){if(localStorage.getItem(u+'-pay-sec-'+k))d++;});return Math.round(d/3*100);}
     default:return 0;
   }
@@ -9330,6 +9330,73 @@ h+='</div>';
 h+='</div>';
 h+='</div>';
 
+// ── Partner Asks About the Guest collapsible ─────────────────────────────
+h+='<div style="margin-top:20px;">';
+h+='<div style="display:flex;align-items:center;gap:10px;">';
+h+='<span id="ibx-pag-check" onclick="markInboxSection(\'ibx-pag\')" role="button" style="width:28px;height:28px;min-width:28px;border-radius:50%;border:2px solid #cbd5e0;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;flex-shrink:0;" title="Mark as complete">&#x25CB;</span>';
+h+='<button onclick="var p=document.getElementById(\'pag-panel\');var arr=document.getElementById(\'pag-arrow\');if(p.style.display===\'none\'){p.style.display=\'block\';arr.innerHTML=\'&#9650;\';}else{p.style.display=\'none\';arr.innerHTML=\'&#9660;\';}" style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-radius:12px;background:linear-gradient(135deg,#1e3a5c,#2a5a7a,#3a8a9e);color:#fff;font-family:inherit;font-size:15px;font-weight:700;box-sizing:border-box;cursor:pointer;border:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">';
+h+='<div style="display:flex;align-items:center;gap:14px;">🤝 Partner Asks About the Guest</div>';
+h+='<span id="pag-arrow" style="font-size:16px;">&#9660;</span>';
+h+='</button>';
+h+='</div>';
+h+='<div id="pag-panel" style="display:none;background:#fff;border-left:2px solid #2a5a7a;border-right:2px solid #2a5a7a;border-bottom:2px solid #2a5a7a;border-radius:0 0 12px 12px;box-sizing:border-box;padding:22px;">';
+h+='<p style="font-size:12.5px;color:#718096;margin:0 0 16px;line-height:1.6;">Check Cirrus first, guest only if needed — that one check decides almost everything below.</p>';
+h+='<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">';
+h+='<span style="background:#1a1a1a;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:16px;">All</span>';
+h+='<span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:6px 12px;border-radius:16px;">We Answer</span>';
+h+='<span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:6px 12px;border-radius:16px;">Guest Must Answer</span>';
+h+='<span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:6px 12px;border-radius:16px;">Close the Loop</span>';
+h+='</div>';
+h+='<div style="overflow-x:auto;border-radius:8px;border:1px solid #e2e8f0;">';
+h+='<table style="border-collapse:collapse;width:100%;min-width:760px;font-size:11.5px;">';
+h+='<tr>';
+h+='<td style="background:#1a1a1a;color:#fff;font-weight:700;padding:9px 12px;">Category + Examples</td>';
+h+='<td style="background:#4f46e5;color:#fff;font-weight:700;padding:9px 12px;">✉ Partner Response</td>';
+h+='<td style="background:#0891b2;color:#fff;font-weight:700;padding:9px 12px;">📋 Cirrus Notes &amp; Tags</td>';
+h+='<td style="background:#059669;color:#fff;font-weight:700;padding:9px 12px;">💬 Guest Message</td>';
+h+='<td style="background:#7c3aed;color:#fff;font-weight:700;padding:9px 12px;">🔧 Skill / Action</td>';
+h+='</tr>';
+h+='<tr><td colspan="5" style="background:#f8fafc;color:#64748b;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:6px 12px;">Pattern 1 — Partner Asks a Question About the Guest, Answer IS in Cirrus</td></tr>';
+h+='<tr style="vertical-align:top;">';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;">';
+h+='<div style="display:flex;align-items:center;gap:6px;font-weight:700;color:#1a1a2e;margin-bottom:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;flex-shrink:0;"></span>1. Partner asks about the guest — we can find the answer in Cirrus</div>';
+h+='<div style="color:#718096;margin-bottom:6px;">› What is the guest\'s booking reference?<br>› Could you verify that the maximum occupancy is not exceeded?<br>› How many adults and children are travelling?</div>';
+h+='<div style="color:#0369a1;font-weight:600;font-size:11px;">🎓 Why: whenever a partner asks about the guest or their booking, check Cirrus first. If it\'s already on file, answer the partner directly — don\'t loop the guest in for something they\'d have no reason to know either.</div>';
+h+='</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello Partner,<br>Thank you for your message.<br><br>[Answer from Cirrus]<br><br>Please do not hesitate to reach out if you have any further questions.<br><br>Kind regards, Lauren – Leavetown<br><span style="color:#94a3b8;font-style:italic;font-size:11px;">Pull the answer from Cirrus first. Lauren approves before sending.</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#94a3b8;font-style:italic;">— N/A — answered instantly, nothing left open, no tag needed.</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#94a3b8;font-style:italic;">— Not applicable — guest does not need to be contacted.</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;"><span style="background:#ede9fe;color:#5b21b6;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;display:inline-block;">🔍 Search Cirrus</span></td>';
+h+='</tr>';
+h+='<tr><td colspan="5" style="background:#f8fafc;color:#64748b;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:6px 12px;border-top:1px solid #eef2f6;">Pattern 2 — Partner Asks a Question About the Guest, Answer NOT in Cirrus</td></tr>';
+h+='<tr style="vertical-align:top;">';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;">';
+h+='<div style="display:flex;align-items:center;gap:6px;font-weight:700;color:#1a1a2e;margin-bottom:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0;"></span>2. Partner asks about the guest — we don\'t have the answer in Cirrus</div>';
+h+='<div style="color:#718096;margin-bottom:6px;">› Does the guest have a pet?<br>› Can you confirm the guest\'s arrival time?<br>› Will there be more than 2 guests?<br>› Do you have any bedding preferences?<br>› What is your estimated time of arrival?<br>› What is your method of transportation to the property?<br>› Can I get a phone number for this guest? I need to speak with them directly.</div>';
+h+='<div style="color:#0369a1;font-weight:600;font-size:11px;">🎓 Why: this is what happens once you\'ve checked Cirrus (Pattern 1) and confirmed the answer genuinely isn\'t there — now the guest is the only source, so we have to ask them.</div>';
+h+='</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello Partner,<br>Thank you for your message.<br><br>We have reached out to the guest to confirm. We will get back to you as soon as we receive a response.<br><br>Kind regards, Lauren – Leavetown<br><span style="color:#94a3b8;font-style:italic;font-size:11px;">Only send this once you\'ve checked Cirrus and the answer really isn\'t there. Lauren must approve before sending.</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Note: Partner asked "[insert question]". Checked Cirrus, answer not on file. Reached out to guest.<br><span style="background:#d1fae5;color:#065f46;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;display:inline-block;margin-top:4px;">Follow_up_guest</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello [Name],<br><br><strong>[Insert question]</strong><br><br>Please let us know at your earliest convenience.<br><br>Kind regards, Lauren – Leavetown<br><span style="color:#94a3b8;font-style:italic;font-size:11px;">EN + FR. Lauren approves before sending.</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;"><span style="background:#ede9fe;color:#5b21b6;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;display:inline-block;margin-bottom:6px;">🔍 Search Cirrus</span><br><span style="background:#ede9fe;color:#5b21b6;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;display:inline-block;">💬 Search JetChat</span></td>';
+h+='</tr>';
+h+='<tr><td colspan="5" style="background:#f8fafc;color:#64748b;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:6px 12px;border-top:1px solid #eef2f6;">Pattern 3 — Guest Replies, Close the Loop</td></tr>';
+h+='<tr style="vertical-align:top;">';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;">';
+h+='<div style="display:flex;align-items:center;gap:6px;font-weight:700;color:#1a1a2e;margin-bottom:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;flex-shrink:0;"></span>3. Guest answers the question from Pattern 2</div>';
+h+='<div style="color:#718096;margin-bottom:6px;">› Partner asked: does the guest have a pet? → Guest replies: no pets.<br>› Partner asked: can you confirm the guest\'s arrival time? → Guest replies: 3pm.<br>› Partner asked: can I get a phone number for this guest? → Guest replies with their number.</div>';
+h+='<div style="color:#0369a1;font-weight:600;font-size:11px;">🎓 Why: this is the second half of Pattern 2, going backwards — Cirrus gets touched twice, once when the question goes out and again when the answer comes back and the tag comes off.</div>';
+h+='</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello Partner,<br>Thank you for your patience.<br><br>We heard back from the guest — [answer]. Please let us know if you need anything further.<br><br>Kind regards, Lauren – Leavetown<br><span style="color:#94a3b8;font-style:italic;font-size:11px;">This is what closes the loop. Lauren must approve before sending.</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Note: Guest confirmed [answer] on [date]. Relayed to partner.<br><span style="background:#d1fae5;color:#065f46;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;display:inline-block;margin-top:4px;">Resolved</span> <span style="color:#94a3b8;font-style:italic;font-size:11px;">(remove Follow_up_guest)</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#94a3b8;font-style:italic;">Original message sent to guest (Pattern 2) — this is the message that opened the loop.</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;"><span style="background:#ede9fe;color:#5b21b6;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;display:inline-block;">🔍 Search Cirrus</span></td>';
+h+='</tr>';
+h+='</table>';
+h+='</div>';
+h+='</div>';
+h+='</div>';
+
 // ── Take the Quiz – Part 1 collapsible ───────────────────────────────────
 h+='<div style="margin-top:20px;">';
 h+='<button id="inbox1-quiz-btn" onclick="toggleInbox1Quiz()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(135deg,#1e3a5c,#2a5a7a,#3a8a9e);color:#fff;font-family:inherit;font-size:15px;font-weight:700;box-sizing:border-box;transition:opacity 0.2s;margin-bottom:0;" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">';
@@ -9725,19 +9792,19 @@ function markInboxSection(id){
 }
 function updateInboxProgress(){
   var u=getUser();if(!u)return;
-  var ids=['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa'];
+  var ids=['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa','ibx-pag'];
   var done=0;
   for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-ibx-sec-'+ids[i]))done++;}
   if(localStorage.getItem(u+'-quiz-inbox1-done'))done++;
   if(localStorage.getItem(u+'-quiz-inbox2-done'))done++;
   if(localStorage.getItem(u+'-quiz-inbox3-done'))done++;
-  var pct=Math.round(done/8*100);
+  var pct=Math.round(done/9*100);
   setProgress('ibx', pct);
   if(typeof updateAllNavChecks==='function')updateAllNavChecks();
 }
 function restoreInboxProgress(){
   var u=getUser();if(!u)return;
-  var ids=['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa'];
+  var ids=['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa','ibx-pag'];
   for(var i=0;i<ids.length;i++){
     if(localStorage.getItem(u+'-ibx-sec-'+ids[i])){
       var btn=document.getElementById(ids[i]+'-check');
