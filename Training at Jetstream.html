@@ -247,6 +247,7 @@ nav{padding:8px 0}
 <button class="nb" id="n-cancellations">❌ Cancellations<span class="nb-check" id="nc-cancellations" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-modifications">✏️ Modifications<span class="nb-check" id="nc-modifications" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-inbox">📬 Handling the Inbox Like a Pro<span class="nb-check" id="nc-inbox" title="Page complete">&#x2713;</span></button>
+<button class="nb" id="n-partnerpropertyupdates">🏘️ Partner Updating Us About Property Information<span class="nb-check" id="nc-partnerpropertyupdates" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-payments">💳 Payments<span class="nb-check" id="nc-payments" title="Page complete">&#x2713;</span></button>
 <button class="nb" id="n-tags">🏷️ Tags<span class="nb-check" id="nc-tags" title="Page complete">&#x2713;</span></button>
 <div class="nsl">Extras</div>
@@ -957,6 +958,7 @@ function getPagePct(page){
       return Math.round(d/3*100);
     }
     case 'inbox':{var d=0;['ibx-p1','ibx-p2','ibx-spam','ibx-catchup','ibx-ltfa','ibx-pag'].forEach(function(k){if(localStorage.getItem(u+'-ibx-sec-'+k))d++;});if(localStorage.getItem(u+'-quiz-inbox1-done'))d++;if(localStorage.getItem(u+'-quiz-inbox2-done'))d++;if(localStorage.getItem(u+'-quiz-inbox3-done'))d++;return Math.round(d/9*100);}
+    case 'partnerpropertyupdates':{var d=_cnt('ppu-sec',['ppu-explain','ppu-examples']);return d*50;}
     case 'payments':{var d=0;['py-sched','py-how','py-dec'].forEach(function(k){if(localStorage.getItem(u+'-pay-sec-'+k))d++;});return Math.round(d/3*100);}
     default:return 0;
   }
@@ -969,7 +971,7 @@ function refreshOverallBar(){
   if(pbiEl)pbiEl.style.width=op.pct+'%';
 }
 function updateAllNavChecks(){
-  var pages=['security','setup','company','bookings','stars','v1v2','v1inquiries','partners','comms','airbnb','cirrus','vrbo','bookingcom','processingbookings','v2partners','managingcases','cancellations','modifications','availability','aircall','tags','inbox','guestentry','payments'];
+  var pages=['security','setup','company','bookings','stars','v1v2','v1inquiries','partners','comms','airbnb','cirrus','vrbo','bookingcom','processingbookings','v2partners','managingcases','cancellations','modifications','availability','aircall','tags','inbox','partnerpropertyupdates','guestentry','payments'];
   for(var i=0;i<pages.length;i++){
     var p=pages[i];
     var el=document.getElementById('nc-'+p);
@@ -979,7 +981,7 @@ function updateAllNavChecks(){
   }
   refreshOverallBar();
 }
-var TRACKED_PAGES=['processingbookings','v2partners','managingcases','guestentry','availability','cancellations','modifications','inbox','payments','tags','bookings','stars','v1v2','v1inquiries','partners','aircall','comms','airbnb','cirrus','vrbo','bookingcom','security','setup','company'];
+var TRACKED_PAGES=['processingbookings','v2partners','managingcases','guestentry','availability','cancellations','modifications','inbox','partnerpropertyupdates','payments','tags','bookings','stars','v1v2','v1inquiries','partners','aircall','comms','airbnb','cirrus','vrbo','bookingcom','security','setup','company'];
 function getOverallPct(){
   var sum=0,completed=0;
   for(var i=0;i<TRACKED_PAGES.length;i++){var p=getPagePct(TRACKED_PAGES[i]);sum+=p;if(p===100)completed++;}
@@ -9817,6 +9819,123 @@ function restoreInboxProgress(){
   updateInboxProgress();
 }
 
+function partnerPropertyUpdatesPage(){
+var h='';
+h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);border-radius:14px;padding:0;margin-bottom:20px;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div><svg style="position:absolute;left:32px;top:50%;transform:translateY(-50%);opacity:0.95;" width="60" height="70" viewBox="10 5 280 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jscol-ppu" gradientUnits="userSpaceOnUse" x1="25.4987" y1="166.0104" x2="273.8939" y2="166.0104"><stop offset="0" stop-color="#4473B9"/><stop offset="0.279" stop-color="#666FAA"/><stop offset="0.4733" stop-color="#84699B"/><stop offset="0.6906" stop-color="#A65F86"/><stop offset="0.9241" stop-color="#CD4A6C"/><stop offset="1" stop-color="#D94164"/></linearGradient></defs><path fill="url(#jscol-ppu)" d="M198.8,121.7v106.7h0c0,47.9-38.8,86.7-86.7,86.7S25.5,277.9,25.5,230c0-9,7.3-16.3,16.3-16.3c9,0,16.3,7.3,16.3,16.3l0,0c1.1,29.8,25.6,52.8,55.6,52.8c30.3,0,55-24.2,55.7-54.4h0v-65v-41.7c0-8.1,6.6-14.7,14.7-14.7C192.2,107,198.8,113.6,198.8,121.7zM187.2,16.9c-47.9,0-86.7,38.8-86.7,86.7h0v106.7c0,8.1,6.6,14.7,14.7,14.7s14.7-6.6,14.7-14.7v-41.7v-65h0c0.7-30.2,25.3-54.4,55.7-54.4c30.1,0,54.6,23,55.6,52.8l0,0c0,9,7.3,16.3,16.3,16.3c9,0,16.3-7.3,16.3-16.3C273.9,54.1,235.1,16.9,187.2,16.9z"/></svg><div style="position:relative;z-index:1;text-align:center;"><div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 8px rgba(0,0,0,0.25);">Jetstream Training</div></div></div>';
+h+='<div class="mh"><div class="mh-icon">🏘️</div><div><h1>Partner Updating Us About Property Information (Permanent and Temporary)</h1><span class="badge by">Operations</span></div></div>';
+h+='<div style="margin:0 0 18px;">';
+h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">';
+h+='<span style="font-size:11px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:0.8px;">Page Progress</span>';
+h+='<span id="ppu-prog-label" style="font-size:12px;font-weight:700;color:#667eea;">'+getPagePct('partnerpropertyupdates')+'%</span>';
+h+='</div>';
+h+='<div style="background:#e2e8f0;border-radius:10px;height:8px;overflow:hidden;">';
+h+='<div id="ppu-prog-bar" style="height:100%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:10px;width:'+getPagePct('partnerpropertyupdates')+'%;transition:width 0.4s;"></div>';
+h+='</div>';
+h+='</div>';
+h+='<p style="font-size:13px;color:#718096;margin:0 0 18px;line-height:1.7;">Sometimes a partner writes in just to update us on something about the property — not to ask a question. These updates are not all handled the same way.</p>';
+
+h+='<div style="display:flex;align-items:center;gap:10px;">';
+h+='<span id="ppu-explain-check" onclick="markPpuSection(\'ppu-explain\')" role="button" style="width:28px;height:28px;min-width:28px;border-radius:50%;border:2px solid #cbd5e0;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;flex-shrink:0;" title="Mark as complete">&#x25CB;</span>';
+h+='<button onclick="var p=document.getElementById(\'ppu-explain-panel\');var arr=document.getElementById(\'ppu-explain-arrow\');if(p.style.display===\'none\'){p.style.display=\'block\';arr.innerHTML=\'&#9650;\';}else{p.style.display=\'none\';arr.innerHTML=\'&#9660;\';}" style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-radius:12px;background:linear-gradient(135deg,#1e3a5c,#2a5a7a,#3a8a9e);color:#fff;font-family:inherit;font-size:15px;font-weight:700;box-sizing:border-box;cursor:pointer;border:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">';
+h+='<div style="display:flex;align-items:center;gap:14px;">🏘️ Permanent vs Temporary — What To Do</div>';
+h+='<span id="ppu-explain-arrow" style="font-size:16px;">&#9660;</span>';
+h+='</button>';
+h+='</div>';
+h+='<div id="ppu-explain-panel" style="display:none;background:#fff;border-left:2px solid #2a5a7a;border-right:2px solid #2a5a7a;border-bottom:2px solid #2a5a7a;border-radius:0 0 12px 12px;box-sizing:border-box;padding:22px;margin-bottom:20px;">';
+h+='<p style="font-size:13px;color:#4a5568;line-height:1.75;margin:0 0 14px;">Some of these updates are really for the Account Manager, not just the guest. Which way it goes depends on whether the change is <strong>permanent</strong> or <strong>temporary</strong>:</p>';
+h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">';
+h+='<div style="background:#f0fff4;border:1px solid #9ae6b4;border-radius:8px;padding:14px;"><div style="font-size:13px;font-weight:700;color:#276749;margin-bottom:6px;">Permanent change</div><div style="font-size:12.5px;color:#4a5568;line-height:1.7;">e.g. a confirmations or amenities update. The AM needs to raise a content update so the listing stays accurate going forward.</div></div>';
+h+='<div style="background:#fffaf0;border:1px solid #fbd38d;border-radius:8px;padding:14px;"><div style="font-size:13px;font-weight:700;color:#9c4221;margin-bottom:6px;">Temporary change</div><div style="font-size:12.5px;color:#4a5568;line-height:1.7;">e.g. a pool closure. A content update may still be needed, <strong>and</strong> every upcoming/affected guest must be told directly.</div></div>';
+h+='</div>';
+h+='<div style="color:#0369a1;font-weight:600;font-size:12.5px;background:#ebf8ff;border-left:4px solid #63b3ed;padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:14px;">🎓 Why: sometimes the AM will tell you exactly which of these to do. Other times you have to use your own judgement from reading the partner\'s email — that judgement call is the actual skill here.</div>';
+h+='<div style="margin-top:10px;padding:12px 14px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;">';
+h+='<div style="font-weight:700;font-size:12px;color:#5b21b6;margin-bottom:4px;">📣 Slack Updates</div>';
+h+='<div style="font-size:12.5px;color:#5b21b6;line-height:1.6;">Once you\'ve relayed the info (guest message and/or content update ticket), post in <strong>#v1-b2c-property-process-updates</strong> (or <strong>#v2-b2c-property-process-updates</strong> for V2 partners) so the team can see it — confirm you\'ve reached out to all affected guests.</div>';
+h+='</div>';
+h+='</div>';
+
+h+='<div style="display:flex;align-items:center;gap:10px;">';
+h+='<span id="ppu-examples-check" onclick="markPpuSection(\'ppu-examples\')" role="button" style="width:28px;height:28px;min-width:28px;border-radius:50%;border:2px solid #cbd5e0;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;flex-shrink:0;" title="Mark as complete">&#x25CB;</span>';
+h+='<button onclick="var p=document.getElementById(\'ppu-examples-panel\');var arr=document.getElementById(\'ppu-examples-arrow\');if(p.style.display===\'none\'){p.style.display=\'block\';arr.innerHTML=\'&#9650;\';}else{p.style.display=\'none\';arr.innerHTML=\'&#9660;\';}" style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-radius:12px;background:linear-gradient(135deg,#1e3a5c,#2a5a7a,#3a8a9e);color:#fff;font-family:inherit;font-size:15px;font-weight:700;box-sizing:border-box;cursor:pointer;border:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">';
+h+='<div style="display:flex;align-items:center;gap:14px;">📋 Partner Update Examples</div>';
+h+='<span id="ppu-examples-arrow" style="font-size:16px;">&#9660;</span>';
+h+='</button>';
+h+='</div>';
+h+='<div id="ppu-examples-panel" style="display:none;background:#fff;border-left:2px solid #2a5a7a;border-right:2px solid #2a5a7a;border-bottom:2px solid #2a5a7a;border-radius:0 0 12px 12px;box-sizing:border-box;padding:22px;">';
+h+='<div style="overflow-x:auto;border-radius:8px;border:1px solid #e2e8f0;">';
+h+='<table style="border-collapse:collapse;width:100%;min-width:620px;font-size:11.5px;">';
+h+='<tr>';
+h+='<td style="background:#1a1a1a;color:#fff;font-weight:700;padding:9px 12px;">Category + Examples</td>';
+h+='<td style="background:#4f46e5;color:#fff;font-weight:700;padding:9px 12px;">✉ Partner Response</td>';
+h+='<td style="background:#0891b2;color:#fff;font-weight:700;padding:9px 12px;">📋 Cirrus Notes &amp; Tags</td>';
+h+='<td style="background:#059669;color:#fff;font-weight:700;padding:9px 12px;">💬 Guest Message</td>';
+h+='</tr>';
+h+='<tr><td colspan="4" style="background:#f8fafc;color:#64748b;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:6px 12px;">Partner update / info only</td></tr>';
+h+='<tr style="vertical-align:top;">';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;">';
+h+='<div style="display:flex;align-items:center;gap:6px;font-weight:700;color:#1a1a2e;margin-bottom:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;flex-shrink:0;"></span>Partner update / info only</div>';
+h+='<div style="color:#718096;margin-bottom:6px;">› The pool is closed tomorrow for maintenance.<br>› Parking gate will be locked tonight.<br>› WiFi password has changed.<br>› Building inspection scheduled for tomorrow.<br>› Road/access closure affecting departure or arrival — partner sends one email per booking, so check Cirrus for any other guests at the same property with the same date and inform them too.</div>';
+h+='</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello Partner,<br>Thank you for letting us know.<br><br>We will relay this information to the guest accordingly.<br><br>Kind regards, Lauren – Leavetown</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Note: Partner advised [info] on [date]. Guest notified.<br><span style="background:#e2e8f0;color:#334155;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;display:inline-block;margin-top:4px;">Partner Update</span> <span style="background:#d1fae5;color:#065f46;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;display:inline-block;margin-top:4px;">Info Relayed</span></td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello,<br>We have received an update from your property:<br><br>[Relay partner\'s info]<br><br>Please do not hesitate to contact us if you have any questions.<br><br>Kind regards, Lauren – Leavetown<br><span style="color:#94a3b8;font-style:italic;font-size:11px;">EN + FR. Lauren approves before sending.</span></td>';
+h+='</tr>';
+h+='<tr><td colspan="4" style="background:#f8fafc;color:#64748b;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:6px 12px;border-top:1px solid #eef2f6;">Partner notifies us of a room move during stay</td></tr>';
+h+='<tr style="vertical-align:top;">';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;">';
+h+='<div style="display:flex;align-items:center;gap:6px;font-weight:700;color:#1a1a2e;margin-bottom:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#0891b2;flex-shrink:0;"></span>Room move during stay</div>';
+h+='<div style="color:#718096;margin-bottom:6px;">› Guest in Room 4a1 will need to move to Room 3b2 on night 2 of their stay.<br>› We don\'t have the guest\'s contact info — please make sure they\'re aware of the room move.<br>› Due to [maintenance / availability], the guest will be relocated to a different room on night 2.</div>';
+h+='</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hi [Name],<br><br>Thank you for the heads-up. We will reach out to [Guest name] to make sure they\'re aware of the room move before check-in.<br><br>Please don\'t hesitate to let us know if anything changes on your end.<br><br>Kind regards, Lauren – Leavetown</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Note: Partner advised room move during stay on [date]. Night 1: Room [X]. Night 2: Room [Y]. Resort will prioritize turnover. Guest notified via JetChat.</td>';
+h+='<td style="padding:12px;border-top:1px solid #eef2f6;color:#334155;">Hello [Name],<br><br>We wanted to give you a quick heads-up: your accommodation will involve a room move during your stay.<br><br>- [Date night 1]: Room [X]<br>- [Date night 2]: Room [Y]<br><br>The resort team will prioritize the turnover so you should be able to access your second room shortly after checking out of the first.<br><br><span style="color:#94a3b8;font-style:italic;font-size:11px;">EN + FR. Send via JetChat. Lauren approves before sending.</span></td>';
+h+='</tr>';
+h+='</table>';
+h+='</div>';
+h+='<div style="margin-top:14px;padding:12px 14px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;">';
+h+='<div style="font-weight:700;font-size:12px;color:#5b21b6;margin-bottom:4px;">📣 Slack Updates — both patterns above</div>';
+h+='<div style="font-size:12.5px;color:#5b21b6;line-height:1.6;">Post in #v1-b2c-property-process-updates (or #v2-b2c-property-process-updates for V2 partners) so the team can see it — confirm you\'ve reached out to all affected guests.</div>';
+h+='</div>';
+h+='</div>';
+
+return h;
+}
+function markPpuSection(id){
+  var u=getUser();
+  if(!u)return;
+  var key=u+'-ppu-sec-'+id;
+  var isDone=!!localStorage.getItem(key);
+  var btn=document.getElementById(id+'-check');
+  if(isDone){
+    localStorage.removeItem(key);
+    if(btn){markUndone(btn);}
+  }else{
+    localStorage.setItem(key,'1');
+    if(btn){markDone(btn);}
+  }
+  updatePpuProgress();
+}
+function updatePpuProgress(){
+  var u=getUser();if(!u)return;
+  var ids=['ppu-explain','ppu-examples'];
+  var done=0;
+  for(var i=0;i<ids.length;i++){if(localStorage.getItem(u+'-ppu-sec-'+ids[i]))done++;}
+  var pct=done*50;
+  setProgress('ppu', pct);
+  if(typeof updateAllNavChecks==='function')updateAllNavChecks();
+}
+function restorePpuProgress(){
+  var u=getUser();if(!u)return;
+  var ids=['ppu-explain','ppu-examples'];
+  for(var i=0;i<ids.length;i++){
+    if(localStorage.getItem(u+'-ppu-sec-'+ids[i])){
+      var btn=document.getElementById(ids[i]+'-check');
+      if(btn){markDone(btn);}
+    }
+  }
+  updatePpuProgress();
+}
+
 function paymentsPage() {
   var h = '';
   h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);border-radius:14px;padding:0;margin-bottom:20px;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div><svg style="position:absolute;left:32px;top:50%;transform:translateY(-50%);opacity:0.95;" width="60" height="70" viewBox="10 5 280 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jscol-pay" gradientUnits="userSpaceOnUse" x1="25.4987" y1="166.0104" x2="273.8939" y2="166.0104"><stop offset="0" stop-color="#4473B9"/><stop offset="0.279" stop-color="#666FAA"/><stop offset="0.4733" stop-color="#84699B"/><stop offset="0.6906" stop-color="#A65F86"/><stop offset="0.9241" stop-color="#CD4A6C"/><stop offset="1" stop-color="#D94164"/></linearGradient></defs><path fill="url(#jscol-pay)" d="M198.8,121.7v106.7h0c0,47.9-38.8,86.7-86.7,86.7S25.5,277.9,25.5,230c0-9,7.3-16.3,16.3-16.3c9,0,16.3,7.3,16.3,16.3l0,0c1.1,29.8,25.6,52.8,55.6,52.8c30.3,0,55-24.2,55.7-54.4h0v-65v-41.7c0-8.1,6.6-14.7,14.7-14.7C192.2,107,198.8,113.6,198.8,121.7zM187.2,16.9c-47.9,0-86.7,38.8-86.7,86.7h0v106.7c0,8.1,6.6,14.7,14.7,14.7s14.7-6.6,14.7-14.7v-41.7v-65h0c0.7-30.2,25.3-54.4,55.7-54.4c30.1,0,54.6,23,55.6,52.8l0,0c0,9,7.3,16.3,16.3,16.3c9,0,16.3-7.3,16.3-16.3C273.9,54.1,235.1,16.9,187.2,16.9z"/></svg><div style="position:relative;z-index:1;text-align:center;"><div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 8px rgba(0,0,0,0.25);">Jetstream Training</div></div></div>';
@@ -10968,7 +11087,7 @@ function setCiTab(tab){
 
 
 
-var PAGES={admin:{icon:"adm",title:"Admin Panel",badge:"Admin",bc:"bg",fn:adminPage},home:{icon:"home",title:"Dashboard Home",badge:"Welcome",bc:"bg",fn:homePage},security:{icon:"sec",title:"Security",badge:"Essential",bc:"br",fn:securityPage},setup:{icon:"gear",title:"Getting Started",badge:"Setup",bc:"bg",fn:setupPage},company:{icon:"co",title:"Who Are We?",badge:"Company",bc:"bg",fn:whoArePage},v1inquiries:{icon:"v1i",title:"Getting Started with Simple V1 Inquiries",badge:"Core Training",bc:"by",fn:v1SimpleInquiriesPage},bookings:{icon:"bk",title:"Bookings Overview",badge:"Core Training",bc:"by",fn:bookingsPage},processingbookings:{icon:"pb",title:"Processing New Bookings",badge:"Core Training",bc:"by",fn:processingNewBookingsPage},v2partners:{icon:"v2p",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2PartnersPage},stars:{icon:"st",title:"Pink and Yellow Stars",badge:"Core Training",bc:"by",fn:starsPage},v1v2:{icon:"v1",title:"V1 and V2 Partners",badge:"Core Training",bc:"by",fn:v1v2Page},v1detail:{icon:"v1",title:"V1 Partners",badge:"Core Training",bc:"by",fn:v1DetailPage},v2detail:{icon:"v2",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2DetailPage},partners:{icon:"pa",title:"Contacting Partners",badge:"Core Training",bc:"by",fn:partnersPage},aircall:{icon:"ac",title:"Aircall",badge:"Core Training",bc:"by",fn:aircallPage},comms:{icon:"cm",title:"Comm. Platforms",badge:"Platforms",bc:"bg",fn:commsPage},airbnb:{icon:"ab",title:"Airbnb",badge:"Platform",bc:"br",fn:airbnbPage},cirrus:{icon:"ci",title:"Cirrus",badge:"Platform",bc:"bg",fn:cirrusPage},vrbo:{icon:"vb",title:"VRBO",badge:"Platform",bc:"bg",fn:vrboPage},bookingcom:{icon:"bc",title:"Booking.com",badge:"Platform",bc:"bg",fn:bookingComPage},tags:{icon:"tg",title:"Tags",badge:"Operations",bc:"by",fn:tagsPage},managingcases:{icon:"mc",title:"Managing Guest and Partner Cases",badge:"Operations",bc:"by",fn:managingCasesPage},guestentry:{icon:"ge",title:"Guest Entry",badge:"Operations",bc:"by",fn:guestEntryPage},availability:{icon:"av",title:"Availability",badge:"Operations",bc:"by",fn:availabilityPage},guestautohost:{icon:"ga",title:"Autohost",badge:"Guest Entry",bc:"by",fn:guestAutohostPage},doorcode:{icon:"dc",title:"Door Code",badge:"Guest Entry",bc:"by",fn:doorCodePage},operto:{icon:"op",title:"Operto",badge:"Guest Entry",bc:"by",fn:opertoPage},remotelock:{icon:"rl",title:"Remote Lock",badge:"Guest Entry",bc:"by",fn:remoteLockPage},cancellations:{icon:"cx",title:"Cancellations",badge:"Operations",bc:"br",fn:cancellationsPage},modifications:{icon:"md",title:"Modifications",badge:"Operations",bc:"by",fn:modificationsPage},inbox:{icon:"ib",title:"Handling the Inbox Like a Pro",badge:"Operations",bc:"by",fn:inboxProPage},v1modifications:{icon:"md",title:"V1 Modifications",badge:"Operations",bc:"by",fn:v1ModificationsPage},v1calculator:{icon:"md",title:"V1 Resort Calculator",badge:"Operations",bc:"by",fn:v1CalculatorPage},v2modifications:{icon:"md",title:"V2 Modifications",badge:"Operations",bc:"by",fn:v2ModificationsPage},failedcancellations:{icon:"cx",title:"Failed Cancellations",badge:"Operations",bc:"br",fn:failedCancellationsPage},regularcancellations:{icon:"cx",title:"Regular Cancellations",badge:"Operations",bc:"br",fn:regularCancellationsPage},rcvideos:{icon:"cx",title:"Cancellation Training Videos",badge:"Operations",bc:"br",fn:rcVideosPage},payments:{icon:"py",title:"Payments",badge:"Operations",bc:"by",fn:paymentsPage},hubspot:{icon:"hs",title:"HubSpot",badge:"Operations",bc:"by",fn:hubSpotPage},regularcomplaints:{icon:"rc",title:"Regular Complaints",badge:"Operations",bc:"by",fn:regularComplaintsPage},contentcomplaints:{icon:"ci",title:"Content Issue Complaints",badge:"Operations",bc:"by",fn:contentComplaintsPage},extras:{icon:"ex",title:"Articles to Read Through",badge:"Reference",bc:"bg",fn:extrasPage},slackchannels:{icon:"sc",title:"Slack Channels",badge:"Reference",bc:"bg",fn:slackChannelsPage},trainingguide:{icon:"tg",title:"Training Guide",badge:"Reference",bc:"bg",fn:trainingGuidePage}};function show(id){var btns=document.querySelectorAll(".nb");for(var i=0;i<btns.length;i++)btns[i].classList.remove("active");var btn=document.getElementById("n-"+id);if(btn)btn.classList.add("active");var pg=PAGES[id];if(!pg)return;document.getElementById("main").innerHTML=pg.fn();if(id==="extras")restoreExtras();if(id==="managingcases")restoreMcProgress();if(id==="company")restoreWhoProgress();if(id==="bookings")restoreBkProgress();if(id==="stars")restoreStarsProgress();if(id==="security")restoreSecProgress();if(id==="v1inquiries"){restoreV1Progress();initV1RobotWidget();}if(id==="v1v2")restoreV1V2Progress();if(id==="partners")restoreCpProgress();if(id==="comms")restoreCommProgress();if(id==="airbnb")restoreAbProgress();if(id==="cirrus")restoreCirrusProgress();if(id==="vrbo")restoreVrboProgress();if(id==="bookingcom")restoreBcomProgress();if(id==="processingbookings")restorePnbProgress();if(id==="v2partners")restoreV2pProgress();if(id==="cancellations")restoreCxlProgress();if(id==="modifications")restoreModProgress();if(id==="availability")restoreAvailProgress();if(id==="inbox")restoreInboxProgress();if(id==="tags")restoreTagsProgress();if(id==="aircall")restoreAircallProgress();if(id==="guestentry")restoreGEProgress();if(id==="payments")restorePayProgress();if(id==="admin")loadTeamProgress();var u=getUser();try{localStorage.setItem("jt-last-"+u,id);}catch(e){}}var su=localStorage.getItem("jt-user");if(su){var sel=document.getElementById("name-select");if(sel){sel.value=su;document.getElementById("name-btn").disabled=false;}}
+var PAGES={admin:{icon:"adm",title:"Admin Panel",badge:"Admin",bc:"bg",fn:adminPage},home:{icon:"home",title:"Dashboard Home",badge:"Welcome",bc:"bg",fn:homePage},security:{icon:"sec",title:"Security",badge:"Essential",bc:"br",fn:securityPage},setup:{icon:"gear",title:"Getting Started",badge:"Setup",bc:"bg",fn:setupPage},company:{icon:"co",title:"Who Are We?",badge:"Company",bc:"bg",fn:whoArePage},v1inquiries:{icon:"v1i",title:"Getting Started with Simple V1 Inquiries",badge:"Core Training",bc:"by",fn:v1SimpleInquiriesPage},bookings:{icon:"bk",title:"Bookings Overview",badge:"Core Training",bc:"by",fn:bookingsPage},processingbookings:{icon:"pb",title:"Processing New Bookings",badge:"Core Training",bc:"by",fn:processingNewBookingsPage},v2partners:{icon:"v2p",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2PartnersPage},stars:{icon:"st",title:"Pink and Yellow Stars",badge:"Core Training",bc:"by",fn:starsPage},v1v2:{icon:"v1",title:"V1 and V2 Partners",badge:"Core Training",bc:"by",fn:v1v2Page},v1detail:{icon:"v1",title:"V1 Partners",badge:"Core Training",bc:"by",fn:v1DetailPage},v2detail:{icon:"v2",title:"V2 Partners",badge:"Core Training",bc:"by",fn:v2DetailPage},partners:{icon:"pa",title:"Contacting Partners",badge:"Core Training",bc:"by",fn:partnersPage},aircall:{icon:"ac",title:"Aircall",badge:"Core Training",bc:"by",fn:aircallPage},comms:{icon:"cm",title:"Comm. Platforms",badge:"Platforms",bc:"bg",fn:commsPage},airbnb:{icon:"ab",title:"Airbnb",badge:"Platform",bc:"br",fn:airbnbPage},cirrus:{icon:"ci",title:"Cirrus",badge:"Platform",bc:"bg",fn:cirrusPage},vrbo:{icon:"vb",title:"VRBO",badge:"Platform",bc:"bg",fn:vrboPage},bookingcom:{icon:"bc",title:"Booking.com",badge:"Platform",bc:"bg",fn:bookingComPage},tags:{icon:"tg",title:"Tags",badge:"Operations",bc:"by",fn:tagsPage},managingcases:{icon:"mc",title:"Managing Guest and Partner Cases",badge:"Operations",bc:"by",fn:managingCasesPage},guestentry:{icon:"ge",title:"Guest Entry",badge:"Operations",bc:"by",fn:guestEntryPage},availability:{icon:"av",title:"Availability",badge:"Operations",bc:"by",fn:availabilityPage},guestautohost:{icon:"ga",title:"Autohost",badge:"Guest Entry",bc:"by",fn:guestAutohostPage},doorcode:{icon:"dc",title:"Door Code",badge:"Guest Entry",bc:"by",fn:doorCodePage},operto:{icon:"op",title:"Operto",badge:"Guest Entry",bc:"by",fn:opertoPage},remotelock:{icon:"rl",title:"Remote Lock",badge:"Guest Entry",bc:"by",fn:remoteLockPage},cancellations:{icon:"cx",title:"Cancellations",badge:"Operations",bc:"br",fn:cancellationsPage},modifications:{icon:"md",title:"Modifications",badge:"Operations",bc:"by",fn:modificationsPage},inbox:{icon:"ib",title:"Handling the Inbox Like a Pro",badge:"Operations",bc:"by",fn:inboxProPage},partnerpropertyupdates:{icon:"ppu",title:"Partner Updating Us About Property Information (Permanent and Temporary)",badge:"Operations",bc:"by",fn:partnerPropertyUpdatesPage},v1modifications:{icon:"md",title:"V1 Modifications",badge:"Operations",bc:"by",fn:v1ModificationsPage},v1calculator:{icon:"md",title:"V1 Resort Calculator",badge:"Operations",bc:"by",fn:v1CalculatorPage},v2modifications:{icon:"md",title:"V2 Modifications",badge:"Operations",bc:"by",fn:v2ModificationsPage},failedcancellations:{icon:"cx",title:"Failed Cancellations",badge:"Operations",bc:"br",fn:failedCancellationsPage},regularcancellations:{icon:"cx",title:"Regular Cancellations",badge:"Operations",bc:"br",fn:regularCancellationsPage},rcvideos:{icon:"cx",title:"Cancellation Training Videos",badge:"Operations",bc:"br",fn:rcVideosPage},payments:{icon:"py",title:"Payments",badge:"Operations",bc:"by",fn:paymentsPage},hubspot:{icon:"hs",title:"HubSpot",badge:"Operations",bc:"by",fn:hubSpotPage},regularcomplaints:{icon:"rc",title:"Regular Complaints",badge:"Operations",bc:"by",fn:regularComplaintsPage},contentcomplaints:{icon:"ci",title:"Content Issue Complaints",badge:"Operations",bc:"by",fn:contentComplaintsPage},extras:{icon:"ex",title:"Articles to Read Through",badge:"Reference",bc:"bg",fn:extrasPage},slackchannels:{icon:"sc",title:"Slack Channels",badge:"Reference",bc:"bg",fn:slackChannelsPage},trainingguide:{icon:"tg",title:"Training Guide",badge:"Reference",bc:"bg",fn:trainingGuidePage}};function show(id){var btns=document.querySelectorAll(".nb");for(var i=0;i<btns.length;i++)btns[i].classList.remove("active");var btn=document.getElementById("n-"+id);if(btn)btn.classList.add("active");var pg=PAGES[id];if(!pg)return;document.getElementById("main").innerHTML=pg.fn();if(id==="extras")restoreExtras();if(id==="managingcases")restoreMcProgress();if(id==="company")restoreWhoProgress();if(id==="bookings")restoreBkProgress();if(id==="stars")restoreStarsProgress();if(id==="security")restoreSecProgress();if(id==="v1inquiries"){restoreV1Progress();initV1RobotWidget();}if(id==="v1v2")restoreV1V2Progress();if(id==="partners")restoreCpProgress();if(id==="comms")restoreCommProgress();if(id==="airbnb")restoreAbProgress();if(id==="cirrus")restoreCirrusProgress();if(id==="vrbo")restoreVrboProgress();if(id==="bookingcom")restoreBcomProgress();if(id==="processingbookings")restorePnbProgress();if(id==="v2partners")restoreV2pProgress();if(id==="cancellations")restoreCxlProgress();if(id==="modifications")restoreModProgress();if(id==="availability")restoreAvailProgress();if(id==="inbox")restoreInboxProgress();if(id==="partnerpropertyupdates")restorePpuProgress();if(id==="tags")restoreTagsProgress();if(id==="aircall")restoreAircallProgress();if(id==="guestentry")restoreGEProgress();if(id==="payments")restorePayProgress();if(id==="admin")loadTeamProgress();var u=getUser();try{localStorage.setItem("jt-last-"+u,id);}catch(e){}}var su=localStorage.getItem("jt-user");if(su){var sel=document.getElementById("name-select");if(sel){sel.value=su;document.getElementById("name-btn").disabled=false;}}
 
 function renderModQ1(){
   var qs=[
