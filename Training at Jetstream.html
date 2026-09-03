@@ -951,7 +951,7 @@ function getPagePct(page){
       if(localStorage.getItem(u2+'-tags-sec-tags-about'))d++;
       if(localStorage.getItem(u2+'-tags-sec-tags-notes'))d++;
       var trainDone=true;
-      var TIDS=['autohost-pending','autohost-unknown','autohost-review','autohost-security-deposit','follow-up-guest','follow-up-partner','duplicate','not-a-duplicate','tapechart','door-code','remote-lock','operto-offline-code','info-required','cxl-request-pending','capital-vacations-cancellation','non-refundable','cancellation-reason','send-cancellation-to-partner','manual-balance-payment','cc-declined','payment-request-sent','bookingcom-vcc','modification-tag','hubspot-tag','check-in-issue','blacklist-tag','maintenance-block','manual-turno-clean','test-booking','send-pretax-total','manual-cost-calculation','send-booking-request','welcome-email','pet-fee','check-for-pets','add-email-confirms'];
+      var TIDS=['autohost-pending','autohost-unknown','autohost-review','autohost-security-deposit','follow-up-guest','follow-up-partner','duplicate','not-a-duplicate','tapechart','door-code','remote-lock','operto-offline-code','info-required','cxl-request-pending','capital-vacations-cancellation','non-refundable','cancellation-reason','send-cancellation-to-partner','manual-balance-payment','cc-declined','payment-request-sent','bookingcom-vcc','modification-tag','hubspot-tag','check-in-issue','blacklist-tag','maintenance-block','manual-turno-clean','test-booking','send-pretax-total','manual-cost-calculation','send-booking-request','welcome-email','pet-fee','check-for-pets','add-email-confirms','send-guest-disclaimer'];
       for(var ti=0;ti<TIDS.length;ti++){if(!localStorage.getItem(u2+'-ntag-learn-'+TIDS[ti])){trainDone=false;break;}}
       if(trainDone)d++;
       return Math.round(d/3*100);
@@ -7009,7 +7009,8 @@ function tagsPage(){
     'welcome-email':{q:"You see a Welcome Email tag and check-in is 3 days away. What should you do?",opts:["Send the Welcome Book manually right now","Leave it — the Manila team will send it at the appropriate time","The tag will auto-clear","Contact the guest to confirm their email"],ans:1},
     'pet-fee':{q:"A guest has confirmed they are bringing a pet. What is your next step?",opts:["Add a Follow Up Guest Tag","Note it in Cirrus and do nothing further","Send the guest a payment link for the pet fee and update the partner notes","Cancel the booking if the property does not allow pets"],ans:2},
     'check-for-pets':{q:"You see this tag on an Airbnb booking. What do you do first?",opts:["Message the guest directly","Check Cirrus to see if a pet was already listed on the booking","Remove the tag — Airbnb handles pets automatically","Add a Manual Balance Payment tag for the pet fee"],ans:1},
-    'add-email-confirms':{q:"A guest provides their email in a message and this tag is on the booking. What do you do?",opts:["Forward the email to the partner","Add the email in Cirrus under the Guest tab, save, then remove the tag","Create a HubSpot ticket with the email","Wait for the next processing cycle"],ans:1}
+    'add-email-confirms':{q:"A guest provides their email in a message and this tag is on the booking. What do you do?",opts:["Forward the email to the partner","Add the email in Cirrus under the Guest tab, save, then remove the tag","Create a HubSpot ticket with the email","Wait for the next processing cycle"],ans:1},
+    'send-guest-disclaimer':{q:"A booking has the Send Guest Disclaimer tag. What should you do?",opts:["Ignore it — Capital Vacations handles it automatically","Send the guest the disclaimer message explaining a unit switch may be required during their stay","Cancel the booking due to availability issues","Add a Modification Tag and wait for the partner to confirm"],ans:1}
   };
   var h='';
   h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);border-radius:14px;padding:0;margin-bottom:20px;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div><svg style="position:absolute;left:32px;top:50%;transform:translateY(-50%);opacity:0.95;" width="60" height="70" viewBox="10 5 280 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jscol" gradientUnits="userSpaceOnUse" x1="25.4987" y1="166.0104" x2="273.8939" y2="166.0104"><stop offset="0" stop-color="#4473B9"/><stop offset="0.279" stop-color="#666FAA"/><stop offset="0.4733" stop-color="#84699B"/><stop offset="0.6906" stop-color="#A65F86"/><stop offset="0.9241" stop-color="#CD4A6C"/><stop offset="1" stop-color="#D94164"/></linearGradient></defs><path fill="url(#jscol)" d="M198.8,121.7v106.7h0c0,47.9-38.8,86.7-86.7,86.7S25.5,277.9,25.5,230c0-9,7.3-16.3,16.3-16.3c9,0,16.3,7.3,16.3,16.3l0,0c1.1,29.8,25.6,52.8,55.6,52.8c30.3,0,55-24.2,55.7-54.4h0v-65v-41.7c0-8.1,6.6-14.7,14.7-14.7C192.2,107,198.8,113.6,198.8,121.7zM187.2,16.9c-47.9,0-86.7,38.8-86.7,86.7h0v106.7c0,8.1,6.6,14.7,14.7,14.7s14.7-6.6,14.7-14.7v-41.7v-65h0c0.7-30.2,25.3-54.4,55.7-54.4c30.1,0,54.6,23,55.6,52.8l0,0c0,9,7.3,16.3,16.3,16.3c9,0,16.3-7.3,16.3-16.3C273.9,54.1,235.1,16.9,187.2,16.9z"/></svg><div style="position:relative;z-index:1;text-align:center;"><div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 8px rgba(0,0,0,0.25);">Jetstream Training</div></div></div>';h+='<div class="mh"><div class="mh-icon">🏷️</div><div><h1>Tags</h1><span class="badge by">Operations</span></div></div>';
@@ -7089,14 +7090,14 @@ function tagsPage(){
 
   // ── Single Tag Training collapsible ───────────────────────────────────────
   h+='<div style="display:flex;align-items:flex-start;gap:10px;">';
-  h+='<button id="tag-train-circle" onclick="event.stopPropagation()" title="Complete all 36 tags to unlock" style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:transparent;border:2px solid #cbd5e0;color:#a0aec0;font-size:18px;font-weight:800;cursor:default;display:flex;align-items:center;justify-content:center;transition:all 0.3s;margin-top:10px;">&#x25CB;</button>';
+  h+='<button id="tag-train-circle" onclick="event.stopPropagation()" title="Complete all 37 tags to unlock" style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:transparent;border:2px solid #cbd5e0;color:#a0aec0;font-size:18px;font-weight:800;cursor:default;display:flex;align-items:center;justify-content:center;transition:all 0.3s;margin-top:10px;">&#x25CB;</button>';
   h+='<div style="flex:1;min-width:0;">';
   h+='<button id="tags-train-btn" data-vid="tags-train" onclick="toggleTagsAcc(this.dataset.vid)" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;border-radius:12px;border:2px solid #2b5a8c;cursor:pointer;background:linear-gradient(135deg,#1a3e6c,#2b5a8c);color:#fff;font-family:inherit;font-size:15px;font-weight:700;box-sizing:border-box;transition:all 0.2s;">';
   h+='<div style="flex:1;min-width:0;">';
   h+='<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;"><span style="font-size:22px;">🏷️</span><span>Tag Training</span></div>';
   h+='<div style="display:flex;align-items:center;gap:10px;">';
   h+='<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:6px;height:8px;overflow:hidden;"><div id="tag-train-prog-bar" style="height:100%;background:linear-gradient(90deg,#68d391,#48bb78);border-radius:6px;width:0%;transition:width 0.4s;"></div></div>';
-  h+='<span id="tag-train-prog-label" style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.85);white-space:nowrap;flex-shrink:0;">0 / 36 learned</span>';
+  h+='<span id="tag-train-prog-label" style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.85);white-space:nowrap;flex-shrink:0;">0 / 37 learned</span>';
   h+='</div>';
   h+='</div>';
   h+='<span id="tags-train-arrow" style="font-size:16px;transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);flex-shrink:0;">&#9660;</span>';
@@ -7168,7 +7169,8 @@ function tagsPage(){
       {id:'welcome-email',name:'Welcome Email'},
       {id:'pet-fee',name:'Pet Fee Tag'},
       {id:'check-for-pets',name:'Check for Pets Tag'},
-      {id:'add-email-confirms',name:'Add Email When Guest Confirms'}
+      {id:'add-email-confirms',name:'Add Email When Guest Confirms'},
+      {id:'send-guest-disclaimer',name:'Send Guest Disclaimer'}
     ]}
   ];
 
@@ -7491,7 +7493,7 @@ function ntagToggle(type,domId,tagId){
   }
   if(typeof updateTagTrainingProgress==='function')updateTagTrainingProgress();
 }
-var TAG_TRAIN_IDS=['autohost-pending','autohost-unknown','autohost-review','autohost-security-deposit','follow-up-guest','follow-up-partner','duplicate','not-a-duplicate','tapechart','door-code','remote-lock','operto-offline-code','info-required','cxl-request-pending','capital-vacations-cancellation','non-refundable','cancellation-reason','send-cancellation-to-partner','manual-balance-payment','cc-declined','payment-request-sent','bookingcom-vcc','modification-tag','hubspot-tag','check-in-issue','blacklist-tag','maintenance-block','manual-turno-clean','test-booking','send-pretax-total','manual-cost-calculation','send-booking-request','welcome-email','pet-fee','check-for-pets','add-email-confirms'];
+var TAG_TRAIN_IDS=['autohost-pending','autohost-unknown','autohost-review','autohost-security-deposit','follow-up-guest','follow-up-partner','duplicate','not-a-duplicate','tapechart','door-code','remote-lock','operto-offline-code','info-required','cxl-request-pending','capital-vacations-cancellation','non-refundable','cancellation-reason','send-cancellation-to-partner','manual-balance-payment','cc-declined','payment-request-sent','bookingcom-vcc','modification-tag','hubspot-tag','check-in-issue','blacklist-tag','maintenance-block','manual-turno-clean','test-booking','send-pretax-total','manual-cost-calculation','send-booking-request','welcome-email','pet-fee','check-for-pets','add-email-confirms','send-guest-disclaimer'];
 function updateTagTrainingProgress(){
   var u=getUser();if(!u)return;
   var done=0;
@@ -7547,7 +7549,7 @@ function updateTagsPageProgress(){
   var nc=document.getElementById('tags-notes-circle');
   if(nc){if(notesDone){nc.innerHTML='&#x2713;';nc.style.background='#48bb78';nc.style.borderColor='#48bb78';nc.style.color='#fff';nc.title='Complete!';}
          else{nc.innerHTML='&#x25CB;';nc.style.background='transparent';nc.style.borderColor='#cbd5e0';nc.style.color='#a0aec0';nc.title='Open this section to mark complete';}}
-  // Section 3: tag training (all 36 learned)
+  // Section 3: tag training (all 37 learned)
   var trainDone=true;
   for(var i=0;i<TAG_TRAIN_IDS.length;i++){if(!localStorage.getItem(u+'-ntag-learn-'+TAG_TRAIN_IDS[i])){trainDone=false;break;}}
   if(trainDone)done++;
