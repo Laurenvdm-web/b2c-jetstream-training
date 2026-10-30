@@ -10376,67 +10376,93 @@ function hubspotPage(){
   h+='</div>';
   return h;
 }
-/* HubSpot Quizzes tab: add a quiz here by adding its name from DQ_ARCHIVE to this list. */
-var HS_QUIZ_NAMES=['Content or Regular Issue'];
-var HS_QUIZ_IDX=0;
-function hsQuizList(){var out=[];for(var i=0;i<HS_QUIZ_NAMES.length;i++){for(var j=0;j<HS_QUIZZES.length;j++){if(HS_QUIZZES[j].name===HS_QUIZ_NAMES[i]){out.push(HS_QUIZZES[j]);break;}}}return out;}
-function hsQuizKey(s){return 'quiz-hs-'+s.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');}
+/* HubSpot Quizzes tab. Add a quiz by adding an object to HS_QUIZZES (further down the file). Same look and behaviour as the module quizzes. */
+function hsSlug(s){return s.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');}
+function hsLabelHtml(i,j,k,text){var L=['A','B','C','D','E'][k];return '<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#1a1a2e;"><input type="radio" name="hsq'+i+'q'+j+'" value="'+L+'" style="accent-color:#1a1a2e;"> '+L+'. '+text+'</label>';}
 function hubspotQuizzesPage(){
-  var qs=hsQuizList();var u=getUser();var h='';
-  h+='<div class="card">';
-  h+='<p style="font-size:13px;color:#718096;line-height:1.6;margin-bottom:18px;">Short quizzes on working HubSpot tickets. Read the HubSpot tab first, then test yourself here. You can retake a quiz as often as you like.</p>';
-  if(!qs.length){h+='<p style="font-size:13px;color:#4a5568;">More quizzes are coming soon.</p>';}
-  for(var i=0;i<qs.length;i++){
-    var s=qs[i];var sc=u?localStorage.getItem(u+'-'+hsQuizKey(s)+'-score'):null;
-    h+='<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;background:#f7fafc;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;">';
-    h+='<div><div style="font-size:14px;font-weight:700;color:#1a1a2e;">'+s.title+'</div><div style="font-size:12px;color:#718096;margin-top:3px;">'+s.questions.length+' questions'+(sc!==null?' &middot; best score '+sc+'%':'')+'</div></div>';
-    h+='<button onclick="openHsQuiz('+i+')" style="background:linear-gradient(135deg,#2b6cb0,#3a8ac9);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">'+(sc!==null?'Retake quiz':'Start quiz')+'</button>';
+  var h='';
+    h+='<div style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);border-radius:14px;padding:0;margin-bottom:20px;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px;"></div><svg style="position:absolute;left:32px;top:50%;transform:translateY(-50%);opacity:0.95;" width="60" height="70" viewBox="10 5 280 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jscol" gradientUnits="userSpaceOnUse" x1="25.4987" y1="166.0104" x2="273.8939" y2="166.0104"><stop offset="0" stop-color="#4473B9"/><stop offset="0.279" stop-color="#666FAA"/><stop offset="0.4733" stop-color="#84699B"/><stop offset="0.6906" stop-color="#A65F86"/><stop offset="0.9241" stop-color="#CD4A6C"/><stop offset="1" stop-color="#D94164"/></linearGradient></defs><path fill="url(#jscol)" d="M198.8,121.7v106.7h0c0,47.9-38.8,86.7-86.7,86.7S25.5,277.9,25.5,230c0-9,7.3-16.3,16.3-16.3c9,0,16.3,7.3,16.3,16.3l0,0c1.1,29.8,25.6,52.8,55.6,52.8c30.3,0,55-24.2,55.7-54.4h0v-65v-41.7c0-8.1,6.6-14.7,14.7-14.7C192.2,107,198.8,113.6,198.8,121.7zM187.2,16.9c-47.9,0-86.7,38.8-86.7,86.7h0v106.7c0,8.1,6.6,14.7,14.7,14.7s14.7-6.6,14.7-14.7v-41.7v-65h0c0.7-30.2,25.3-54.4,55.7-54.4c30.1,0,54.6,23,55.6,52.8l0,0c0,9,7.3,16.3,16.3,16.3c9,0,16.3-7.3,16.3-16.3C273.9,54.1,235.1,16.9,187.2,16.9z"/></svg><div style="position:relative;z-index:1;text-align:center;"><div style="font-size:28px;font-weight:800;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 8px rgba(0,0,0,0.25);">Jetstream Training</div></div></div>';
+  h+='<div class="mh"><div class="mh-icon">🎯</div><div><h1>HubSpot Quizzes</h1><span class="badge by">Quizzes</span></div></div>';
+  h+='<div style="background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #e8ecf0;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">';
+  h+='<p style="font-size:13px;color:#4a5568;line-height:1.7;margin:0;">Test yourself on working HubSpot tickets. Read the HubSpot section first, then take the quizzes below. You can reset and retake any quiz.</p>';
+  h+='</div>';
+  for(var i=0;i<HS_QUIZZES.length;i++){
+    var s=HS_QUIZZES[i];
+    h+='<div style="margin-top:16px;display:flex;align-items:flex-start;gap:10px;">';
+    h+='<div id="hsqc-'+i+'" title="Pass the quiz to complete" style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:transparent;border:1.5px solid #cbd5e0;color:#a0aec0;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:6px;">&#x25CB;</div>';
+    h+='<div style="flex:1;min-width:0;">';
+    h+='<button id="hsq-btn-'+i+'" onclick="toggleHsQuiz('+i+')" onmouseover="this.style.filter=\'brightness(1.12)\'" onmouseout="this.style.filter=\'brightness(1)\'" onmousedown="this.style.filter=\'brightness(0.92)\'" onmouseup="this.style.filter=\'brightness(1.12)\'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);color:#fff;font-family:inherit;font-size:14px;font-weight:700;box-sizing:border-box;transition:box-shadow 0.2s,filter 0.15s;text-align:left;">';
+    h+='<span>&#x1F512; Take Quiz: '+s.title+'</span>';
+    h+='<span id="hsq-arr-'+i+'" style="font-size:16px;">&#9654;</span>';
+    h+='</button>';
+    h+='</div>';
+    h+='</div>';
+    h+='<div id="hsq-body-'+i+'" style="display:none;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:24px 22px;background:#fff;">';
+    if(s.scenario){h+='<div style="background:#ebf4ff;border:1px solid #bee3f8;border-radius:12px;padding:16px 20px;margin-bottom:14px;font-size:13px;color:#1e3a5c;line-height:1.7;">'+s.scenario+'</div>';}
+    for(var j=0;j<s.questions.length;j++){
+      var q=s.questions[j];
+      h+='<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;">';
+      h+='<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:14px;">'+q.q+'</div>';
+      h+='<div style="display:flex;flex-direction:column;gap:8px;">';
+      for(var k=0;k<q.opts.length;k++){h+=hsLabelHtml(i,j,k,q.opts[k]);}
+      h+='</div></div>';
+    }
+    h+='<div id="hsq-res-'+i+'" style="display:none;margin-bottom:16px;"></div>';
+    h+='<div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;">';
+    h+='<button id="hsq-submit-'+i+'" onclick="submitHsQuiz('+i+')" onmouseover="this.style.filter=\'brightness(1.12)\'" onmouseout="this.style.filter=\'brightness(1)\'" style="background:linear-gradient(135deg,#1e3a5c 0%,#2a5a7a 40%,#3a8a9e 75%,#4aacb8 100%);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,58,92,0.4);transition:filter 0.15s;">Submit Quiz</button>';
+    h+='<button onclick="resetHsQuiz('+i+')" style="background:none;border:1px solid #cbd5e0;border-radius:10px;padding:13px 24px;font-size:14px;font-weight:600;color:#718096;cursor:pointer;">&#x21BA; Reset Quiz</button>';
+    h+='</div>';
     h+='</div>';
   }
-  h+='</div>';
+  setTimeout(hsRestoreAll,0);
   return h;
 }
-function openHsQuiz(idx){
-  var s=hsQuizList()[idx];if(!s)return;HS_QUIZ_IDX=idx;
-  var body=document.getElementById('dq-modal-body');var title=document.getElementById('dq-modal-title');if(!body)return;
-  title.textContent='🎯 '+s.title;
-  var html='<div class="dq-scenario"><strong>Scenario</strong><br><br>'+s.scenario+'</div>';
-  for(var i=0;i<s.questions.length;i++){var q=s.questions[i];
-    html+='<div class="dq-q" id="hsq-q-'+i+'"><div class="dq-q-text">'+q.q+'</div>';
-    for(var j=0;j<q.opts.length;j++){html+='<label class="dq-opt"><input type="radio" name="hsq-q'+i+'" value="'+j+'"> '+q.opts[j]+'</label>';}
-    html+='</div>';
-  }
-  html+='<div id="hsq-result" style="display:none;"></div>';
-  html+='<div style="text-align:center;margin-top:20px;padding-bottom:4px;"><button id="hsq-submit-btn" onclick="submitHsQuiz()">Submit Answers</button><button id="dq-close-btn" onclick="closeDailyQuiz()">Close</button></div>';
-  body.innerHTML=html;
-  document.getElementById('dq-overlay').classList.add('open');document.body.style.overflow='hidden';
+function toggleHsQuiz(i){var b=document.getElementById('hsq-body-'+i);var a=document.getElementById('hsq-arr-'+i);var btn=document.getElementById('hsq-btn-'+i);if(!b)return;var isOpen=b.style.display!=='none';b.style.display=isOpen?'none':'block';a.textContent=isOpen?'►':'▼';btn.style.boxShadow=isOpen?'':'0 4px 20px rgba(30,58,92,0.45)';}
+function hsShowResult(i,score,total){
+  var pct=Math.round(score/total*100);var pass=pct>=80;
+  var bg=pass?'#f0fff4':'#fff5f5';var bord=pass?'#68d391':'#fc8181';var col=pass?'#276749':'#9b2235';
+  var res=document.getElementById('hsq-res-'+i);
+  if(res){res.style.display='block';res.innerHTML=buildQuizResult(score,total,(pass?'🎉':'📚'),(pass?'PASSED':'NEEDS REVIEW'),bg,bord,col,pct,(pass?'Great work! You have a solid understanding of this topic.':'Review the HubSpot section above and try again when ready.'));}
+  var sb=document.getElementById('hsq-submit-'+i);if(sb)sb.style.display='none';
+  var qc=document.getElementById('hsqc-'+i);if(qc&&pass){markDone(qc);qc.style.color='#fff';}
 }
-function submitHsQuiz(){
-  var s=hsQuizList()[HS_QUIZ_IDX];if(!s)return;
-  var allAnswered=true;var score=0;
-  for(var i=0;i<s.questions.length;i++){if(!document.querySelector('input[name="hsq-q'+i+'"]:checked')){allAnswered=false;break;}}
-  if(!checkAllAnswered(allAnswered,s.questions.length))return;
-  for(var i=0;i<s.questions.length;i++){
-    var q=s.questions[i];var chosen=parseInt(document.querySelector('input[name="hsq-q'+i+'"]:checked').value);
-    var opts=document.querySelectorAll('#hsq-q-'+i+' .dq-opt');
-    for(var j=0;j<opts.length;j++){opts[j].style.cursor='not-allowed';opts[j].querySelector('input').disabled=true;}
-    if(chosen===q.ans){opts[chosen].classList.add('dq-correct');score++;}
-    else{opts[chosen].classList.add('dq-wrong');opts[q.ans].classList.add('dq-correct');}
-    var exp=document.createElement('div');
-    exp.style.cssText='display:block;margin-top:8px;padding:8px 12px;background:#fffbeb;border-radius:6px;font-size:12px;color:#744210;line-height:1.6;';
-    exp.innerHTML='<strong>'+(chosen===q.ans?'✅ Correct! ':'❌ Incorrect. ')+'</strong>'+q.explanation;
-    document.getElementById('hsq-q-'+i).appendChild(exp);
+function hsColourLabels(i,answers){
+  var s=HS_QUIZZES[i];
+  for(var j=0;j<s.questions.length;j++){
+    var v=answers[j];if(!v)continue;
+    var inp=document.querySelector('input[name="hsq'+i+'q'+j+'"][value="'+v+'"]');if(!inp)continue;
+    inp.checked=true;var lbl=inp.closest('label');
+    var ok=(v==='ABCDE'.charAt(s.questions[j].ans));
+    if(lbl){lbl.style.background=ok?'#f0fff4':'#fff5f5';lbl.style.borderColor=ok?'#68d391':'#fc8181';}
   }
-  var pct=Math.round(score/s.questions.length*100);var pass=pct>=60;
-  var u=getUser();
-  if(u){try{var k=u+'-'+hsQuizKey(s)+'-score';var prev=parseInt(localStorage.getItem(k));if(isNaN(prev)||pct>prev)localStorage.setItem(k,String(pct));}catch(e){}}
-  var r='<div style="text-align:center;margin-bottom:16px;padding:18px;background:'+(pass?'#f0fff4':'#fff5f5')+';border-radius:10px;border:2px solid '+(pass?'#68d391':'#fc8181')+'">';
-  r+='<div style="font-size:36px;margin-bottom:8px;">'+(pct===100?'🏆':pass?'🎉':'📚')+'</div>';
-  r+='<div style="font-size:22px;font-weight:800;color:'+(pass?'#276749':'#9b2235')+';">'+score+' / '+s.questions.length+'</div>';
-  r+='<div style="font-size:13px;color:#4a5568;margin-top:4px;">'+pct+'%</div></div>';
-  if(s.resolution&&s.resolution.length){r+='<div class="dq-resolution"><h3>📋 '+(s.resolutionTitle||'Key takeaways')+'</h3><ul>';for(var k2=0;k2<s.resolution.length;k2++)r+='<li>'+s.resolution[k2]+'</li>';r+='</ul></div>';}
-  var rDiv=document.getElementById('hsq-result');if(rDiv){rDiv.innerHTML=r;rDiv.style.display='block';}
-  var sb=document.getElementById('hsq-submit-btn');if(sb)sb.style.display='none';
+}
+function submitHsQuiz(i){
+  var s=HS_QUIZZES[i];var score=0;var allAnswered=true;var answers=[];
+  document.querySelectorAll('#hsq-body-'+i+' label').forEach(function(l){resetLabel(l);});
+  for(var j=0;j<s.questions.length;j++){var sel=document.querySelector('input[name="hsq'+i+'q'+j+'"]:checked');if(!sel){allAnswered=false;answers.push(null);}else{answers.push(sel.value);}}
+  if(!checkAllAnswered(allAnswered,s.questions.length))return;
+  for(var j=0;j<s.questions.length;j++){if(answers[j]==='ABCDE'.charAt(s.questions[j].ans))score++;}
+  hsColourLabels(i,answers);
+  hsShowResult(i,score,s.questions.length);
+  try{var u=getUser();if(u){var k=u+'-quiz-hs-'+hsSlug(s);localStorage.setItem(k+'-done','1');localStorage.setItem(k+'-answers',JSON.stringify(answers));localStorage.setItem(k+'-score',String(score));recordModuleQuiz('HubSpot Quiz — '+s.title,score,s.questions.length,Math.round(score/s.questions.length*100));}}catch(e){}
+}
+function resetHsQuiz(i){
+  var s=HS_QUIZZES[i];
+  document.querySelectorAll('#hsq-body-'+i+' input[type=radio]').forEach(function(inp){inp.checked=false;var l=inp.closest('label');if(l)resetLabel(l);});
+  var res=document.getElementById('hsq-res-'+i);if(res){res.style.display='none';res.innerHTML='';}
+  var sb=document.getElementById('hsq-submit-'+i);if(sb)sb.style.display='';
+  var qc=document.getElementById('hsqc-'+i);if(qc){qc.innerHTML='&#x25CB;';qc.style.background='transparent';qc.style.borderColor='#cbd5e0';qc.style.color='#a0aec0';}
+  try{var u=getUser();if(u){var k=u+'-quiz-hs-'+hsSlug(s);localStorage.removeItem(k+'-done');localStorage.removeItem(k+'-answers');localStorage.removeItem(k+'-score');}}catch(e){}
+}
+function hsRestoreAll(){
+  var u=getUser();if(!u)return;
+  for(var i=0;i<HS_QUIZZES.length;i++){
+    var s=HS_QUIZZES[i];var k=u+'-quiz-hs-'+hsSlug(s);
+    if(!localStorage.getItem(k+'-done'))continue;
+    var answers=[];try{answers=JSON.parse(localStorage.getItem(k+'-answers')||'[]');}catch(e){}
+    hsColourLabels(i,answers);
+    hsShowResult(i,parseInt(localStorage.getItem(k+'-score')||'0',10),s.questions.length);
+  }
 }
 function slackChannelsPage(){
   var h='';
